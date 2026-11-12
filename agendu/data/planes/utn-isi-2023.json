@@ -1,0 +1,431 @@
+{
+  "fuente": "UTN, Ord. 1877 (diseño curricular) y Ord. 1878 (correlatividades) del Consejo Superior. Tabla publicada por la FR Santa Fe.",
+  "universidad": {
+    "id": "utn",
+    "nombre": "Universidad Tecnológica Nacional",
+    "sigla": "UTN"
+  },
+  "carrera": {
+    "id": "utn-isi",
+    "nombre": "Ingeniería en Sistemas de Información"
+  },
+  "plan": {
+    "id": "utn-isi-2023",
+    "nombre": "Plan 2023",
+    "anio": 2023,
+    "ordenanzas": "Ord. 1877 y 1878 CSU",
+    "horas_electivas": 480
+  },
+  "regionales": [
+    {
+      "id": "utn-frc",
+      "nombre": "Facultad Regional Córdoba",
+      "sigla": "FRC"
+    }
+  ],
+  "materias": [
+    {
+      "numero": 1,
+      "nivel": 1,
+      "nombre": "Análisis Matemático I",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 2,
+      "nivel": 1,
+      "nombre": "Álgebra y Geometría Analítica",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 3,
+      "nivel": 1,
+      "nombre": "Física I",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 4,
+      "nivel": 1,
+      "nombre": "Inglés I",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 5,
+      "nivel": 1,
+      "nombre": "Lógica y Estructuras Discretas",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 6,
+      "nivel": 1,
+      "nombre": "Algoritmos y Estructuras de Datos",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 7,
+      "nivel": 1,
+      "nombre": "Arquitectura de Computadoras",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 8,
+      "nivel": 1,
+      "nombre": "Sistemas y Procesos de Negocio",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 9,
+      "nivel": 2,
+      "nombre": "Análisis Matemático II",
+      "integradora": false,
+      "regulares": [
+        1,
+        2
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 10,
+      "nivel": 2,
+      "nombre": "Física II",
+      "integradora": false,
+      "regulares": [
+        1,
+        3
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 11,
+      "nivel": 2,
+      "nombre": "Ingeniería y Sociedad",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": []
+    },
+    {
+      "numero": 12,
+      "nivel": 2,
+      "nombre": "Inglés II",
+      "integradora": false,
+      "regulares": [
+        4
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 13,
+      "nivel": 2,
+      "nombre": "Sintaxis y Semántica de los Lenguajes",
+      "integradora": false,
+      "regulares": [
+        5,
+        6
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 14,
+      "nivel": 2,
+      "nombre": "Paradigmas de Programación",
+      "integradora": false,
+      "regulares": [
+        5,
+        6
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 15,
+      "nivel": 2,
+      "nombre": "Sistemas Operativos",
+      "integradora": false,
+      "regulares": [
+        7
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 16,
+      "nivel": 2,
+      "nombre": "Análisis de Sistemas de Información",
+      "integradora": true,
+      "regulares": [
+        6,
+        8
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 17,
+      "nivel": 3,
+      "nombre": "Probabilidad y Estadística",
+      "integradora": false,
+      "regulares": [
+        1,
+        2
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 18,
+      "nivel": 3,
+      "nombre": "Economía",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": [
+        1,
+        2
+      ]
+    },
+    {
+      "numero": 19,
+      "nivel": 3,
+      "nombre": "Bases de Datos",
+      "integradora": false,
+      "regulares": [
+        13,
+        16
+      ],
+      "aprobadas": [
+        5,
+        6
+      ]
+    },
+    {
+      "numero": 20,
+      "nivel": 3,
+      "nombre": "Desarrollo de Software",
+      "integradora": false,
+      "regulares": [
+        14,
+        16
+      ],
+      "aprobadas": [
+        5,
+        6
+      ]
+    },
+    {
+      "numero": 21,
+      "nivel": 3,
+      "nombre": "Comunicación de Datos",
+      "integradora": false,
+      "regulares": [],
+      "aprobadas": [
+        3,
+        7
+      ]
+    },
+    {
+      "numero": 22,
+      "nivel": 3,
+      "nombre": "Análisis Numérico",
+      "integradora": false,
+      "regulares": [
+        9
+      ],
+      "aprobadas": [
+        1,
+        2
+      ]
+    },
+    {
+      "numero": 23,
+      "nivel": 3,
+      "nombre": "Diseño de Sistemas de Información",
+      "integradora": true,
+      "regulares": [
+        14,
+        16
+      ],
+      "aprobadas": [
+        4,
+        6,
+        8
+      ]
+    },
+    {
+      "numero": 24,
+      "nivel": 4,
+      "nombre": "Legislación",
+      "integradora": false,
+      "regulares": [
+        11
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 25,
+      "nivel": 4,
+      "nombre": "Ingeniería y Calidad de Software",
+      "integradora": false,
+      "regulares": [
+        19,
+        20,
+        23
+      ],
+      "aprobadas": [
+        13,
+        14
+      ]
+    },
+    {
+      "numero": 26,
+      "nivel": 4,
+      "nombre": "Redes de Datos",
+      "integradora": false,
+      "regulares": [
+        15,
+        21
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 27,
+      "nivel": 4,
+      "nombre": "Investigación Operativa",
+      "integradora": false,
+      "regulares": [
+        17,
+        22
+      ],
+      "aprobadas": []
+    },
+    {
+      "numero": 28,
+      "nivel": 4,
+      "nombre": "Simulación",
+      "integradora": false,
+      "regulares": [
+        17
+      ],
+      "aprobadas": [
+        9
+      ]
+    },
+    {
+      "numero": 29,
+      "nivel": 4,
+      "nombre": "Tecnologías para la Automatización",
+      "integradora": false,
+      "regulares": [
+        10,
+        22
+      ],
+      "aprobadas": [
+        9
+      ]
+    },
+    {
+      "numero": 30,
+      "nivel": 4,
+      "nombre": "Administración de Sistemas de Información",
+      "integradora": true,
+      "regulares": [
+        18,
+        23
+      ],
+      "aprobadas": [
+        16
+      ]
+    },
+    {
+      "numero": 31,
+      "nivel": 5,
+      "nombre": "Inteligencia Artificial",
+      "integradora": false,
+      "regulares": [
+        28
+      ],
+      "aprobadas": [
+        17,
+        22
+      ]
+    },
+    {
+      "numero": 32,
+      "nivel": 5,
+      "nombre": "Ciencia de Datos",
+      "integradora": false,
+      "regulares": [
+        28
+      ],
+      "aprobadas": [
+        17,
+        19
+      ]
+    },
+    {
+      "numero": 33,
+      "nivel": 5,
+      "nombre": "Sistemas de Gestión",
+      "integradora": false,
+      "regulares": [
+        18,
+        27
+      ],
+      "aprobadas": [
+        23
+      ]
+    },
+    {
+      "numero": 34,
+      "nivel": 5,
+      "nombre": "Gestión Gerencial",
+      "integradora": false,
+      "regulares": [
+        24,
+        30
+      ],
+      "aprobadas": [
+        18
+      ]
+    },
+    {
+      "numero": 35,
+      "nivel": 5,
+      "nombre": "Seguridad en los Sistemas de Información",
+      "integradora": false,
+      "regulares": [
+        26,
+        30
+      ],
+      "aprobadas": [
+        20,
+        21
+      ]
+    },
+    {
+      "numero": 36,
+      "nivel": 5,
+      "nombre": "Proyecto Final",
+      "integradora": true,
+      "regulares": [
+        25,
+        26,
+        30
+      ],
+      "aprobadas": [
+        12,
+        20,
+        23
+      ]
+    }
+  ]
+}
