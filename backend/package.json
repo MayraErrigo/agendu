@@ -1,0 +1,11 @@
+{
+  "name": "agendu-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cargar-plan": "node --env-file=.env scripts/cargar-plan.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2"
+  }
+}

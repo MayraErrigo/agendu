@@ -1,6 +1,6 @@
 // Carga un plan de estudios (archivo JSON) en Supabase.
-// Uso: node --env-file=.env.local scripts/cargar-plan.mjs data/planes/utn-isi-2023.json
-// Necesita en .env.local: NEXT_PUBLIC_SUPABASE_URL y SUPABASE_SECRET_KEY.
+// Uso, desde la carpeta backend: npm run cargar-plan -- planes/utn-isi-2023.json
+// Necesita en backend/.env: SUPABASE_URL y SUPABASE_SECRET_KEY.
 // Se puede correr las veces que haga falta: actualiza lo que ya existe.
 
 import { readFile } from "node:fs/promises";
@@ -8,14 +8,14 @@ import { createClient } from "@supabase/supabase-js";
 
 const archivo = process.argv[2];
 if (!archivo) {
-  console.error("Falta el archivo. Ejemplo: node --env-file=.env.local scripts/cargar-plan.mjs data/planes/utn-isi-2023.json");
+  console.error("Falta el archivo. Ejemplo: npm run cargar-plan -- planes/utn-isi-2023.json");
   process.exit(1);
 }
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const url = process.env.SUPABASE_URL;
 const clave = process.env.SUPABASE_SECRET_KEY;
 if (!url || !clave) {
-  console.error("Faltan NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SECRET_KEY en .env.local");
+  console.error("Faltan SUPABASE_URL o SUPABASE_SECRET_KEY en backend/.env");
   process.exit(1);
 }
 

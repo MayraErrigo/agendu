@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* Colores y tipografía de Agendu.
+   Se usan en las clases de Tailwind: bg-fondo, text-tinta, bg-acento, etc. */
+@theme {
+  --color-fondo: #F7F6F2;
+  --color-superficie: #FFFFFF;
+  --color-tinta: #1F2A2E;
+  --color-suave: #5B6669;
+  --color-linea: #E3E3DD;
+
+  --color-acento: #3E6B62;
+  --color-acento-hover: #2F5A50;
+  --color-acento-claro: #E4EEEA;
+
+  /* Estados de materia */
+  --color-arena: #F4EBD8;
+  --color-arena-tinta: #6E5119;
+  --color-pizarra: #E2E9F1;
+  --color-pizarra-tinta: #34506B;
+  --color-bloqueo: #ECECE6;
+  --color-bloqueo-tinta: #5F6563;
+
+  --color-error: #9B2C2C;
+  --color-error-claro: #FBEAEA;
+
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
