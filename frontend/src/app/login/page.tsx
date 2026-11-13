@@ -18,7 +18,6 @@ function traducirError(mensaje: string) {
 }
 
 export default function LoginPage() {
-  const supabase = createClient();
   const [modo, setModo] = useState<"entrar" | "registrarme">("entrar");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,6 +32,7 @@ export default function LoginPage() {
   }, []);
 
   async function entrarConGoogle() {
+    const supabase = createClient();
     setCargando(true);
     setMensaje(null);
     const { error } = await supabase.auth.signInWithOAuth({
@@ -47,6 +47,7 @@ export default function LoginPage() {
 
   async function entrarConMail(evento: React.FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    const supabase = createClient();
     setCargando(true);
     setMensaje(null);
 
