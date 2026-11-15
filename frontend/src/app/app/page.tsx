@@ -48,10 +48,30 @@ async function Bienvenida() {
 
   const nombre = perfil.nombre?.split(" ")[0] ?? user.email;
 
+  // Cuántas obligatorias aprobó sobre el total del plan, y cuántas electivas.
+  const aprobadasDeTipo = (tipo: "obligatoria" | "electiva") =>
+    supabase
+      .from("estados_materias")
+      .select("materia_id, materias!inner ( tipo, plan_id )", { count: "exact", head: true })
+      .eq("usuario_id", user.id)
+      .eq("estado", "aprobada")
+      .eq("materias.tipo", tipo)
+      .eq("materias.plan_id", perfil.plan_id);
+
+  const [{ count: aprobadas }, { count: electivas }, { count: total }] = await Promise.all([
+    aprobadasDeTipo("obligatoria"),
+    aprobadasDeTipo("electiva"),
+    supabase
+      .from("materias")
+      .select("id", { count: "exact", head: true })
+      .eq("plan_id", perfil.plan_id)
+      .eq("tipo", "obligatoria"),
+  ]);
+
   return (
     <>
       <h1 className="mt-10 text-[28px] font-bold leading-tight tracking-tight">Hola, {nombre}</h1>
-      <p className="mt-2 text-suave">Tu carrera quedó guardada. El próximo paso es cargar tu avance.</p>
+      <p className="mt-2 text-suave">Tu carrera y tu avance quedaron guardados.</p>
 
       <div className="mt-6 flex items-start justify-between gap-4 rounded-2xl bg-superficie p-4">
         <div className="flex flex-col gap-1">
@@ -63,6 +83,19 @@ async function Bienvenida() {
         </div>
         <Link href="/app/carrera" className="text-sm font-semibold text-acento hover:underline">
           Cambiar
+        </Link>
+      </div>
+
+      <div className="mt-3 flex items-start justify-between gap-4 rounded-2xl bg-superficie p-4">
+        <div className="flex flex-col gap-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-suave">Tu avance</span>
+          <span className="font-semibold">
+            {aprobadas ?? 0} de {total ?? 0} obligatorias aprobadas
+          </span>
+          <span className="text-sm text-suave">{electivas ?? 0} electivas aprobadas</span>
+        </div>
+        <Link href="/app/avance" className="text-sm font-semibold text-acento hover:underline">
+          Editar
         </Link>
       </div>
 

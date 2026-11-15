@@ -1,0 +1,30 @@
+{
+  "fuente": "UTN FRC, Departamento de Sistemas: correlatividades de electivas del Plan 2023 (ciclo 2023) y oferta actual de electivas con créditos (noticia 2315 del sitio del departamento).",
+  "plan_id": "utn-isi-2023",
+  "regional_id": "utn-frc",
+  "creditos_requeridos": 20,
+  "electivas": [
+    {"numero": 101, "nombre": "Backend de Aplicaciones", "nivel": 3, "creditos": 4, "se_dicta": true, "regulares": [14, 13], "aprobadas": [6]},
+    {"numero": 102, "nombre": "Green Software", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [20, 19], "aprobadas": [14, 13]},
+    {"numero": 103, "nombre": "Gestión Industrial de la Producción", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [19], "aprobadas": [8, 16]},
+    {"numero": 104, "nombre": "Gestión de la Mejora de los Procesos", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [19], "aprobadas": [8, 16]},
+    {"numero": 105, "nombre": "Desarrollo y Operaciones DevOps", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [19, 20], "aprobadas": [14, 13]},
+    {"numero": 106, "nombre": "Desarrollo de Aplicaciones con Objetos", "nivel": 4, "creditos": 2, "se_dicta": true, "regulares": [13], "aprobadas": [6]},
+    {"numero": 107, "nombre": "Comunicación Multimedial en el Desarrollo de Sistemas de Información", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [19], "aprobadas": [8, 16]},
+    {"numero": 108, "nombre": "Arquitectura de Software", "nivel": 4, "creditos": null, "se_dicta": false, "regulares": [19, 20], "aprobadas": [14, 13], "verificar": "No figura en la oferta actual de electivas de la FRC; créditos desconocidos."},
+    {"numero": 109, "nombre": "Desarrollo con Tecnologías Blockchain", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [26, 19], "aprobadas": [14, 20]},
+    {"numero": 110, "nombre": "Creatividad e Innovación en Ingeniería", "nivel": 5, "creditos": null, "se_dicta": false, "regulares": [30], "aprobadas": [20], "verificar": "No figura en la oferta actual de electivas de la FRC; créditos desconocidos."},
+    {"numero": 111, "nombre": "Auditoría de SI/TI", "nivel": 5, "creditos": null, "se_dicta": false, "regulares": [30], "aprobadas": [20], "verificar": "No figura en la oferta actual de electivas de la FRC; créditos desconocidos."},
+    {"numero": 112, "nombre": "Gerenciamiento Estratégico", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [30], "aprobadas": [20]},
+    {"numero": 113, "nombre": "Consultoría en Negocios Digitales", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [30], "aprobadas": [20]},
+    {"numero": 114, "nombre": "Emprendimientos Tecnológicos", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [30], "aprobadas": [16, 19]},
+    {"numero": 115, "nombre": "Decisiones en Escenarios Complejos", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [27], "aprobadas": [19]},
+    {"numero": 116, "nombre": "Testing de Software", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [25], "aprobadas": [19, 20]},
+    {"numero": 117, "nombre": "Seguridad en el Desarrollo de Software", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [26, 19], "aprobadas": [20, 8]},
+    {"numero": 118, "nombre": "Integración de Aplicaciones en Entorno Web", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [26], "aprobadas": [19, 20], "verificar": "La fuente pide Bases de Datos cursada solo para el ciclo lectivo 2023 (transición) y aprobada como regla general; se cargó como aprobada."},
+    {"numero": 119, "nombre": "Ingeniería de Software de Fuentes Abiertas/Libres", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [20, 19, 26], "aprobadas": [13, 14]},
+    {"numero": 120, "nombre": "Experiencia e Interfaces de Usuario", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [], "aprobadas": [], "verificar": "Electiva nueva: faltan sus correlativas."},
+    {"numero": 121, "nombre": "Habilidades Blandas", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [], "aprobadas": [], "verificar": "Electiva nueva: faltan sus correlativas."},
+    {"numero": 122, "nombre": "Creatividad y Desarrollo de Entornos Virtuales", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [], "aprobadas": [], "verificar": "Electiva nueva: faltan sus correlativas."}
+  ]
+}

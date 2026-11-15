@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "cargar-plan": "node --env-file=.env scripts/cargar-plan.mjs"
+    "cargar-plan": "node --env-file=.env scripts/cargar-plan.mjs",
+    "cargar-electivas": "node --env-file=.env scripts/cargar-electivas.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2"

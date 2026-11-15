@@ -1,5 +1,5 @@
 "use server";
-
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -45,5 +45,7 @@ export async function guardarCarrera(_estadoAnterior: EstadoGuardado, formulario
     return { error: "No pudimos guardar tu carrera. Probá de nuevo." };
   }
 
-  redirect("/app");
+  // Avisamos a Next.js que los datos cambiaron, así no muestra una versión vieja.
+  revalidatePath("/app", "layout");
+  redirect("/app/avance");
 }
