@@ -24,7 +24,7 @@ Cada etapa termina con algo que se puede probar. Si algo falla, no se avanza.
 | 6. Pantalla Plan | Materias por año, con colores por estado | Se ve la carrera y se pueden cambiar estados | Hecha |
 | 7. Pantalla Inicio | Avance, promedio, qué cursar y rendir | Los números coinciden con la autogestión | Pendiente |
 | 8. Ficha de materia | Nota, fecha, correlativas y qué habilita | Cualquier materia muestra todo | Pendiente |
-| 9. Navegación y reportes | Barra inferior; agregar una materia que no figura | Se navega toda la app y se puede reportar | Pendiente |
+| 9. Navegación y reportes | Barra inferior; agregar una materia que no figura | Se navega toda la app y se puede reportar | Hecha |
 | 10. Electivas FRC | Las 19 electivas con sus correlativas | Aparecen en el plan | Pendiente |
 | 11. Publicar | Instalable y en Vercel | Los amigos la usan desde el celular | Pendiente |
 | 12. Verificación | Checklist de datos con amigos | Nadie encuentra errores en el plan | Pendiente |

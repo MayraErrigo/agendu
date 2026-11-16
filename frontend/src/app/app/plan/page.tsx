@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Link from "next/link";
+
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { nombreDelAnio, obtenerCorrelativas, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
@@ -17,9 +17,6 @@ import PlanCarrera, { type GrupoPlan } from "./PlanCarrera";
 export default function PlanPage() {
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-10 pt-12">
-      <Link href="/app" className="text-sm font-semibold text-acento hover:underline">
-        ← Volver
-      </Link>
       <h1 className="mt-4 text-[28px] font-bold leading-tight tracking-tight">Tu carrera</h1>
       <Suspense fallback={<p className="mt-6 text-suave">Cargando tu plan…</p>}>
         <Contenido />

@@ -9,7 +9,7 @@ import { calcularAvance } from "@/lib/logica/avance";
 // Pantalla Inicio: el resumen de la carrera del alumno.
 export default function InicioPage() {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-10 pt-12">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pt-12">
       <Suspense fallback={<p className="text-suave">Cargando tu carrera…</p>}>
         <Inicio />
       </Suspense>
@@ -191,20 +191,8 @@ async function Inicio() {
         </p>
       )}
 
-      {/* Accesos provisorios: en la etapa 9 pasan a la barra de navegación y a Perfil */}
-      <nav aria-label="Accesos" className="mt-auto flex flex-wrap justify-center gap-x-5 gap-y-2 pt-6 text-sm">
-        <Link href="/app/avance" className="font-semibold text-acento hover:underline">
-          Editar avance
-        </Link>
-        <Link href="/app/carrera" className="font-semibold text-acento hover:underline">
-          Cambiar carrera
-        </Link>
-        <form action="/auth/salir" method="post">
-          <button type="submit" className="font-semibold text-suave hover:underline">
-            Cerrar sesión
-          </button>
-        </form>
-      </nav>
+      
+      
     </div>
   );
 }
