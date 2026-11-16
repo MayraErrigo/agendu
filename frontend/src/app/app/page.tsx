@@ -154,14 +154,14 @@ async function Bienvenida() {
         )}
       </section>
 
-      <form action="/auth/salir" method="post" className="mt-auto pt-10">
-        <button
-          type="submit"
-          className="h-14 w-full rounded-2xl border border-linea bg-superficie font-semibold transition hover:bg-fondo"
-        >
-          Cerrar sesión
-        </button>
-      </form>
+            <Link
+        href="/app/plan"
+        className="mt-8 flex h-14 items-center justify-center rounded-2xl bg-acento font-semibold text-white transition hover:bg-acento-hover"
+      >
+        Ver mi plan completo
+      </Link>
+
+      <form action="/auth/salir" method="post" className="mt-auto pt-6"></form>
     </>
   );
 }
