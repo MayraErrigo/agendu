@@ -1,7 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 export async function createClient() {
+  // Le avisamos a Next.js que esto depende de cada visita (la sesión del alumno),
+  // así no intenta prepararlo de antemano. Lo pide el modo cacheComponents.
+  await connection();
   const cookieStore = await cookies();
 
   return createServerClient(

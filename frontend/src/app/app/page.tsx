@@ -2,81 +2,56 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import Logo from "@/components/Logo";
-import { obtenerCorrelativas, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
+import { obtenerCorrelativas, obtenerEstados, obtenerMaterias, obtenerNotas } from "@/lib/datos/plan";
 import { resumen } from "@/lib/logica/correlativas";
+import { calcularAvance } from "@/lib/logica/avance";
 
-// Pantalla provisoria de /app. Si el alumno no eligió carrera, lo manda a elegirla.
-// En la etapa 7 la reemplazamos por la pantalla Inicio.
-export default function AppPage() {
+// Pantalla Inicio: el resumen de la carrera del alumno.
+export default function InicioPage() {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-6 pb-10 pt-14">
-      <Logo tamano={40} conNombre />
-      <Suspense fallback={<p className="mt-10 text-suave">Cargando…</p>}>
-        <Bienvenida />
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-10 pt-12">
+      <Suspense fallback={<p className="text-suave">Cargando tu carrera…</p>}>
+        <Inicio />
       </Suspense>
     </main>
   );
 }
 
-type PerfilConCarrera = {
+type Perfil = {
   nombre: string | null;
   plan_id: string | null;
   regional_id: string | null;
-  regionales: { nombre: string; sigla: string } | null;
-  planes: { nombre: string; carreras: { nombre: string } } | null;
+  regionales: { sigla: string } | null;
+  planes: { nombre: string; creditos_electivas: number | null; carreras: { nombre: string } } | null;
 };
 
-async function Bienvenida() {
+async function Inicio() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
   if (!user) {
     redirect("/login");
   }
 
   const { data } = await supabase
     .from("perfiles")
-    .select("nombre, plan_id, regional_id, regionales ( nombre, sigla ), planes ( nombre, carreras ( nombre ) )")
+    .select("nombre, plan_id, regional_id, regionales ( sigla ), planes ( nombre, creditos_electivas, carreras ( nombre ) )")
     .eq("id", user.id)
     .maybeSingle();
-
-  const perfil = data as unknown as PerfilConCarrera | null;
-
+  const perfil = data as unknown as Perfil | null;
   if (!perfil?.plan_id) {
     redirect("/app/carrera");
   }
 
-  const nombre = perfil.nombre?.split(" ")[0] ?? user.email;
-
-  // Cuántas obligatorias aprobó sobre el total del plan, y cuántas electivas.
-  const aprobadasDeTipo = (tipo: "obligatoria" | "electiva") =>
-    supabase
-      .from("estados_materias")
-      .select("materia_id, materias!inner ( tipo, plan_id )", { count: "exact", head: true })
-      .eq("usuario_id", user.id)
-      .eq("estado", "aprobada")
-      .eq("materias.tipo", tipo)
-      .eq("materias.plan_id", perfil.plan_id);
-
-  const [{ count: aprobadas }, { count: electivas }, { count: total }] = await Promise.all([
-    aprobadasDeTipo("obligatoria"),
-    aprobadasDeTipo("electiva"),
-    supabase
-      .from("materias")
-      .select("id", { count: "exact", head: true })
-      .eq("plan_id", perfil.plan_id)
-      .eq("tipo", "obligatoria"),
-  ]);
-
-  // Qué puede cursar y qué puede rendir, según sus correlativas.
-  const [materias, estados] = await Promise.all([
+  const [materias, estados, notas] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
+    obtenerNotas(user.id),
   ]);
   const correlativas = await obtenerCorrelativas(materias.map((m) => m.id));
+
+  const avance = calcularAvance(materias, estados, notas, perfil.planes?.creditos_electivas ?? null);
   const { podesCursar, podesRendir } = resumen(
     materias.map((m) => m.id),
     correlativas,
@@ -88,39 +63,109 @@ async function Bienvenida() {
   const electivasCursables = cursables.filter((m) => m.tipo === "electiva");
   const rendibles = podesRendir.map((id) => materiaPorId.get(id)!);
 
+  const nombre = perfil.nombre?.split(" ")[0] ?? "";
+  const carrera = perfil.planes?.carreras.nombre ?? "";
+  const sigla = perfil.regionales?.sigla ?? "";
+
+  // Anillo de avance
+  const radio = 44;
+  const circunferencia = 2 * Math.PI * radio;
+  const trazo = (circunferencia * avance.porcentaje) / 100;
+
+  const requeridos = avance.creditosRequeridos;
+  const porcentajeCreditos = requeridos ? Math.min(100, Math.round((avance.creditosAprobados / requeridos) * 100)) : 0;
+
   return (
-    <>
-      <h1 className="mt-10 text-[28px] font-bold leading-tight tracking-tight">Hola, {nombre}</h1>
-      <p className="mt-2 text-suave">Tu carrera y tu avance quedaron guardados.</p>
+    <div className="flex flex-1 flex-col gap-5">
+      <header className="flex flex-col gap-0.5">
+        <span className="text-sm text-suave">
+          {carrera} · UTN {sigla}
+        </span>
+        <h1 className="text-[26px] font-bold tracking-tight">{nombre ? `Hola, ${nombre}` : "Hola"}</h1>
+      </header>
 
-      <div className="mt-6 flex items-start justify-between gap-4 rounded-2xl bg-superficie p-4">
-        <div className="flex flex-col gap-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-suave">Tu carrera</span>
-          <span className="font-semibold">{perfil.planes?.carreras.nombre}</span>
-          <span className="text-sm text-suave">
-            {perfil.regionales?.nombre} · {perfil.planes?.nombre}
+      {/* Avance */}
+      <section className="flex items-center gap-5 rounded-3xl bg-superficie p-5 shadow-sm">
+        <div className="relative size-26 shrink-0">
+          <svg viewBox="0 0 104 104" className="size-26" role="img" aria-label={`Avance de la carrera: ${avance.porcentaje}%`}>
+            <circle cx="52" cy="52" r={radio} fill="none" strokeWidth="10" className="stroke-acento-claro" />
+            <circle
+              cx="52"
+              cy="52"
+              r={radio}
+              fill="none"
+              strokeWidth="10"
+              strokeLinecap="round"
+              strokeDasharray={`${trazo} ${circunferencia}`}
+              transform="rotate(-90 52 52)"
+              className="stroke-acento"
+            />
+          </svg>
+          <span className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold tracking-tight">
+            {avance.porcentaje}%
           </span>
         </div>
-        <Link href="/app/carrera" className="text-sm font-semibold text-acento hover:underline">
-          Cambiar
-        </Link>
-      </div>
-
-      <div className="mt-3 flex items-start justify-between gap-4 rounded-2xl bg-superficie p-4">
-        <div className="flex flex-col gap-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-suave">Tu avance</span>
-          <span className="font-semibold">
-            {aprobadas ?? 0} de {total ?? 0} obligatorias aprobadas
+        <div className="flex flex-col gap-3">
+          <span className="font-bold leading-snug">
+            {avance.obligatoriasAprobadas} de {avance.obligatoriasTotal} materias aprobadas
           </span>
-          <span className="text-sm text-suave">{electivas ?? 0} electivas aprobadas</span>
+          <div className="flex gap-4">
+            <Dato valor={avance.promedio !== null ? avance.promedio.toLocaleString("es-AR") : "—"} etiqueta="Promedio" />
+            <Dato valor={String(avance.regulares)} etiqueta="Regulares" />
+            <Dato valor={String(avance.faltan)} etiqueta="Te faltan" />
+          </div>
         </div>
-        <Link href="/app/avance" className="text-sm font-semibold text-acento hover:underline">
-          Editar
-        </Link>
-      </div>
+      </section>
 
-      <section className="mt-6 flex flex-col gap-3">
-        <h2 className="text-lg font-bold">Podés cursar ahora</h2>
+      {/* Créditos de electivas */}
+      {requeridos && (
+        <section className="flex flex-col gap-2 rounded-3xl bg-superficie p-5 shadow-sm">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-bold">Electivas</h2>
+            <span className="text-sm text-suave">
+              {avance.creditosAprobados} de {requeridos} créditos
+            </span>
+          </div>
+          <div
+            className="h-2.5 overflow-hidden rounded-full bg-acento-claro"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={requeridos}
+            aria-valuenow={avance.creditosAprobados}
+            aria-label="Créditos de electivas"
+          >
+            <div className="h-full rounded-full bg-acento" style={{ width: `${porcentajeCreditos}%` }} />
+          </div>
+          <span className="text-xs text-suave">
+            {avance.creditosAprobados >= requeridos
+              ? "Ya juntaste todos los créditos de electivas."
+              : `Te faltan ${requeridos - avance.creditosAprobados} créditos.`}
+          </span>
+        </section>
+      )}
+
+      {/* Podés rendir */}
+      {rendibles.length > 0 && (
+        <section className="flex flex-col gap-2 rounded-3xl bg-arena p-5">
+          <h2 className="font-bold text-arena-tinta">
+            {rendibles.length === 1 ? "Podés rendir 1 final" : `Podés rendir ${rendibles.length} finales`}
+          </h2>
+          <ul className="flex flex-col gap-1 text-sm text-arena-tinta">
+            {rendibles.map((m) => (
+              <li key={m.id}>{m.nombre}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Podés cursar */}
+      <section className="flex flex-col gap-3">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-lg font-bold">Podés cursar</h2>
+          <Link href="/app/plan" className="text-sm font-semibold text-acento hover:underline">
+            Ver plan
+          </Link>
+        </div>
         {obligatoriasCursables.length ? (
           <div className="flex flex-wrap gap-2">
             {obligatoriasCursables.map((m) => (
@@ -134,34 +179,41 @@ async function Bienvenida() {
         )}
         {electivasCursables.length > 0 && (
           <p className="text-sm text-suave">
-            Y {electivasCursables.length} {electivasCursables.length === 1 ? "electiva" : "electivas"}.
+            También {electivasCursables.length === 1 ? "1 electiva" : `${electivasCursables.length} electivas`}.
           </p>
         )}
       </section>
 
-      <section className="mt-6 flex flex-col gap-3">
-        <h2 className="text-lg font-bold">Podés rendir</h2>
-        {rendibles.length ? (
-          <div className="flex flex-wrap gap-2">
-            {rendibles.map((m) => (
-              <span key={m.id} className="rounded-full bg-arena px-3.5 py-2 text-sm font-semibold text-arena-tinta">
-                {m.nombre}
-              </span>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-suave">Todavía no tenés finales habilitados.</p>
-        )}
-      </section>
+      {avance.promedio === null && avance.obligatoriasAprobadas > 0 && (
+        <p className="rounded-2xl bg-pizarra px-4 py-3 text-sm text-pizarra-tinta">
+          Para ver tu promedio, cargá la nota de tus materias aprobadas. Lo vas a poder hacer desde la ficha de cada
+          materia.
+        </p>
+      )}
 
-            <Link
-        href="/app/plan"
-        className="mt-8 flex h-14 items-center justify-center rounded-2xl bg-acento font-semibold text-white transition hover:bg-acento-hover"
-      >
-        Ver mi plan completo
-      </Link>
+      {/* Accesos provisorios: en la etapa 9 pasan a la barra de navegación y a Perfil */}
+      <nav aria-label="Accesos" className="mt-auto flex flex-wrap justify-center gap-x-5 gap-y-2 pt-6 text-sm">
+        <Link href="/app/avance" className="font-semibold text-acento hover:underline">
+          Editar avance
+        </Link>
+        <Link href="/app/carrera" className="font-semibold text-acento hover:underline">
+          Cambiar carrera
+        </Link>
+        <form action="/auth/salir" method="post">
+          <button type="submit" className="font-semibold text-suave hover:underline">
+            Cerrar sesión
+          </button>
+        </form>
+      </nav>
+    </div>
+  );
+}
 
-      <form action="/auth/salir" method="post" className="mt-auto pt-6"></form>
-    </>
+function Dato({ valor, etiqueta }: { valor: string; etiqueta: string }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-xl font-bold tabular-nums">{valor}</span>
+      <span className="text-xs text-suave">{etiqueta}</span>
+    </div>
   );
 }

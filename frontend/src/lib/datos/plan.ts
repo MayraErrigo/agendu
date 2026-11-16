@@ -73,3 +73,23 @@ export async function obtenerCorrelativas(materiaIds: string[]): Promise<Correla
   }
   return (data ?? []) as Correlativa[];
 }
+
+// Las notas que el alumno cargó (solo las materias que tienen nota).
+export async function obtenerNotas(usuarioId: string): Promise<Record<string, number>> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("estados_materias")
+    .select("materia_id, nota")
+    .eq("usuario_id", usuarioId)
+    .not("nota", "is", null);
+
+  if (error) {
+    throw new Error(`No pudimos cargar tus notas: ${error.message}`);
+  }
+
+  const notas: Record<string, number> = {};
+  for (const fila of (data ?? []) as { materia_id: string; nota: number }[]) {
+    notas[fila.materia_id] = Number(fila.nota);
+  }
+  return notas;
+}

@@ -22,6 +22,7 @@ export default function FormularioLogin() {
   const router = useRouter();
   const errorEnDireccion = useSearchParams().get("error");
   const [modo, setModo] = useState<"entrar" | "registrarme">("entrar");
+  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cargando, setCargando] = useState(false);
@@ -58,7 +59,11 @@ export default function FormularioLogin() {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          // Guardamos el nombre: el perfil lo toma de acá al crearse.
+          data: { full_name: nombre.trim() },
+        },
       });
       if (error) {
         setMensaje({ tipo: "error", texto: traducirError(error.message) });
@@ -117,6 +122,24 @@ export default function FormularioLogin() {
         </div>
 
         <form onSubmit={entrarConMail} className="flex flex-col gap-3">
+          {esRegistro && (
+            <>
+              <label htmlFor="nombre" className="text-sm font-semibold">
+                Nombre
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                required
+                minLength={2}
+                maxLength={60}
+                autoComplete="given-name"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                className="h-13 rounded-2xl border border-linea bg-superficie px-4 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro"
+              />
+            </>
+          )}
           <label htmlFor="email" className="text-sm font-semibold">
             Mail
           </label>
