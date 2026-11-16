@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import type { Correlativa } from "@/lib/logica/correlativas";
 
 export const ESTADOS = ["pendiente", "cursando", "regular", "aprobada"] as const;
 export type EstadoMateria = (typeof ESTADOS)[number];
@@ -56,4 +57,19 @@ export async function obtenerEstados(usuarioId: string): Promise<Record<string, 
 export function nombreDelAnio(nivel: number): string {
   const ordinales: Record<number, string> = { 1: "1er", 2: "2do", 3: "3er", 4: "4to", 5: "5to", 6: "6to" };
   return `${ordinales[nivel] ?? `${nivel}º`} año`;
+}
+
+// Las correlativas de un grupo de materias (por ejemplo, todas las que ve el alumno).
+export async function obtenerCorrelativas(materiaIds: string[]): Promise<Correlativa[]> {
+  if (!materiaIds.length) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("correlativas")
+    .select("materia_id, requiere_id, condicion")
+    .in("materia_id", materiaIds);
+
+  if (error) {
+    throw new Error(`No pudimos cargar las correlativas: ${error.message}`);
+  }
+  return (data ?? []) as Correlativa[];
 }

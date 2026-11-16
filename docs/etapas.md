@@ -19,8 +19,8 @@ Cada etapa termina con algo que se puede probar. Si algo falla, no se avanza.
 | 1b. Estructura | Carpetas frontend, backend y docs | La app corre desde frontend | Hecha |
 | 2. Login | Entrar con mail y con Google | Entrás, cerrás sesión y volvés a entrar | Hecha |
 | 3. Elegí tu carrera | Universidad, regional, carrera y plan | La elección queda guardada en el perfil | Hecha |
-| 4. Cargá tu avance | Marcar lo aprobado, año por año | Las materias quedan guardadas | Pendiente |
-| 5. Correlativas | Qué podés cursar y rendir | Las pruebas dan bien con casos reales | Pendiente |
+| 4. Cargá tu avance | Marcar lo aprobado, año por año | Las materias quedan guardadas | Hecha |
+| 5. Correlativas | Qué podés cursar y rendir | Las pruebas dan bien con casos reales | Hecha |
 | 6. Pantalla Plan | Materias por año, con colores por estado | Se ve la carrera y se pueden cambiar estados | Pendiente |
 | 7. Pantalla Inicio | Avance, promedio, qué cursar y rendir | Los números coinciden con la autogestión | Pendiente |
 | 8. Ficha de materia | Nota, fecha, correlativas y qué habilita | Cualquier materia muestra todo | Pendiente |
