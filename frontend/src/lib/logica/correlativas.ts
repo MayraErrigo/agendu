@@ -90,3 +90,23 @@ export function resumen(materiaIds: string[], correlativas: Correlativa[], estad
     podesRendir: materiaIds.filter((id) => puedeRendir(id, indice, estados)),
   };
 }
+
+// Cada correlativa de una materia, con lo que pide y si el alumno ya la cumple.
+export type Requisito = {
+  materiaId: string;
+  condicion: Condicion; // lo que pide para cursar
+  cumpleParaCursar: boolean;
+  aprobada: boolean; // para rendir el final hacen falta todas aprobadas
+};
+
+export function requisitos(materiaId: string, indice: Map<string, Correlativa[]>, estados: Estados): Requisito[] {
+  return (indice.get(materiaId) ?? []).map((c) => {
+    const estado = estadoDe(estados, c.requiere_id);
+    return {
+      materiaId: c.requiere_id,
+      condicion: c.condicion,
+      cumpleParaCursar: cumple(estado, c.condicion),
+      aprobada: estado === "aprobada",
+    };
+  });
+}

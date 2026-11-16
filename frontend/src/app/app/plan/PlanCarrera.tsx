@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import type { EstadoMateria } from "@/lib/datos/plan";
 import type { Condicion, Situacion } from "@/lib/logica/correlativas";
 import { cambiarEstado } from "./acciones";
@@ -178,6 +179,12 @@ export default function PlanCarrera({ grupos, subtitulo: textoPlan }: { grupos: 
 
                   {!m.seDicta && <p className="text-suave">Esta electiva no se dicta actualmente.</p>}
 
+                  <Link
+                    href={`/app/materia/${m.id}`}
+                    className="flex h-11 items-center justify-center rounded-xl border border-acento font-semibold text-acento transition hover:bg-acento-claro"
+                  >
+                    Abrir materia
+                  </Link>
                   <div className="flex flex-col gap-2">
                     <span className="font-semibold">Cambiar estado</span>
                     <div className="grid grid-cols-4 gap-1.5">

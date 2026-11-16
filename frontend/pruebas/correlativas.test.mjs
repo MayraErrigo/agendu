@@ -10,6 +10,7 @@ import {
   habilita,
   indexarCorrelativas,
   puedeRendir,
+  requisitos,
   resumen,
   situacion,
 } from "../src/lib/logica/correlativas.ts";
@@ -75,4 +76,12 @@ test("Proyecto Final queda bloqueado hasta cumplir todas sus correlativas", () =
   assert.equal(situacion(id(36), indice, {}), "bloqueada");
   const listo = avance({ 25: "regular", 26: "regular", 30: "regular", 12: "aprobada", 20: "aprobada", 23: "aprobada" });
   assert.equal(situacion(id(36), indice, listo), "disponible");
+});
+
+test("la ficha muestra cada correlativa con lo que pide y si se cumple", () => {
+  const lista = requisitos(id(9), indice, avance({ 1: "aprobada", 2: "regular" }));
+  assert.deepEqual(lista, [
+    { materiaId: id(1), condicion: "regular", cumpleParaCursar: true, aprobada: true },
+    { materiaId: id(2), condicion: "regular", cumpleParaCursar: true, aprobada: false },
+  ]);
 });
