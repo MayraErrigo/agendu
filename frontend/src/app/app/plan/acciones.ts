@@ -48,3 +48,32 @@ export async function cambiarEstado(materiaId: string, estado: EstadoMateria): P
   revalidatePath("/app", "layout");
   return null;
 }
+
+// Cambia el estado de una materia que agregó el alumno.
+// La seguridad de la base (RLS) ya impide tocar materias de otro alumno.
+export async function cambiarEstadoPropia(id: string, estado: EstadoMateria): Promise<{ error: string } | null> {
+  if (!ESTADOS.includes(estado)) {
+    return { error: "Ese estado no existe." };
+  }
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("materias_propias")
+    .update({ estado, actualizado_en: new Date().toISOString() })
+    .eq("id", id);
+  if (error) {
+    return { error: "No pudimos guardar el cambio. Probá de nuevo." };
+  }
+  revalidatePath("/app", "layout");
+  return null;
+}
+
+// Quita del plan una materia que agregó el alumno. El reporte que mandó sigue en pie.
+export async function quitarPropia(id: string): Promise<{ error: string } | null> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("materias_propias").delete().eq("id", id);
+  if (error) {
+    return { error: "No pudimos quitarla. Probá de nuevo." };
+  }
+  revalidatePath("/app", "layout");
+  return null;
+}

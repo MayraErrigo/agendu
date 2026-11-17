@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { obtenerCorrelativas, obtenerEstados, obtenerMaterias, obtenerNotas } from "@/lib/datos/plan";
+import { obtenerPropias } from "@/lib/datos/propias";
 import { resumen } from "@/lib/logica/correlativas";
 import { calcularAvance } from "@/lib/logica/avance";
 
@@ -44,14 +45,22 @@ async function Inicio() {
     redirect("/app/carrera");
   }
 
-  const [materias, estados, notas] = await Promise.all([
+  const [materias, estados, notas, propias] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
     obtenerNotas(user.id),
+    obtenerPropias(user.id, perfil.plan_id),
   ]);
   const correlativas = await obtenerCorrelativas(materias.map((m) => m.id));
 
-  const avance = calcularAvance(materias, estados, notas, perfil.planes?.creditos_electivas ?? null);
+  // El avance cuenta también las materias que agregó el alumno (suman al total y a los créditos).
+  const estadosPropias = Object.fromEntries(propias.map((p) => [p.id, p.estado]));
+  const avance = calcularAvance(
+    [...materias, ...propias],
+    { ...estados, ...estadosPropias },
+    notas,
+    perfil.planes?.creditos_electivas ?? null
+  );
   const { podesCursar, podesRendir } = resumen(
     materias.map((m) => m.id),
     correlativas,

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { nombreDelAnio, obtenerCorrelativas, obtenerEstados, obtenerMaterias, type Materia } from "@/lib/datos/plan";
+import { obtenerPropias } from "@/lib/datos/propias";
 import { indexarCorrelativas, puedeRendir } from "@/lib/logica/correlativas";
 
 // Pantalla Cursando: las materias que el alumno tiene entre manos este cuatrimestre
@@ -36,14 +37,20 @@ async function Contenido() {
     redirect("/app/carrera");
   }
 
-  const [materias, estados] = await Promise.all([
+  const [materias, estados, propias] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
+    obtenerPropias(user.id, perfil.plan_id),
   ]);
   const indice = indexarCorrelativas(await obtenerCorrelativas(materias.map((m) => m.id)));
 
-  const cursando = materias.filter((m) => estados[m.id] === "cursando");
-  const regulares = materias.filter((m) => estados[m.id] === "regular");
+  // Las materias agregadas por el alumno no tienen página propia: se abren desde el Plan.
+  const tarjetas = [
+    ...materias.map((m) => ({ ...m, estado: estados[m.id], href: `/app/materia/${m.id}`, propia: false })),
+    ...propias.map((p) => ({ ...p, href: "/app/plan", propia: true })),
+  ];
+  const cursando = tarjetas.filter((m) => m.estado === "cursando");
+  const regulares = tarjetas.filter((m) => m.estado === "regular");
 
   return (
     <>
@@ -74,7 +81,7 @@ async function Contenido() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-suave">Regulares: te falta el final</h2>
           <ul className="flex flex-col gap-2">
             {regulares.map((m) => {
-              const rendible = puedeRendir(m.id, indice, estados);
+              const rendible = m.propia || puedeRendir(m.id, indice, estados);
               return (
                 <li key={m.id}>
                   <TarjetaMateria
@@ -92,10 +99,12 @@ async function Contenido() {
   );
 }
 
-function TarjetaMateria({ materia, etiqueta, clases }: { materia: Materia; etiqueta: string; clases: string }) {
+type Tarjeta = Pick<Materia, "id" | "nombre" | "nivel" | "tipo"> & { href: string };
+
+function TarjetaMateria({ materia, etiqueta, clases }: { materia: Tarjeta; etiqueta: string; clases: string }) {
   return (
     <Link
-      href={`/app/materia/${materia.id}`}
+      href={materia.href}
       className="flex items-center gap-3 rounded-2xl bg-superficie p-4 shadow-sm transition hover:shadow-md"
     >
       <span className="flex flex-1 flex-col gap-0.5">

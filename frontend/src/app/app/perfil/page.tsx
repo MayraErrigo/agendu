@@ -67,7 +67,10 @@ async function Contenido() {
         <div className="flex flex-col gap-2">
           <Opcion href="/app/avance" texto="Editar mi avance" detalle="Marcar varias materias de una vez" />
           <Opcion href="/app/carrera" texto="Cambiar de carrera o de plan" />
+          <Opcion href="/app/plan/agregar" texto="Agregar una materia que no figura" />
+          <Opcion href="/app/reportar" texto="Reportar un error en el plan" />
         </div>
+
       </section>
 
       {/* Salir */}

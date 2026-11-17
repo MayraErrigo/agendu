@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import type { EstadoMateria } from "@/lib/datos/plan";
 import type { Condicion, Situacion } from "@/lib/logica/correlativas";
-import { cambiarEstado } from "./acciones";
+import { cambiarEstado, cambiarEstadoPropia, quitarPropia } from "./acciones";
 
 export type MateriaPlan = {
   id: string;
@@ -19,6 +19,7 @@ export type MateriaPlan = {
   faltanParaCursar: { nombre: string; necesita: Condicion }[];
   faltanParaRendir: string[];
   habilita: string[];
+  propia: boolean; // la agregó el alumno porque no figuraba en el plan
 };
 
 export type GrupoPlan = { clave: string; etiqueta: string; titulo: string; materias: MateriaPlan[] };
@@ -40,6 +41,7 @@ const BOTONES: { estado: EstadoMateria; texto: string }[] = [
 
 // La línea chica debajo del nombre de cada materia.
 function subtitulo(m: MateriaPlan): string {
+  if (m.propia && m.situacion === "disponible") return "Agregada por vos";
   switch (m.situacion) {
     case "aprobada":
       return "Aprobada";
@@ -56,8 +58,18 @@ function subtitulo(m: MateriaPlan): string {
   }
 }
 
-export default function PlanCarrera({ grupos, subtitulo: textoPlan }: { grupos: GrupoPlan[]; subtitulo: string }) {
-  const [elegido, setElegido] = useState(grupos[0]?.clave ?? "");
+export default function PlanCarrera({
+  grupos,
+  subtitulo: textoPlan,
+  inicial,
+  aviso,
+}: {
+  grupos: GrupoPlan[];
+  subtitulo: string;
+  inicial?: string;
+  aviso?: string;
+}) {
+  const [elegido, setElegido] = useState(inicial ?? grupos[0]?.clave ?? "");
   const [abierta, setAbierta] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [guardando, iniciar] = useTransition();
@@ -66,17 +78,32 @@ export default function PlanCarrera({ grupos, subtitulo: textoPlan }: { grupos: 
   if (!grupo) return null;
   const aprobadas = grupo.materias.filter((m) => m.situacion === "aprobada").length;
 
-  function elegirEstado(materiaId: string, estado: EstadoMateria) {
+  function elegirEstado(m: MateriaPlan, estado: EstadoMateria) {
     setError(null);
     iniciar(async () => {
-      const resultado = await cambiarEstado(materiaId, estado);
+      const resultado = m.propia ? await cambiarEstadoPropia(m.id, estado) : await cambiarEstado(m.id, estado);
       if (resultado?.error) setError(resultado.error);
+    });
+  }
+
+  function quitar(m: MateriaPlan) {
+    setError(null);
+    iniciar(async () => {
+      const resultado = await quitarPropia(m.id);
+      if (resultado?.error) setError(resultado.error);
+      else setAbierta(null);
     });
   }
 
   return (
     <div className="mt-2 flex flex-col gap-4">
       <p className="text-sm text-suave">{textoPlan}</p>
+
+      {aviso && (
+        <p role="status" className="rounded-xl bg-acento-claro px-4 py-3 text-sm text-acento-hover">
+          {aviso}
+        </p>
+      )}
 
       <div
         role="tablist"
@@ -179,12 +206,19 @@ export default function PlanCarrera({ grupos, subtitulo: textoPlan }: { grupos: 
 
                   {!m.seDicta && <p className="text-suave">Esta electiva no se dicta actualmente.</p>}
 
-                  <Link
-                    href={`/app/materia/${m.id}`}
-                    className="flex h-11 items-center justify-center rounded-xl border border-acento font-semibold text-acento transition hover:bg-acento-claro"
-                  >
-                    Abrir materia
-                  </Link>
+                  {m.propia ? (
+                    <p className="text-suave">
+                      La agregaste vos. Ya nos llegó el aviso para sumarla al plan de todos.
+                    </p>
+                  ) : (
+                    <Link
+                      href={`/app/materia/${m.id}`}
+                      className="flex h-11 items-center justify-center rounded-xl border border-acento font-semibold text-acento transition hover:bg-acento-claro"
+                    >
+                      Abrir materia
+                    </Link>
+                  )}
+
                   <div className="flex flex-col gap-2">
                     <span className="font-semibold">Cambiar estado</span>
                     <div className="grid grid-cols-4 gap-1.5">
@@ -195,7 +229,7 @@ export default function PlanCarrera({ grupos, subtitulo: textoPlan }: { grupos: 
                             key={b.estado}
                             type="button"
                             disabled={guardando || actual}
-                            onClick={() => elegirEstado(m.id, b.estado)}
+                            onClick={() => elegirEstado(m, b.estado)}
                             className={`h-10 rounded-xl text-xs font-semibold transition disabled:cursor-default ${
                               actual
                                 ? "bg-acento text-white"
@@ -208,12 +242,30 @@ export default function PlanCarrera({ grupos, subtitulo: textoPlan }: { grupos: 
                       })}
                     </div>
                   </div>
+
+                  {m.propia && (
+                    <button
+                      type="button"
+                      disabled={guardando}
+                      onClick={() => quitar(m)}
+                      className="self-start text-sm font-semibold text-error hover:underline disabled:opacity-50"
+                    >
+                      Quitar de mi plan
+                    </button>
+                  )}
                 </div>
               )}
             </li>
           );
         })}
       </ul>
+
+      <Link
+        href="/app/plan/agregar"
+        className="flex h-12 items-center justify-center rounded-2xl border border-dashed border-suave text-sm font-semibold text-suave transition hover:border-acento hover:text-acento"
+      >
+        ¿Falta una materia? Agregala
+      </Link>
     </div>
   );
 }

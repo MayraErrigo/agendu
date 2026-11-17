@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { nombreDelAnio, obtenerCorrelativas, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
+import { obtenerPropias } from "@/lib/datos/propias";
 import {
   faltantesParaCursar,
   faltantesParaRendir,
@@ -14,18 +14,19 @@ import {
 import PlanCarrera, { type GrupoPlan } from "./PlanCarrera";
 
 // Pantalla Plan: la carrera completa, año por año, con el estado de cada materia.
-export default function PlanPage() {
+export default function PlanPage({ searchParams }: { searchParams: Promise<{ agregada?: string }> }) {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-10 pt-12">
-      <h1 className="mt-4 text-[28px] font-bold leading-tight tracking-tight">Tu carrera</h1>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pt-12">
+      <h1 className="text-[28px] font-bold leading-tight tracking-tight">Tu carrera</h1>
       <Suspense fallback={<p className="mt-6 text-suave">Cargando tu plan…</p>}>
-        <Contenido />
+        <Contenido searchParams={searchParams} />
       </Suspense>
     </main>
   );
 }
 
-async function Contenido() {
+async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: string }> }) {
+  const { agregada } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -44,9 +45,10 @@ async function Contenido() {
   }
   const nombrePlan = (perfil.planes as unknown as { nombre: string } | null)?.nombre ?? "";
 
-  const [materias, estados] = await Promise.all([
+  const [materias, estados, propias] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
+    obtenerPropias(user.id, perfil.plan_id),
   ]);
   const correlativas = await obtenerCorrelativas(materias.map((m) => m.id));
   const indice = indexarCorrelativas(correlativas);
@@ -69,6 +71,7 @@ async function Contenido() {
     })),
     faltanParaRendir: faltantesParaRendir(m.id, indice, estados).map((f) => nombre.get(f.materiaId) ?? f.materiaId),
     habilita: habilita(m.id, correlativas).map((id) => nombre.get(id) ?? id),
+    propia: false,
   }));
 
   const obligatorias = detalle.filter((m) => m.tipo === "obligatoria");
@@ -85,5 +88,38 @@ async function Contenido() {
     grupos.push({ clave: "electivas", etiqueta: "Elect.", titulo: "Electivas", materias: electivas });
   }
 
-  return <PlanCarrera grupos={grupos} subtitulo={`${nombrePlan} · ${obligatorias.length} obligatorias`} />;
+  // Las materias que agregó el alumno: no tienen correlativas cargadas, así que nunca están bloqueadas.
+  if (propias.length) {
+    grupos.push({
+      clave: "propias",
+      etiqueta: "Tuyas",
+      titulo: "Agregadas por vos",
+      materias: propias.map((p) => ({
+        id: p.id,
+        nombre: p.nombre,
+        nivel: p.nivel,
+        tipo: p.tipo,
+        creditos: p.creditos,
+        seDicta: true,
+        estado: p.estado,
+        situacion: p.estado === "pendiente" ? "disponible" : p.estado,
+        puedeRendir: true,
+        faltanParaCursar: [],
+        faltanParaRendir: [],
+        habilita: [],
+        propia: true,
+      })),
+    });
+  }
+
+  const recienAgregada = agregada === "1" && propias.length > 0;
+
+  return (
+    <PlanCarrera
+      grupos={grupos}
+      subtitulo={`${nombrePlan} · ${obligatorias.length} obligatorias`}
+      inicial={recienAgregada ? "propias" : undefined}
+      aviso={recienAgregada ? "Listo, la agregamos a tu plan. ¡Gracias por avisarnos!" : undefined}
+    />
+  );
 }
