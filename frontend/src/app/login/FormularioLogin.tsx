@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
@@ -202,6 +203,9 @@ export default function FormularioLogin() {
             {esRegistro ? "Iniciá sesión" : "Creá tu cuenta"}
           </button>
         </p>
+        <Link href="/privacidad" className="mt-6 text-center text-sm text-suave hover:underline">
+          Política de privacidad
+        </Link>
       </div>
     </main>
   );
