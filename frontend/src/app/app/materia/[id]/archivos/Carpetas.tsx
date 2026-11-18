@@ -1,10 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import IconoCarpeta from "@/components/IconoCarpeta";
 import { MAXIMO_PROPIAS, type Carpeta } from "@/lib/logica/carpetas";
-import { crearCarpeta } from "./acciones";
+import { crearCarpeta, type EstadoCarpeta } from "./acciones";
 
 // La grilla de carpetas de una materia, con el botón para crear una propia.
 export default function Carpetas({
@@ -17,19 +17,15 @@ export default function Carpetas({
   cantidades: Record<string, number>;
 }) {
   const [creando, setCreando] = useState(false);
-  const [resultado, crear, guardando] = useActionState(crearCarpeta, null);
-  const formulario = useRef<HTMLFormElement>(null);
+  // Al crearla bien, se cierra el formulario.
+  const [resultado, crear, guardando] = useActionState(async (anterior: EstadoCarpeta, datos: FormData) => {
+    const r = await crearCarpeta(anterior, datos);
+    if (r?.ok) setCreando(false);
+    return r;
+  }, null);
 
   const propias = carpetas.filter((c) => !c.fija).length;
   const puedeCrear = propias < MAXIMO_PROPIAS;
-
-  // Al crearla, se cierra el formulario.
-  useEffect(() => {
-    if (resultado?.ok) {
-      formulario.current?.reset();
-      setCreando(false);
-    }
-  }, [resultado]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -54,7 +50,7 @@ export default function Carpetas({
       </ul>
 
       {creando ? (
-        <form ref={formulario} action={crear} className="flex flex-col gap-2 rounded-3xl bg-superficie p-4 shadow-sm">
+        <form action={crear} className="flex flex-col gap-2 rounded-3xl bg-superficie p-4 shadow-sm">
           <input type="hidden" name="materia_id" value={materiaId} />
           <label htmlFor="nombre-carpeta" className="text-sm font-semibold">
             Nombre de la carpeta

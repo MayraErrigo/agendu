@@ -1,9 +1,11 @@
 import { Suspense } from "react";
 import { cargarMateria } from "@/lib/datos/materia";
 import { obtenerCarpetas } from "@/lib/datos/carpetas";
+import { obtenerCantidades, obtenerUso } from "@/lib/datos/archivos";
+import BarraEspacio from "@/components/BarraEspacio";
 import Carpetas from "./Carpetas";
 
-// Pestaña Archivos: las carpetas de la materia.
+// Pestaña Archivos: el espacio usado y las carpetas de la materia.
 export default function ArchivosPage({ params }: { params: Promise<{ id: string }> }) {
   return (
     <Suspense fallback={null}>
@@ -15,7 +17,16 @@ export default function ArchivosPage({ params }: { params: Promise<{ id: string 
 async function Contenido({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const { usuarioId } = await cargarMateria(id);
-  const carpetas = await obtenerCarpetas(usuarioId, id);
-  // Por ahora todas están vacías: los archivos llegan en la tanda 2.
-  return <Carpetas materiaId={id} carpetas={carpetas} cantidades={{}} />;
+  const [carpetas, cantidades, uso] = await Promise.all([
+    obtenerCarpetas(usuarioId, id),
+    obtenerCantidades(usuarioId, id),
+    obtenerUso(usuarioId),
+  ]);
+
+  return (
+    <div className="flex flex-col gap-5">
+      <BarraEspacio usado={uso.usado} limite={uso.limite} />
+      <Carpetas materiaId={id} carpetas={carpetas} cantidades={cantidades} />
+    </div>
+  );
 }

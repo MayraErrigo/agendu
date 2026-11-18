@@ -1,8 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useState, useTransition } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { borrarCarpeta, renombrarCarpeta } from "../acciones";
+import { borrarCarpeta, renombrarCarpeta, type EstadoCarpeta } from "../acciones";
 
 // Renombrar y borrar una carpeta propia.
 export default function OpcionesCarpeta({
@@ -16,14 +16,14 @@ export default function OpcionesCarpeta({
 }) {
   const router = useRouter();
   const [modo, setModo] = useState<"nada" | "renombrar" | "borrar">("nada");
-  const [resultado, renombrar, renombrando] = useActionState(renombrarCarpeta, null);
+  // Al renombrarla bien, se cierra el formulario.
+  const [resultado, renombrar, renombrando] = useActionState(async (anterior: EstadoCarpeta, datos: FormData) => {
+    const r = await renombrarCarpeta(anterior, datos);
+    if (r?.ok) setModo("nada");
+    return r;
+  }, null);
   const [error, setError] = useState<string | null>(null);
   const [borrando, iniciar] = useTransition();
-
-  // Al renombrarla, se cierra el formulario.
-  useEffect(() => {
-    if (resultado?.ok) setModo("nada");
-  }, [resultado]);
 
   function confirmarBorrado() {
     setError(null);

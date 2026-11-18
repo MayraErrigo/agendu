@@ -76,11 +76,19 @@ export async function renombrarCarpeta(_anterior: EstadoCarpeta, formulario: For
   return { ok: true };
 }
 
-// Borra una carpeta propia. (En la tanda 2: antes de borrarla, sus archivos pasan a "Otros".)
+// Borra una carpeta propia. Sus archivos no se pierden: pasan a "Otros".
 export async function borrarCarpeta(materiaId: string, carpetaId: string): Promise<{ error?: string } | null> {
   const validacion = await validarMateria(materiaId);
   if ("error" in validacion) return { error: validacion.error };
-  const { supabase } = validacion;
+  const { supabase, usuarioId } = validacion;
+
+  const { error: errorMover } = await supabase
+    .from("archivos")
+    .update({ carpeta: "otros" })
+    .eq("usuario_id", usuarioId)
+    .eq("materia_id", materiaId)
+    .eq("carpeta", carpetaId);
+  if (errorMover) return { error: "No pudimos mover sus archivos a Otros. Probá de nuevo." };
 
   const { error } = await supabase.from("carpetas").delete().eq("id", carpetaId).eq("materia_id", materiaId);
   if (error) return { error: "No pudimos borrarla. Probá de nuevo." };

@@ -3,10 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cargarMateria } from "@/lib/datos/materia";
 import { obtenerCarpetas } from "@/lib/datos/carpetas";
+import { obtenerArchivos } from "@/lib/datos/archivos";
 import IconoCarpeta from "@/components/IconoCarpeta";
 import OpcionesCarpeta from "./OpcionesCarpeta";
+import SubirArchivos from "./SubirArchivos";
+import ListaArchivos from "./ListaArchivos";
 
-// Una carpeta abierta: sus archivos (en la tanda 2) y, si es propia, las opciones para renombrarla o borrarla.
+// Una carpeta abierta: sus archivos, el botón para subir y, si es propia, renombrarla o borrarla.
 export default function CarpetaPage({ params }: { params: Promise<{ id: string; carpeta: string }> }) {
   return (
     <Suspense fallback={null}>
@@ -23,6 +26,7 @@ async function Contenido({ params }: { params: Promise<{ id: string; carpeta: st
   if (!carpeta) {
     notFound();
   }
+  const archivos = await obtenerArchivos(usuarioId, id, carpeta.id);
 
   return (
     <div className="flex flex-col gap-4">
@@ -37,9 +41,9 @@ async function Contenido({ params }: { params: Promise<{ id: string; carpeta: st
 
       {!carpeta.fija && <OpcionesCarpeta materiaId={id} carpetaId={carpeta.id} nombre={carpeta.nombre} />}
 
-      <p className="rounded-2xl bg-superficie px-4 py-6 text-center text-sm text-suave shadow-sm">
-        Esta carpeta está vacía.
-      </p>
+      <SubirArchivos materiaId={id} carpeta={carpeta.id} />
+
+      <ListaArchivos materiaId={id} archivos={archivos} carpetas={carpetas} carpetaActual={carpeta.id} />
     </div>
   );
 }

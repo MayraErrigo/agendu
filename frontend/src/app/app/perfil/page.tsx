@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { obtenerUso } from "@/lib/datos/archivos";
+import BarraEspacio from "@/components/BarraEspacio";
 import EditarNombre from "./EditarNombre";
 
 // Pantalla Perfil: los datos del alumno, su carrera y la salida.
@@ -37,6 +39,7 @@ async function Contenido() {
     .eq("id", user.id)
     .maybeSingle();
   const perfil = data as unknown as Perfil | null;
+  const uso = await obtenerUso(user.id);
 
   return (
     <>
@@ -70,7 +73,11 @@ async function Contenido() {
           <Opcion href="/app/plan/agregar" texto="Agregar una materia que no figura" />
           <Opcion href="/app/reportar" texto="Reportar un error en el plan" />
         </div>
+      </section>
 
+      {/* Espacio para archivos */}
+      <section className="rounded-3xl bg-superficie p-5 shadow-sm">
+        <BarraEspacio usado={uso.usado} limite={uso.limite} />
       </section>
 
       {/* Salir */}
