@@ -58,3 +58,4 @@
 - Planificador de finales, tareas del día y alertas (por ejemplo, vencimiento de regularidades).
 - Títulos intermedios.
 - Más carreras de la UTN y otras universidades.
+- Foro por materia: los alumnos comparten resúmenes y archivos que les sirvieron. Solo para el plan más alto. Hay que pensar moderación y derechos de autor.

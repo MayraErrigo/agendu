@@ -19,7 +19,8 @@ export default function PestanasMateria({ materiaId }: { materiaId: string }) {
     <nav aria-label="Secciones de la materia" className="-mx-5 overflow-x-auto px-5">
       <ul className="flex w-max gap-1 rounded-2xl bg-bloqueo p-1">
         {pestanas.map((p) => {
-          const activa = ruta === p.href;
+          // Resumen solo en su dirección exacta; las demás también cuando estás adentro (ej.: una carpeta de Archivos).
+          const activa = p.href === base ? ruta === base : ruta.startsWith(p.href);
           return (
             <li key={p.href}>
               <Link
