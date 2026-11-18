@@ -2,7 +2,9 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { cargarMateria } from "@/lib/datos/materia";
 import { nombreDelAnio } from "@/lib/datos/plan";
+import { obtenerParciales } from "@/lib/datos/parciales";
 import { puedeRendir, situacion } from "@/lib/logica/correlativas";
+import { resumirParciales } from "@/lib/logica/parciales";
 import PestanasMateria from "@/components/PestanasMateria";
 
 const ETIQUETA = {
@@ -36,8 +38,13 @@ export default function MateriaLayout({
 
 async function Encabezado({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { materia, estados, indice } = await cargarMateria(id);
+  const { usuarioId, materia, estados, indice } = await cargarMateria(id);
   const sit = situacion(id, indice, estados);
+
+  // Si está regular con promoción práctica, el final es solo teórico.
+  const practica =
+    sit === "regular" &&
+    resumirParciales(await obtenerParciales(usuarioId, id)).situacion === "promocion_practica";
 
   return (
     <>
@@ -53,6 +60,11 @@ async function Encabezado({ params }: { params: Promise<{ id: string }> }) {
           </span>
         </div>
         <h1 className="text-[26px] font-bold leading-tight tracking-tight">{materia.nombre}</h1>
+        {practica && (
+          <span className="self-start rounded-full bg-pizarra px-2.5 py-1 text-xs font-bold text-pizarra-tinta">
+            Promoción práctica · final teórico
+          </span>
+        )}
         {sit === "regular" && (
           <p className="text-sm font-semibold text-arena-tinta">
             {puedeRendir(id, indice, estados) ? "Ya podés rendir el final." : "Todavía no podés rendir el final."}

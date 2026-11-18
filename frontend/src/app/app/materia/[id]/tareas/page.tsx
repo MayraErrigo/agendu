@@ -1,10 +1,20 @@
-import Proximamente from "@/components/Proximamente";
+import { Suspense } from "react";
+import { cargarMateria } from "@/lib/datos/materia";
+import { obtenerTareas } from "@/lib/datos/tareas";
+import Tareas from "./Tareas";
 
-export default function TareasPage() {
+// Pestaña Tareas: lo que el alumno tiene que hacer en esta materia.
+export default function TareasPage({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <Proximamente
-      titulo="Tareas"
-      descripcion="Tus tareas de esta materia con fecha, por ejemplo «martes: estudiar tema 1 y 2». Las vas a ver también en tu día."
-    />
+    <Suspense fallback={null}>
+      <Contenido params={params} />
+    </Suspense>
   );
+}
+
+async function Contenido({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const { usuarioId } = await cargarMateria(id);
+  const tareas = await obtenerTareas(usuarioId, id);
+  return <Tareas materiaId={id} tareas={tareas} />;
 }

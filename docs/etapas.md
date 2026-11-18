@@ -19,6 +19,7 @@
 | 0 | Preparación | Programas, proyecto, GitHub y Supabase | La app corre en la compu | Hecha |
 | 1 | Base de datos | Tablas y plan de Sistemas 2023 (36 materias y correlativas) | Las materias están en Supabase | Hecha |
 | 1b | Orden del proyecto | Carpetas `frontend`, `backend` y `docs`; claves separadas | Todo corre desde su carpeta | Hecha |
+1b. **Debate:** si hay algo para decidir (cómo funciona, qué datos se guardan, límites), primero lo charlamos. El código viene recién cuando lo pido.
 | 2 | Login | Entrar con mail (con nombre) y con Google | Entro, cierro sesión y vuelvo a entrar | Hecha |
 | 3 | Elegí tu carrera | Universidad, regional, carrera y plan | La elección queda guardada en el perfil | Hecha |
 | 4 | Cargá tu avance | Marcar lo aprobado, año por año | Las materias quedan guardadas | Hecha |
