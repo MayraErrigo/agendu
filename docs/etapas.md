@@ -28,6 +28,9 @@
 | 7 | Pantalla Inicio | Avance, promedio, créditos, qué cursar y rendir | Los números coinciden con autogestión | Hecha |
 | 8 | Ficha de materia | Estado, nota, fechas y correlativas | Abro cualquier materia y veo todo | Hecha |
 | 8b | Materia con pestañas | Resumen, Importante, Tareas, Parciales y Archivos | Me muevo entre pestañas y Resumen e Importante guardan | Hecha |
+| 8c | Tareas | Tareas por materia con fecha, hechas y pendientes | Agrego, marco y borro tareas | Hecha |
+| 8d | Parciales | Notas, recuperatorios, promoción práctica y aprobación directa | El resumen dice cómo voy | Hecha |
+| 8e | Archivos | Carpetas fijas y propias; subir, abrir, mover y borrar, con límite | Subo un PDF y lo abro desde el celular | Hecha |
 | 9a | Navegación | Barra de abajo, pantallas Cursando y Perfil | Me muevo por toda la app y cambio mi nombre | Hecha |
 | 9b | Reportes | Agregar una materia que no figura y reportar errores | La materia aparece en mi plan y el reporte llega a Supabase | Sigue ahora |
 | 10 | Electivas FRC | Las electivas con créditos y correlativas | Aparecen en el plan y suman créditos | Hecha |
