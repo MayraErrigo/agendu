@@ -166,7 +166,13 @@ export default function FormularioLogin() {
             onChange={(e) => setPassword(e.target.value)}
             className="h-13 rounded-2xl border border-linea bg-superficie px-4 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro"
           />
-          {esRegistro && <p className="text-sm text-suave">Mínimo 6 caracteres.</p>}
+          {esRegistro ? (
+            <p className="text-sm text-suave">Mínimo 6 caracteres.</p>
+          ) : (
+            <Link href="/recuperar" className="self-end text-sm font-semibold text-acento hover:underline">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          )}
 
           {mensajeVisible && (
             <p
@@ -203,6 +209,7 @@ export default function FormularioLogin() {
             {esRegistro ? "Iniciá sesión" : "Creá tu cuenta"}
           </button>
         </p>
+
         <Link href="/privacidad" className="mt-6 text-center text-sm text-suave hover:underline">
           Política de privacidad
         </Link>

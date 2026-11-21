@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { obtenerUso } from "@/lib/datos/archivos";
+import CambiarContrasena from "@/components/CambiarContrasena";
 import BarraEspacio from "@/components/BarraEspacio";
 import EditarNombre from "./EditarNombre";
 
@@ -40,7 +41,8 @@ async function Contenido() {
     .maybeSingle();
   const perfil = data as unknown as Perfil | null;
   const uso = await obtenerUso(user.id);
-
+  // Solo las cuentas con mail tienen contraseña en Agendu (las de Google no).
+  const conContrasena = user.identities?.some((i) => i.provider === "email") ?? false;
   return (
     <>
       {/* Datos personales */}
@@ -74,7 +76,20 @@ async function Contenido() {
           <Opcion href="/app/reportar" texto="Reportar un error en el plan" />
         </div>
       </section>
-
+            {/* Contraseña */}
+      {conContrasena && (
+        <details className="group rounded-3xl bg-superficie p-5 shadow-sm">
+          <summary className="flex cursor-pointer list-none items-center justify-between font-bold">
+            Cambiar contraseña
+            <span className="text-suave transition group-open:rotate-180" aria-hidden="true">
+              ▾
+            </span>
+          </summary>
+          <div className="mt-4">
+            <CambiarContrasena alTerminar="quedarse" email={user.email} />
+          </div>
+        </details>
+      )}
       {/* Espacio para archivos */}
       <section className="rounded-3xl bg-superficie p-5 shadow-sm">
         <BarraEspacio usado={uso.usado} limite={uso.limite} />

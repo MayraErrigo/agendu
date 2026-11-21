@@ -55,6 +55,7 @@
 - La página de presentación en el dominio propio.
 - Mails propios en lugar de los de Supabase.
 - Monotributo y planes pagos de Vercel y Supabase.
+- Verificar la marca en Google (que en el login diga "Agendu" y no la dirección de Supabase), con el dominio propio.
 
 ## Versión 3 · Organización del día a día
 
