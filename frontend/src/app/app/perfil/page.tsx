@@ -74,7 +74,9 @@ async function Contenido() {
           <Opcion href="/app/carrera" texto="Cambiar de carrera o de plan" />
           <Opcion href="/app/plan/agregar" texto="Agregar una materia que no figura" />
           <Opcion href="/app/reportar" texto="Reportar un error en el plan" />
+          <Opcion href="/app/opinion" texto="Mandanos tu opinión" detalle="Qué te gusta, qué no se entiende o qué te falta" />
         </div>
+
       </section>
             {/* Contraseña */}
       {conContrasena && (
