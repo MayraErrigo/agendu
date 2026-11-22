@@ -36,7 +36,12 @@
 | 10 | Electivas FRC | Las electivas con créditos y correlativas | Aparecen en el plan y suman créditos | Hecha |
 | 11 | Publicar | Hacerla instalable (PWA) y subirla a Vercel | Mis amigos la usan desde el celular | Pendiente |
 | 12 | Verificación | La lista de datos a revisar, con mis amigos | Nadie encuentra errores en el plan | Pendiente |
-
+| 13a | Fechas | Pestaña Fechas en cada materia (entrega, lección, evaluación, presentación, otro), hora opcional y fecha del recuperatorio | Cargo una fecha y la veo en la materia | Hecha |
+| 13b | Calendario | Calendario en Inicio con fechas y parciales de todas las materias (semana que se despliega a mes) | Toco un día y veo qué tengo | Hecha |
+| 13c-1 | Conectar y traer | Pegar el link de la UV, Google, Apple u Outlook; leerlo con seguridad; sugerir materia y tipo; revisar y traer; recordar lo descartado | Conecto la UV y traigo mis entregas | Sigue ahora |
+| 13c-2 | Mantenerlo al día | Buscar fechas nuevas; aviso a los 14 días sin buscar y si el link falla; desconectar; acceso desde Perfil; política de privacidad actualizada | Busco fechas nuevas y solo aparece lo que no vi | Pendiente |
+| 14 | Revisión de seguridad | Permisos de cada tabla, avisos de Supabase, npm audit, cabeceras y límites de intentos | No queda ningún aviso pendiente | Pendiente |
+| 14 | Revisión de seguridad | Permisos de cada tabla, avisos de Supabase, npm audit, cabeceras y límites de intentos | No queda ningún aviso pendiente | Pendiente |
 ### Para revisar en la etapa 12
 
 - Confirmar que el plan 2023 pide **20 créditos** de electivas (el 2008 pedía 22).
@@ -57,9 +62,11 @@
 - Monotributo y planes pagos de Vercel y Supabase.
 - Verificar la marca en Google (que en el login diga "Agendu" y no la dirección de Supabase), con el dominio propio.
 
+
 ## Versión 3 · Organización del día a día
 
 - Planificador de finales, tareas del día y alertas (por ejemplo, vencimiento de regularidades).
 - Títulos intermedios.
 - Más carreras de la UTN y otras universidades.
 - Foro por materia: los alumnos comparten resúmenes y archivos que les sirvieron. Solo para el plan más alto. Hay que pensar moderación y derechos de autor.
+- Buscar fechas nuevas de la UV automáticamente (una vez por día) y avisar con notificación.

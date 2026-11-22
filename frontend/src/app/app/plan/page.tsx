@@ -76,14 +76,15 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
 
   const obligatorias = detalle.filter((m) => m.tipo === "obligatoria");
   const electivas = detalle.filter((m) => m.tipo === "electiva");
-  const niveles = [...new Set(obligatorias.map((m) => m.nivel))];
+    // Las del título intermedio van en su año, junto con las obligatorias.
+  const porAnio = detalle.filter((m) => m.tipo !== "electiva");
+  const niveles = [...new Set(porAnio.map((m) => m.nivel))];
 
   const grupos: GrupoPlan[] = niveles.map((nivel) => ({
     clave: `nivel-${nivel}`,
     etiqueta: `${nivel}º`,
     titulo: nombreDelAnio(nivel),
-    materias: obligatorias.filter((m) => m.nivel === nivel),
-  }));
+    materias: porAnio.filter((m) => m.nivel === nivel),  }));
   if (electivas.length) {
     grupos.push({ clave: "electivas", etiqueta: "Elect.", titulo: "Electivas", materias: electivas });
   }

@@ -10,7 +10,7 @@ export type MateriaPlan = {
   id: string;
   nombre: string;
   nivel: number;
-  tipo: "obligatoria" | "electiva";
+  tipo: "obligatoria" | "electiva" | "intermedio";
   creditos: number | null;
   seDicta: boolean;
   estado: EstadoMateria;
@@ -76,8 +76,9 @@ export default function PlanCarrera({
 
   const grupo = grupos.find((g) => g.clave === elegido) ?? grupos[0];
   if (!grupo) return null;
-  const aprobadas = grupo.materias.filter((m) => m.situacion === "aprobada").length;
-
+  // Las del título intermedio se muestran en su año, pero no cuentan para la ingeniería.
+  const deLaCarrera = grupo.materias.filter((m) => m.tipo !== "intermedio");
+  const aprobadas = deLaCarrera.filter((m) => m.situacion === "aprobada").length;
   function elegirEstado(m: MateriaPlan, estado: EstadoMateria) {
     setError(null);
     iniciar(async () => {
@@ -136,7 +137,7 @@ export default function PlanCarrera({
       <div className="flex items-baseline justify-between">
         <h2 className="font-bold">{grupo.titulo}</h2>
         <span className="text-sm text-suave">
-          {aprobadas} de {grupo.materias.length} aprobadas
+          {aprobadas} de {deLaCarrera.length} aprobadas
         </span>
       </div>
 
@@ -164,6 +165,7 @@ export default function PlanCarrera({
                     {subtitulo(m)}
                     {m.tipo === "electiva" && m.creditos ? ` · ${m.creditos} créditos` : ""}
                     {m.tipo === "electiva" ? ` · ${m.nivel}º año` : ""}
+                                      {m.tipo === "intermedio" ? " · Título intermedio" : ""}
                   </span>
                 </span>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${estilo.insignia}`}>

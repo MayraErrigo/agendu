@@ -5,7 +5,7 @@ import type { Estado } from "./correlativas";
 
 export type MateriaAvance = {
   id: string;
-  tipo: "obligatoria" | "electiva";
+  tipo: "obligatoria" | "electiva" | "intermedio"; // intermedio: del título intermedio, no suma al avance
   creditos: number | null;
 };
 

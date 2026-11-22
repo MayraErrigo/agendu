@@ -67,6 +67,11 @@ async function Contenido() {
   if (electivas.length) {
     grupos.push({ clave: "electivas", titulo: "Electivas", materias: electivas, esElectiva: true });
   }
+    // Las del título intermedio, aparte: son opcionales, como las electivas.
+  const intermedio = materias.filter((m) => m.tipo === "intermedio");
+  if (intermedio.length) {
+    grupos.push({ clave: "intermedio", titulo: "Título intermedio", materias: intermedio, esElectiva: true });
+  }
 
   return <CargarAvance grupos={grupos} estadosIniciales={estados} />;
 }

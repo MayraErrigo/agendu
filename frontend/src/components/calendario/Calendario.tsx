@@ -179,18 +179,23 @@ export default function Calendario({ items, hoy }: { items: ItemCalendario[]; ho
         </span>
       </div>
 
-      <div className="flex items-center gap-3 rounded-2xl border border-dashed border-linea p-3 text-suave">
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-fondo">
+           <Link
+        href="/app/calendario/importar"
+        className="flex items-center gap-3 rounded-2xl border border-dashed border-suave p-3 transition hover:border-acento hover:bg-fondo"
+      >
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-acento-claro text-acento-hover">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 4v12M7 11l5 5 5-5M5 20h14" />
           </svg>
         </span>
         <span className="flex flex-1 flex-col">
           <span className="text-sm font-bold">Traer fechas de la UV</span>
-          <span className="text-xs">O de Google, Apple u Outlook</span>
+          <span className="text-xs text-suave">O de Google, Apple u Outlook</span>
         </span>
-        <span className="rounded-full bg-pizarra px-2.5 py-1 text-[11px] font-bold text-pizarra-tinta">Próximamente</span>
-      </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-suave" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </Link>
     </section>
   );
 }

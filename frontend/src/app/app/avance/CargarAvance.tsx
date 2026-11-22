@@ -77,7 +77,7 @@ export default function CargarAvance({
                       <path d="M5 12.5l4.5 4.5L19 7.5" />
                     </svg>
                   ) : (
-                    <span className="text-sm font-bold">{grupo.esElectiva ? "E" : grupo.titulo.charAt(0)}</span>
+                    <span className="text-sm font-bold">{grupo.titulo.charAt(0)}</span>
                   )}
                 </span>
                 <span className="flex flex-1 flex-col">

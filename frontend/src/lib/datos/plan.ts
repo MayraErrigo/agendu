@@ -9,7 +9,7 @@ export type Materia = {
   numero: number;
   nombre: string;
   nivel: number;
-  tipo: "obligatoria" | "electiva";
+  tipo: "obligatoria" | "electiva" | "intermedio";
   integradora: boolean;
   creditos: number | null;
   se_dicta: boolean;
