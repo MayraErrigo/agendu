@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { obtenerCorrelativas, obtenerEstados, obtenerMaterias, obtenerNotas } from "@/lib/datos/plan";
 import { obtenerPropias } from "@/lib/datos/propias";
+import { obtenerCalendario } from "@/lib/datos/calendario";
+import { hoyEnArgentina } from "@/lib/logica/fechas";
+import Calendario from "@/components/calendario/Calendario";
 import { resumen } from "@/lib/logica/correlativas";
 import { calcularAvance } from "@/lib/logica/avance";
 
@@ -45,11 +48,12 @@ async function Inicio() {
     redirect("/app/carrera");
   }
 
-  const [materias, estados, notas, propias] = await Promise.all([
+  const [materias, estados, notas, propias, calendario] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
     obtenerNotas(user.id),
     obtenerPropias(user.id, perfil.plan_id),
+    obtenerCalendario(user.id),
   ]);
   const correlativas = await obtenerCorrelativas(materias.map((m) => m.id));
 
@@ -92,6 +96,9 @@ async function Inicio() {
         </span>
         <h1 className="text-[26px] font-bold tracking-tight">{nombre ? `Hola, ${nombre}` : "Hola"}</h1>
       </header>
+      
+      {/* Calendario: fechas importantes y parciales de todas las materias */}
+      <Calendario items={calendario} hoy={hoyEnArgentina()} />
 
       {/* Avance */}
       <section className="flex items-center gap-5 rounded-3xl bg-superficie p-5 shadow-sm">
