@@ -3,6 +3,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { obtenerUso } from "@/lib/datos/archivos";
+import { obtenerConexion } from "@/lib/datos/conexion";
+import { estadoConexion, haceCuanto } from "@/lib/logica/conexion";
+import { hoyEnArgentina } from "@/lib/logica/fechas";
 import CambiarContrasena from "@/components/CambiarContrasena";
 import BarraEspacio from "@/components/BarraEspacio";
 import EditarNombre from "./EditarNombre";
@@ -40,8 +43,9 @@ async function Contenido() {
     .eq("id", user.id)
     .maybeSingle();
   const perfil = data as unknown as Perfil | null;
-  const uso = await obtenerUso(user.id);
-  // Solo las cuentas con mail tienen contraseña en Agendu (las de Google no).
+  const [uso, conexion] = await Promise.all([obtenerUso(user.id), obtenerConexion(user.id)]);
+  const estado = conexion ? estadoConexion(conexion, hoyEnArgentina()) : null;
+    // Solo las cuentas con mail tienen contraseña en Agendu (las de Google no).
   const conContrasena = user.identities?.some((i) => i.provider === "email") ?? false;
   return (
     <>
@@ -78,7 +82,32 @@ async function Contenido() {
         </div>
 
       </section>
-            {/* Contraseña */}
+            {/* Calendario conectado */}
+      <section className="flex flex-col gap-3 rounded-3xl bg-superficie p-5 shadow-sm">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-suave">Calendario conectado</span>
+          {estado ? (
+            <>
+              <span className="font-bold leading-snug">{estado.nombre}</span>
+              <span className={`text-sm ${estado.nivel === "error" ? "text-error" : "text-suave"}`}>
+                {estado.nivel === "error"
+                  ? "El link dejó de funcionar"
+                  : estado.dias === null
+                    ? "Todavía no buscaste fechas"
+                    : `Última búsqueda ${haceCuanto(estado.dias)}`}
+              </span>
+            </>
+          ) : (
+            <span className="text-sm text-suave">No conectaste ningún calendario.</span>
+          )}
+        </div>
+        <Opcion
+          href="/app/calendario/importar"
+          texto={conexion ? "Buscar fechas, cambiar el link o desconectar" : "Traer fechas de la UV"}
+          detalle={conexion ? undefined : "O de Google, Apple u Outlook"}
+        />
+      </section>
+        {/* Contraseña */}
       {conContrasena && (
         <details className="group rounded-3xl bg-superficie p-5 shadow-sm">
           <summary className="flex cursor-pointer list-none items-center justify-between font-bold">

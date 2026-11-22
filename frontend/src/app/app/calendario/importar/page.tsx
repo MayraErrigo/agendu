@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { nombreDelAnio, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
 import { linkOculto } from "@/lib/logica/links";
+import { diasDesde, haceCuanto } from "@/lib/logica/conexion";
+import { hoyEnArgentina } from "@/lib/logica/fechas";
 import ImportarCalendario from "./ImportarCalendario";
 
 // Traer fechas de la UV, Google, Apple u Outlook.
@@ -46,7 +48,11 @@ async function Contenido() {
   const [materias, estados, { data: conexion }] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
-    supabase.from("conexiones_calendario").select("origen, url").eq("usuario_id", user.id).maybeSingle(),
+    supabase
+      .from("conexiones_calendario")
+      .select("origen, url, ultima_busqueda, ultimo_error")
+      .eq("usuario_id", user.id)
+      .maybeSingle(),
   ]);
 
   // De cada materia, lo que necesita la pantalla: si la cursás, si ya la aprobaste y en qué grupo va en el buscador.
@@ -62,7 +68,18 @@ async function Contenido() {
   return (
     <ImportarCalendario
       materias={lista}
-      conectado={conexion ? { origen: conexion.origen as string, link: linkOculto(conexion.url as string) } : null}
+      conectado={
+        conexion
+          ? {
+              origen: conexion.origen as string,
+              link: linkOculto(conexion.url as string),
+              ultimaBusqueda: conexion.ultima_busqueda
+                ? haceCuanto(diasDesde(conexion.ultima_busqueda as string, hoyEnArgentina()))
+                : null,
+              error: (conexion.ultimo_error as string | null) ?? null,
+            }
+          : null
+      }
     />
   );
 }

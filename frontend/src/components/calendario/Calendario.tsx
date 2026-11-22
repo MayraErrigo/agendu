@@ -5,6 +5,8 @@ import Link from "next/link";
 import type { ItemCalendario } from "@/lib/datos/calendario";
 import { TIPOS_FECHA, type TipoFecha } from "@/lib/logica/fechas";
 import { diasDeSemana, grillaDelMes, moverMes, nombreDelDia, nombreDelMes, sumarDias } from "@/lib/logica/calendario";
+import type { ConexionCalendario } from "@/lib/logica/conexion";
+import AccesoCalendario from "./AccesoCalendario";
 
 // Color del puntito y de la etiqueta de cada tipo.
 const PUNTO: Record<TipoFecha | "parcial", string> = {
@@ -21,7 +23,15 @@ function etiqueta(tipo: TipoFecha | "parcial") {
 }
 
 // El calendario de Inicio: una semana que se despliega a mes, y lo que hay el día elegido.
-export default function Calendario({ items, hoy }: { items: ItemCalendario[]; hoy: string }) {
+export default function Calendario({
+  items,
+  hoy,
+  conexion,
+}: {
+  items: ItemCalendario[];
+  hoy: string;
+  conexion: ConexionCalendario | null;
+}) {
   const [elegido, setElegido] = useState(hoy);
   const [verMes, setVerMes] = useState(false);
   const [mes, setMes] = useState(() => ({ anio: Number(hoy.slice(0, 4)), mes: Number(hoy.slice(5, 7)) }));
@@ -179,23 +189,7 @@ export default function Calendario({ items, hoy }: { items: ItemCalendario[]; ho
         </span>
       </div>
 
-           <Link
-        href="/app/calendario/importar"
-        className="flex items-center gap-3 rounded-2xl border border-dashed border-suave p-3 transition hover:border-acento hover:bg-fondo"
-      >
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-acento-claro text-acento-hover">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M12 4v12M7 11l5 5 5-5M5 20h14" />
-          </svg>
-        </span>
-        <span className="flex flex-1 flex-col">
-          <span className="text-sm font-bold">Traer fechas de la UV</span>
-          <span className="text-xs text-suave">O de Google, Apple u Outlook</span>
-        </span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-suave" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" />
-        </svg>
-      </Link>
+      <AccesoCalendario conexion={conexion} hoy={hoy} />
     </section>
   );
 }

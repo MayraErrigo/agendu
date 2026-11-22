@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Política de privacidad · Agendu",
 };
 
-const ACTUALIZADA = "18 de noviembre de 2026";
+const ACTUALIZADA = "22 de noviembre de 2026";
 
 // Política de privacidad: qué datos guarda Agendu, para qué y cómo pedir que se borren.
 export default function PrivacidadPage() {
@@ -45,6 +45,13 @@ export default function PrivacidadPage() {
           </li>
           <li>
             <strong>Tus archivos:</strong> los apuntes, resúmenes y demás archivos que subís.
+          </li>
+                    <li>
+            <strong>Tu calendario conectado (si lo conectás):</strong> el link del calendario de la UV, Google, Apple u
+            Outlook que pegás, para buscar tus fechas cuando vos lo pedís. Solo leemos las fechas: nunca escribimos ni
+            cambiamos nada en ese calendario, y solo traemos las que elegís. El link funciona como una clave: no lo
+            mostramos entero en la app ni lo compartimos con nadie. Podés desconectarlo cuando quieras, y lo borramos en
+            el momento.
           </li>
         </ul>
         <p>No pedimos datos sensibles (salud, religión, opiniones políticas, etc.) ni datos de tarjetas.</p>

@@ -178,3 +178,20 @@ export async function traerFechas(elegidas: Elegida[], descartadas: string[]): P
   revalidatePath("/app", "layout");
   return { traidas: filas.length };
 }
+
+// Desconecta el calendario: borra el link guardado y la lista de descartados.
+// Las fechas que ya trajo quedan en Agendu (son suyas).
+export async function desconectarCalendario(): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Tu sesión se cerró. Volvé a iniciar sesión." };
+
+  const { error } = await supabase.from("conexiones_calendario").delete().eq("usuario_id", user.id);
+  if (error) return { error: "No pudimos desconectar tu calendario. Probá de nuevo." };
+  await supabase.from("eventos_descartados").delete().eq("usuario_id", user.id);
+
+  revalidatePath("/app", "layout");
+  return {};
+}

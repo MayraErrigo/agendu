@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { partesDeFecha, TIPOS_FECHA, type TipoFecha } from "@/lib/logica/fechas";
-import { buscarFechas, traerFechas, type Origen, type Propuesta } from "../acciones";
+import { buscarFechas, desconectarCalendario, traerFechas, type Origen, type Propuesta } from "../acciones";
 
 const FUENTES: { id: Origen; nombre: string; detalle: string; inicial: string; color: string; pasos: string[]; ejemplo: string }[] = [
   {
@@ -72,7 +72,7 @@ export default function ImportarCalendario({
   conectado,
 }: {
   materias: Materia[];
-  conectado: { origen: string; link: string } | null;
+  conectado: { origen: string; link: string; ultimaBusqueda: string | null; error: string | null } | null;
 }) {
   const [paso, setPaso] = useState<"conectar" | "revisar" | "listo">("conectar");
   const [otroLink, setOtroLink] = useState(!conectado);
@@ -82,6 +82,7 @@ export default function ImportarCalendario({
   const [traidas, setTraidas] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [trabajando, iniciar] = useTransition();
+  const [confirmarDesconectar, setConfirmarDesconectar] = useState(false);
 
   const fuente = FUENTES.find((f) => f.id === origen)!;
   const cursando = materias.filter((m) => m.cursando);
@@ -103,6 +104,20 @@ export default function ImportarCalendario({
 
   function cambiar(uid: string, cambios: Partial<Fila>) {
     setFilas((lista) => lista.map((f) => (f.uid === uid ? { ...f, ...cambios } : f)));
+  }
+
+  function desconectar() {
+    setError(null);
+    iniciar(async () => {
+      const r = await desconectarCalendario();
+      if (r.error) {
+        setError(r.error);
+        return;
+      }
+      setConfirmarDesconectar(false);
+      setOtroLink(true);
+      setLink("");
+    });
   }
 
   const elegidas = filas.filter((f) => f.elegida);
@@ -273,18 +288,68 @@ export default function ImportarCalendario({
             <span className="text-xs font-bold uppercase tracking-wider text-suave">Conectado</span>
             <span className="font-bold">{nombreConectado}</span>
             <span className="text-sm text-suave">{conectado.link}</span>
+            {conectado.ultimaBusqueda && (
+              <span className="text-sm text-suave">Última búsqueda: {conectado.ultimaBusqueda}</span>
+            )}
           </div>
+
+          {conectado.error && (
+            <p className="rounded-xl bg-error-claro px-4 py-3 text-sm text-error">
+              {conectado.error} Si el link cambió, tocá «Usar otro link» y pegá el nuevo.
+            </p>
+          )}
+
           <button
             type="button"
             disabled={trabajando}
             onClick={() => buscar(false)}
             className="h-14 rounded-2xl bg-acento font-semibold text-white transition hover:bg-acento-hover disabled:opacity-50"
           >
-            {trabajando ? "Buscando…" : "Buscar fechas"}
+            {trabajando ? "Buscando…" : "Buscar fechas nuevas"}
           </button>
-          <button type="button" onClick={() => setOtroLink(true)} className="self-start text-sm font-semibold text-acento hover:underline">
-            Usar otro link
-          </button>
+          <p className="text-xs leading-relaxed text-suave">
+            Solo te mostramos las fechas que todavía no trajiste ni descartaste.
+          </p>
+
+          <div className="flex items-center justify-between gap-3 border-t border-fondo pt-3">
+            <button type="button" onClick={() => setOtroLink(true)} className="text-sm font-semibold text-acento hover:underline">
+              Usar otro link
+            </button>
+            {!confirmarDesconectar && (
+              <button
+                type="button"
+                onClick={() => setConfirmarDesconectar(true)}
+                className="text-sm font-semibold text-error hover:underline"
+              >
+                Desconectar
+              </button>
+            )}
+          </div>
+
+          {confirmarDesconectar && (
+            <div className="flex flex-col gap-3 rounded-2xl bg-error-claro p-4 text-sm text-error">
+              <p>
+                Vamos a borrar el link guardado. Las fechas que ya trajiste <strong>se quedan</strong> en Agendu.
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setConfirmarDesconectar(false)}
+                  className="h-11 rounded-xl border border-linea bg-superficie font-semibold text-tinta"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  disabled={trabajando}
+                  onClick={desconectar}
+                  className="h-11 rounded-xl bg-error font-semibold text-white disabled:opacity-50"
+                >
+                  {trabajando ? "Desconectando…" : "Desconectar"}
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       ) : (
         <>
