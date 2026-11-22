@@ -64,11 +64,8 @@ const FUENTES: { id: Origen; nombre: string; detalle: string; inicial: string; c
 const campo =
   "h-11 w-full rounded-xl border border-linea bg-superficie px-3 text-sm outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro";
 
-// Valor especial del desplegable para abrir la lista completa del plan.
-const OTRA = "__otra";
-
-type Materia = { id: string; nombre: string; cursando: boolean };
-type Fila = Propuesta & { elegida: boolean; verTodas: boolean };
+type Materia = { id: string; nombre: string; cursando: boolean; aprobada: boolean; grupo: string; orden: number };
+type Fila = Propuesta & { elegida: boolean };
 
 export default function ImportarCalendario({
   materias,
@@ -88,9 +85,7 @@ export default function ImportarCalendario({
 
   const fuente = FUENTES.find((f) => f.id === origen)!;
   const cursando = materias.filter((m) => m.cursando);
-  const otras = materias.filter((m) => !m.cursando);
   const sinCursando = cursando.length === 0;
-  const idsCursando = new Set(cursando.map((m) => m.id));
   const nombreConectado = FUENTES.find((f) => f.id === conectado?.origen)?.nombre ?? "Tu calendario";
 
   function buscar(conLinkNuevo: boolean) {
@@ -101,14 +96,7 @@ export default function ImportarCalendario({
         setError(r.error ?? "No pudimos leer tu calendario.");
         return;
       }
-      // Si la sugerencia es de una materia que no cursás, esa fila ya muestra la lista completa.
-      setFilas(
-        r.propuestas.map((p) => ({
-          ...p,
-          elegida: p.marcada,
-          verTodas: Boolean(p.materiaId) && !idsCursando.has(p.materiaId!),
-        }))
-      );
+      setFilas(r.propuestas.map((p) => ({ ...p, elegida: p.marcada })));
       setPaso("revisar");
     });
   }
@@ -217,58 +205,13 @@ export default function ImportarCalendario({
                     </span>
                   </div>
                   {f.elegida ? (
-                    <div className="grid grid-cols-[1fr_auto] gap-2">
-                      <label className="sr-only" htmlFor={`materia-${f.uid}`}>
-                        Materia
-                      </label>
-                      <select
-                        id={`materia-${f.uid}`}
-                        value={f.materiaId ?? ""}
-                        onChange={(e) =>
-                          e.target.value === OTRA
-                            ? cambiar(f.uid, { verTodas: true, materiaId: null })
-                            : cambiar(f.uid, { materiaId: e.target.value || null })
-                        }
-                        className={`${campo} ${f.materiaId ? "" : "border-error text-error"}`}
-                      >
-                        <option value="">Elegí la materia</option>
-                        {sinCursando ? (
-                          // Sin materias en curso: la lista completa del plan.
-                          materias.map((m) => (
-                            <option key={m.id} value={m.id}>
-                              {m.nombre}
-                            </option>
-                          ))
-                        ) : f.verTodas ? (
-                          // Lista completa: las que cursás arriba y el resto abajo.
-                          <>
-                            <optgroup label="Cursando">
-                              {cursando.map((m) => (
-                                <option key={m.id} value={m.id}>
-                                  {m.nombre}
-                                </option>
-                              ))}
-                            </optgroup>
-                            <optgroup label="Otras materias">
-                              {otras.map((m) => (
-                                <option key={m.id} value={m.id}>
-                                  {m.nombre}
-                                </option>
-                              ))}
-                            </optgroup>
-                          </>
-                        ) : (
-                          // Lo normal: solo las que cursás, y la opción de ver el resto.
-                          <>
-                            {cursando.map((m) => (
-                              <option key={m.id} value={m.id}>
-                                {m.nombre}
-                              </option>
-                            ))}
-                            <option value={OTRA}>Otra materia…</option>
-                          </>
-                        )}
-                      </select>
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-2">
+                      <ElegirMateria
+                        fila={f}
+                        materias={materias}
+                        cursando={cursando}
+                        onElegir={(materiaId) => cambiar(f.uid, { materiaId })}
+                      />
                       <label className="sr-only" htmlFor={`tipo-${f.uid}`}>
                         Tipo
                       </label>
@@ -422,5 +365,67 @@ export default function ImportarCalendario({
         </p>
       )}
     </div>
+  );
+}
+
+// El desplegable de materia de cada fecha: arriba las que cursás; después, el resto separado por año,
+// en el orden del plan (como en la pantalla Plan), y las electivas al final. Las aprobadas no aparecen.
+function ElegirMateria({
+  fila,
+  materias,
+  cursando,
+  onElegir,
+}: {
+  fila: Fila;
+  materias: Materia[];
+  cursando: Materia[];
+  onElegir: (materiaId: string | null) => void;
+}) {
+  const id = `materia-${fila.uid}`;
+
+  // Las materias ya vienen en el orden del plan; solo pasamos las electivas al final (el orden es estable).
+  // Una aprobada se muestra solo si es la que está elegida, para que el desplegable no quede vacío.
+  const resto = materias
+    .filter((m) => !m.cursando && (!m.aprobada || m.id === fila.materiaId))
+    .sort((a, b) => a.orden - b.orden);
+  const grupos: { titulo: string; materias: Materia[] }[] = [];
+  for (const m of resto) {
+    const ultimo = grupos[grupos.length - 1];
+    if (ultimo?.titulo === m.grupo) ultimo.materias.push(m);
+    else grupos.push({ titulo: m.grupo, materias: [m] });
+  }
+
+  return (
+    <>
+      <label className="sr-only" htmlFor={id}>
+        Materia
+      </label>
+      <select
+        id={id}
+        value={fila.materiaId ?? ""}
+        onChange={(e) => onElegir(e.target.value || null)}
+        className={`${campo} ${fila.materiaId ? "" : "border-error text-error"}`}
+      >
+        <option value="">Elegí la materia</option>
+        {cursando.length > 0 && (
+          <optgroup label="Las que cursás">
+            {cursando.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.nombre}
+              </option>
+            ))}
+          </optgroup>
+        )}
+        {grupos.map((g) => (
+          <optgroup key={g.titulo} label={g.titulo}>
+            {g.materias.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.nombre}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
+    </>
   );
 }

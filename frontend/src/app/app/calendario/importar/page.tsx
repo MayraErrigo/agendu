@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
+import { nombreDelAnio, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
 import { linkOculto } from "@/lib/logica/links";
 import ImportarCalendario from "./ImportarCalendario";
 
@@ -49,10 +49,15 @@ async function Contenido() {
     supabase.from("conexiones_calendario").select("origen, url").eq("usuario_id", user.id).maybeSingle(),
   ]);
 
-  // Cada materia sabe si la estás cursando: esas van primero en el desplegable.
-  const lista = materias
-    .map((m) => ({ id: m.id, nombre: m.nombre, cursando: estados[m.id] === "cursando" }))
-    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+  // De cada materia, lo que necesita la pantalla: si la cursás, si ya la aprobaste y en qué grupo va en el buscador.
+  const lista = materias.map((m) => ({
+    id: m.id,
+    nombre: m.nombre,
+    cursando: estados[m.id] === "cursando",
+    aprobada: estados[m.id] === "aprobada",
+    grupo: m.tipo === "electiva" ? "Electivas" : nombreDelAnio(m.nivel),
+    orden: m.tipo === "electiva" ? 99 : m.nivel,
+  }));
 
   return (
     <ImportarCalendario
