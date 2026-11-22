@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import type { ConfigParciales } from "@/lib/logica/parciales";
 import { guardarImportante } from "../acciones";
 
@@ -17,11 +17,26 @@ export default function Importante({
   texto: string;
   condiciones: ConfigParciales;
 }) {
+  // Campos "controlados": así no se vacían cuando React reinicia el formulario después de guardar.
+  const [cantidad, setCantidad] = useState(String(condiciones.cantidad));
   const [tieneTp, setTieneTp] = useState(condiciones.tieneTp);
+  const [minimo, setMinimo] = useState(condiciones.minimo === null ? "" : String(condiciones.minimo));
+  const [practica, setPractica] = useState(condiciones.practica === null ? "" : String(condiciones.practica));
+  const [directa, setDirecta] = useState(condiciones.directa === null ? "" : String(condiciones.directa));
+  const [anotaciones, setAnotaciones] = useState(texto);
   const [resultado, guardar, guardando] = useActionState(guardarImportante, null);
 
+  // Enviamos el formulario "a mano" (y no con action={…}) para que React no reinicie los campos al guardar:
+  // React 19 vuelve los desplegables a su primera opción aunque el valor se haya guardado bien.
+  const [, iniciar] = useTransition();
+  function enviar(evento: React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    const datos = new FormData(evento.currentTarget);
+    iniciar(() => guardar(datos));
+  }
+
   return (
-    <form action={guardar} className="flex flex-col gap-5">
+    <form onSubmit={enviar} className="flex flex-col gap-5">
       <input type="hidden" name="materia_id" value={materiaId} />
       <input type="hidden" name="tiene_tp" value={tieneTp ? "si" : "no"} />
 
@@ -31,13 +46,13 @@ export default function Importante({
           <h2 className="font-bold">Cómo se aprueba</h2>
           <span className="text-sm text-suave">
             Con esto, en Parciales te decimos cómo vas. Si la materia no tiene promoción práctica o aprobación directa,
-            elegí «No tiene»..
+            elegí «No tiene».
           </span>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-semibold">Cantidad de parciales</span>
-            <select name="cantidad" defaultValue={condiciones.cantidad} className={campo}>
+            <select name="cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} className={campo}>
               {[1, 2, 3, 4, 5, 6].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -63,9 +78,9 @@ export default function Importante({
               ))}
             </div>
           </div>
-          <SelectorNota nombre="minimo" etiqueta="Mínimo en cada parcial" valor={condiciones.minimo} />
-          <SelectorNota nombre="promocion_practica" etiqueta="Promoción práctica (promedio)" valor={condiciones.practica} />
-          <SelectorNota nombre="aprobacion_directa" etiqueta="Aprobación directa (promedio)" valor={condiciones.directa} />
+          <SelectorNota nombre="minimo" etiqueta="Mínimo en cada parcial" valor={minimo} onCambiar={setMinimo} />
+          <SelectorNota nombre="promocion_practica" etiqueta="Promoción práctica (promedio)" valor={practica} onCambiar={setPractica} />
+          <SelectorNota nombre="aprobacion_directa" etiqueta="Aprobación directa (promedio)" valor={directa} onCambiar={setDirecta} />
         </div>
         <span className="text-xs text-suave">
           Si un parcial queda por debajo del mínimo, lo tenés que recuperar. La nota del recuperatorio reemplaza a la
@@ -86,7 +101,8 @@ export default function Importante({
           name="anotaciones"
           rows={7}
           maxLength={2000}
-          defaultValue={texto}
+          value={anotaciones}
+          onChange={(e) => setAnotaciones(e.target.value)}
           placeholder={"Ej.: Recuperatorio solo de un parcial.\nConsultas: jueves 18 h.\nEl final es oral."}
           className="mt-1 rounded-2xl border border-linea bg-superficie px-4 py-3 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro"
         />
@@ -114,12 +130,22 @@ export default function Importante({
   );
 }
 
-function SelectorNota({ nombre, etiqueta, valor }: { nombre: string; etiqueta: string; valor: number | null }) {
+function SelectorNota({
+  nombre,
+  etiqueta,
+  valor,
+  onCambiar,
+}: {
+  nombre: string;
+  etiqueta: string;
+  valor: string;
+  onCambiar: (valor: string) => void;
+}) {
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-sm font-semibold">{etiqueta}</span>
-      <select name={nombre} defaultValue={valor ?? ""} className={campo}>
-         <option value="">No tiene</option>
+      <select name={nombre} value={valor} onChange={(e) => onCambiar(e.target.value)} className={campo}>
+        <option value="">No tiene</option>
         {NOTAS.map((n) => (
           <option key={n} value={n}>
             {n}

@@ -14,10 +14,12 @@ function limpiar(e: Partial<Evaluacion> | undefined): Evaluacion | null {
   const fecha = e?.fecha ?? null;
   const nota = e?.nota ?? null;
   const recuperatorio = e?.recuperatorio ?? null;
+  const fechaRecuperatorio = e?.fechaRecuperatorio ?? null;
   if (fecha !== null && !esFecha(fecha)) return null;
+  if (fechaRecuperatorio !== null && !esFecha(fechaRecuperatorio)) return null;
   if (nota !== null && !esNota(nota)) return null;
   if (recuperatorio !== null && !esNota(recuperatorio)) return null;
-  return { fecha, nota, recuperatorio };
+  return { fecha, nota, recuperatorio, fechaRecuperatorio };
 }
 
 // Guarda las notas de los parciales y del TP. Cuántos son y si hay TP se eligen en Importante.

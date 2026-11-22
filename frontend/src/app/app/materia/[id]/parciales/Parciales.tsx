@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import Link from "next/link";
 import {
   nombreParcial,
@@ -12,7 +12,7 @@ import {
 } from "@/lib/logica/parciales";
 import { guardarParciales } from "./acciones";
 
-const VACIA: Evaluacion = { fecha: null, nota: null, recuperatorio: null };
+const VACIA: Evaluacion = { fecha: null, nota: null, recuperatorio: null, fechaRecuperatorio: null };
 const NOTAS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const campo =
@@ -50,6 +50,15 @@ export default function Parciales({ materiaId, inicial }: { materiaId: string; i
   const [tp, setTp] = useState<Evaluacion>(inicial.tp);
   const [resultado, guardar, guardando] = useActionState(guardarParciales, null);
 
+  // Enviamos el formulario "a mano" (y no con action={…}) para que React no reinicie los campos al guardar:
+  // React 19 vuelve los desplegables a su primera opción aunque el valor se haya guardado bien.
+  const [, iniciar] = useTransition();
+  function enviar(evento: React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    const datos = new FormData(evento.currentTarget);
+    iniciar(() => guardar(datos));
+  }
+
   const resumen = resumirParciales({ cantidad, tieneTp, minimo, practica, directa, parciales, tp });
   const mensaje = MENSAJE[resumen.situacion];
 
@@ -66,7 +75,7 @@ export default function Parciales({ materiaId, inicial }: { materiaId: string; i
   ].filter(Boolean);
 
   return (
-    <form action={guardar} className="flex flex-col gap-5">
+    <form onSubmit={enviar} className="flex flex-col gap-5">
       <input type="hidden" name="materia_id" value={materiaId} />
       <input type="hidden" name="datos" value={JSON.stringify({ parciales, tp })} />
 
@@ -142,7 +151,7 @@ export default function Parciales({ materiaId, inicial }: { materiaId: string; i
   );
 }
 
-// Un desplegable de notas, con la opción "—" para dejarlo vacío.
+// Un desplegable de notas, con la opción "Sin nota" para dejarlo vacío.
 function Selector({
   etiqueta,
   valor,
@@ -163,17 +172,16 @@ function Selector({
         className={campo}
       >
         <option value="">Sin nota</option>
-            {opciones.map((n) => (
-            <option key={n} value={n}>
-                {n}
+        {opciones.map((n) => (
+          <option key={n} value={n}>
+            {n}
           </option>
         ))}
       </select>
     </label>
   );
 }
-
-// Una evaluación: fecha, nota y, si la nota no llega al mínimo, el recuperatorio.
+// Una evaluación: fecha, nota y, si la nota no alcanza, el recuperatorio.
 function FilaEvaluacion({
   nombre,
   evaluacion,
@@ -211,7 +219,15 @@ function FilaEvaluacion({
       </div>
       {mostrarRecuperatorio && (
         <div className="grid grid-cols-[1fr_auto] items-end gap-3 border-t border-fondo pt-3">
-          <span className="pb-3 text-sm text-suave">Si rendiste el recuperatorio, cargá la nota acá.</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-suave">Fecha del recuperatorio</span>
+            <input
+              type="date"
+              value={evaluacion.fechaRecuperatorio ?? ""}
+              onChange={(e) => onCambiar({ fechaRecuperatorio: e.target.value || null })}
+              className={campo}
+            />
+          </label>
           <div className="w-24">
             <Selector
               etiqueta="Recuperatorio"

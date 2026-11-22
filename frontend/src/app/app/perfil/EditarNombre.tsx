@@ -1,13 +1,23 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { guardarNombre } from "./acciones";
 
 export default function EditarNombre({ nombre }: { nombre: string }) {
+  const [valor, setValor] = useState(nombre);
   const [resultado, guardar, guardando] = useActionState(guardarNombre, null);
 
+  // Enviamos el formulario "a mano" (y no con action={…}) para que React no reinicie los campos al guardar:
+  // React 19 vuelve los desplegables a su primera opción aunque el valor se haya guardado bien.
+  const [, iniciar] = useTransition();
+  function enviar(evento: React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    const datos = new FormData(evento.currentTarget);
+    iniciar(() => guardar(datos));
+  }
+
   return (
-    <form action={guardar} className="flex flex-col gap-2">
+    <form onSubmit={enviar} className="flex flex-col gap-2">
       <label htmlFor="nombre" className="text-sm font-semibold">
         Tu nombre
       </label>
@@ -20,7 +30,8 @@ export default function EditarNombre({ nombre }: { nombre: string }) {
           minLength={2}
           maxLength={60}
           autoComplete="given-name"
-          defaultValue={nombre}
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
           className="h-12 min-w-0 flex-1 rounded-2xl border border-linea bg-superficie px-4 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro"
         />
         <button

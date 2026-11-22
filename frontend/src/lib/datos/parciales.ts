@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type { ConfigParciales, Evaluacion } from "@/lib/logica/parciales";
 
-export const VACIA: Evaluacion = { fecha: null, nota: null, recuperatorio: null };
-
+export const VACIA: Evaluacion = { fecha: null, nota: null, recuperatorio: null, fechaRecuperatorio: null };
 // Lo que el alumno cargó de los parciales de una materia. Si todavía no cargó nada, 2 parciales vacíos.
 export async function obtenerParciales(usuarioId: string, materiaId: string): Promise<ConfigParciales> {
   const supabase = await createClient();

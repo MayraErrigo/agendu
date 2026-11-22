@@ -11,6 +11,7 @@ export type Evaluacion = {
   fecha: string | null; // AAAA-MM-DD
   nota: number | null; // 1 a 10
   recuperatorio: number | null; // nota del recuperatorio, si lo rindió
+  fechaRecuperatorio?: string | null; // AAAA-MM-DD
 };
 
 export type ConfigParciales = {

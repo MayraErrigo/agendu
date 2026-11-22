@@ -12,6 +12,7 @@ export default function PestanasMateria({ materiaId }: { materiaId: string }) {
     { href: `${base}/importante`, texto: "Importante" },
     { href: `${base}/tareas`, texto: "Tareas" },
     { href: `${base}/parciales`, texto: "Parciales" },
+        { href: `${base}/fechas`, texto: "Fechas" },
     { href: `${base}/archivos`, texto: "Archivos" },
   ];
 
