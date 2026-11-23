@@ -29,3 +29,8 @@ Los estudiantes nos confían sus datos. Por eso, en todo lo que hagamos:
 5. **Archivos y links privados.** Links que vencen, nada público.
 6. **El alumno decide.** Puede ver, corregir, desconectar y borrar sus datos.
 7. **Revisar seguido.** Cada tanto, una etapa de revisión de seguridad.
+
+- **Security Advisor (nov 2026):** revisado. RLS en las 20 tablas; el catálogo se ve solo con sesión;
+  funciones de disparador sin permiso de ejecución desde la API. Queda un aviso a propósito:
+  `confirmar_archivo` la pueden llamar usuarios con sesión (la app la usa al subir archivos y
+  adentro verifica que el archivo sea del alumno). Contraseñas: mínimo 8 caracteres.

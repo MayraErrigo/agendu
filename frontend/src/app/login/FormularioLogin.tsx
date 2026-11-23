@@ -5,9 +5,12 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
+import { AYUDA_CONTRASENA, problemaDeContrasena } from "@/lib/logica/contrasena";
+import { estaFiltrada } from "@/lib/contrasenaFiltrada";
 
 type Mensaje = { tipo: "error" | "ok"; texto: string } | null;
 
+const FILTRADA = "Esa contraseña apareció en filtraciones de datos de otras páginas, así que es fácil de adivinar. Elegí otra.";
 // Pasa los errores de Supabase (en inglés) a mensajes claros en castellano.
 function traducirError(mensaje: string) {
   const m = mensaje.toLowerCase();
@@ -15,7 +18,8 @@ function traducirError(mensaje: string) {
   if (m.includes("email not confirmed")) return "Todavía no confirmaste tu mail. Revisá tu casilla (y la carpeta de spam).";
   if (m.includes("already registered")) return "Ya hay una cuenta con ese mail. Iniciá sesión.";
   if (m.includes("rate limit")) return "Hiciste muchos intentos seguidos. Esperá unos minutos y probá de nuevo.";
-  if (m.includes("password")) return "La contraseña tiene que tener al menos 6 caracteres.";
+  if (m.includes("weak") || m.includes("pwned") || m.includes("leaked")) return FILTRADA;
+  if (m.includes("password")) return "La contraseña tiene que tener al menos 8 caracteres.";
   return "Algo salió mal. Probá de nuevo.";
 }
 
@@ -57,6 +61,19 @@ export default function FormularioLogin() {
     setMensaje(null);
 
     if (modo === "registrarme") {
+      // Antes de crear la cuenta: que la contraseña cumpla las reglas y no esté filtrada.
+      const problema = problemaDeContrasena(password);
+      if (problema) {
+        setMensaje({ tipo: "error", texto: problema });
+        setCargando(false);
+        return;
+      }
+      if (await estaFiltrada(password)) {
+        setMensaje({ tipo: "error", texto: FILTRADA });
+        setCargando(false);
+        return;
+      }
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -160,14 +177,14 @@ export default function FormularioLogin() {
             id="password"
             type="password"
             required
-            minLength={6}
+            minLength={esRegistro ? 8 : undefined}
             autoComplete={esRegistro ? "new-password" : "current-password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="h-13 rounded-2xl border border-linea bg-superficie px-4 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro"
           />
           {esRegistro ? (
-            <p className="text-sm text-suave">Mínimo 6 caracteres.</p>
+            <p className="text-sm text-suave">{AYUDA_CONTRASENA}</p>
           ) : (
             <Link href="/recuperar" className="self-end text-sm font-semibold text-acento hover:underline">
               ¿Olvidaste tu contraseña?

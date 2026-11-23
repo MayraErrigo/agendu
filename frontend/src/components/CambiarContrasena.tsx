@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { AYUDA_CONTRASENA, problemaDeContrasena } from "@/lib/logica/contrasena";
+import { estaFiltrada } from "@/lib/contrasenaFiltrada";
 
+const FILTRADA = "Esa contraseña es demasiado fácil. Elegí otra.";
 const campo =
   "h-12 rounded-2xl border border-linea bg-superficie px-4 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro";
 
@@ -28,8 +31,9 @@ export default function CambiarContrasena({
   async function guardar(evento: React.FormEvent<HTMLFormElement>) {
     evento.preventDefault();
     setMensaje(null);
-    if (contrasena.length < 6) {
-      setMensaje({ tipo: "error", texto: "La contraseña tiene que tener al menos 6 caracteres." });
+    const problema = problemaDeContrasena(contrasena);
+    if (problema) {
+      setMensaje({ tipo: "error", texto: problema });
       return;
     }
     if (contrasena !== repetida) {
@@ -42,6 +46,14 @@ export default function CambiarContrasena({
     }
 
     setGuardando(true);
+
+    // Que no sea una contraseña filtrada (si el servicio no responde, seguimos igual).
+    if (await estaFiltrada(contrasena)) {
+      setGuardando(false);
+      setMensaje({ tipo: "error", texto: FILTRADA });
+      return;
+    }
+
     const supabase = createClient();
 
     // En Perfil: primero comprobamos que la contraseña actual sea la correcta.
@@ -68,9 +80,11 @@ export default function CambiarContrasena({
         tipo: "error",
         texto: m.includes("different from the old")
           ? "La contraseña nueva tiene que ser distinta de la anterior."
-          : m.includes("session")
-            ? "El link venció. Pedí uno nuevo."
-            : "No pudimos guardarla. Probá de nuevo.",
+          : m.includes("weak") || m.includes("pwned") || m.includes("leaked")
+            ? FILTRADA
+            : m.includes("session")
+              ? "El link venció. Pedí uno nuevo."
+              : "No pudimos guardarla. Probá de nuevo.",
       });
       return;
     }
@@ -110,7 +124,7 @@ export default function CambiarContrasena({
         id="contrasena-nueva"
         type="password"
         required
-        minLength={6}
+        minLength={8}
         autoComplete="new-password"
         value={contrasena}
         onChange={(e) => setContrasena(e.target.value)}
@@ -123,13 +137,13 @@ export default function CambiarContrasena({
         id="contrasena-repetida"
         type="password"
         required
-        minLength={6}
+        minLength={8}
         autoComplete="new-password"
         value={repetida}
         onChange={(e) => setRepetida(e.target.value)}
         className={campo}
       />
-      <span className="text-xs text-suave">Mínimo 6 caracteres.</span>
+      <span className="text-xs text-suave">{AYUDA_CONTRASENA}</span>
 
       {mensaje && (
         <p

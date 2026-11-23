@@ -84,7 +84,9 @@ export default function PrivacidadPage() {
             <strong>Vercel:</strong> donde funciona la app.
           </li>
           <li>
-            <strong>Google:</strong> solo si elegís entrar con tu cuenta de Google.
+            <strong>Have I Been Pwned:</strong> al crear o cambiar tu contraseña, revisamos que no figure en
+            filtraciones de datos conocidas. Tu contraseña nunca sale de tu dispositivo: solo se envía un fragmento de
+            un código calculado a partir de ella, del que no se puede recuperar.
           </li>
         </ul>
         <p>
