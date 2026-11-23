@@ -34,3 +34,6 @@ Los estudiantes nos confían sus datos. Por eso, en todo lo que hagamos:
   funciones de disparador sin permiso de ejecución desde la API. Queda un aviso a propósito:
   `confirmar_archivo` la pueden llamar usuarios con sesión (la app la usa al subir archivos y
   adentro verifica que el archivo sea del alumno). Contraseñas: mínimo 8 caracteres.
+  - **Contraseñas (nov 2026):** mínimo 8 caracteres, con letras y números (en la app y en Supabase).
+  Las filtradas se rechazan desde la app con Have I Been Pwned (k-anonimato: la contraseña no sale
+  del dispositivo). La opción equivalente de Supabase es del plan Pro.
