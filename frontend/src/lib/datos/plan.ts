@@ -4,34 +4,52 @@ import type { Correlativa } from "@/lib/logica/correlativas";
 export const ESTADOS = ["pendiente", "cursando", "regular", "aprobada"] as const;
 export type EstadoMateria = (typeof ESTADOS)[number];
 
+export type Dictado = "anual" | "1c" | "2c";
+
 export type Materia = {
   id: string;
   numero: number;
   nombre: string;
-  nivel: number;
+  nivel: number; // el año en que se cursa en la regional del alumno (o el de la ordenanza, si la regional no lo cambia)
   tipo: "obligatoria" | "electiva" | "intermedio";
   integradora: boolean;
   creditos: number | null;
   se_dicta: boolean;
+  dictado: Dictado | null; // anual o cuatrimestre, si lo sabemos para su regional
 };
 
+type FilaMateria = Omit<Materia, "dictado"> & {
+  materias_regionales: { regional_id: string; nivel: number | null; dictado: Dictado | null }[] | null;
+};
+
+const ORDEN_DICTADO: Record<string, number> = { "1c": 0, anual: 1, "2c": 2 };
+
 // Las materias de un plan que ve un alumno: las comunes a todas las regionales
-// más las electivas de su regional. Ordenadas por año y por número.
+// más las electivas de su regional. Si su regional las dicta en otro año, vale ese año.
+// Ordenadas por año, cuatrimestre y número.
 export async function obtenerMaterias(planId: string, regionalId: string | null): Promise<Materia[]> {
   const supabase = await createClient();
   const filtroRegional = regionalId ? `regional_id.is.null,regional_id.eq.${regionalId}` : "regional_id.is.null";
   const { data, error } = await supabase
     .from("materias")
-    .select("id, numero, nombre, nivel, tipo, integradora, creditos, se_dicta")
+    .select("id, numero, nombre, nivel, tipo, integradora, creditos, se_dicta, materias_regionales ( regional_id, nivel, dictado )")
     .eq("plan_id", planId)
-    .or(filtroRegional)
-    .order("nivel")
-    .order("numero");
+    .or(filtroRegional);
 
   if (error) {
     throw new Error(`No pudimos cargar las materias: ${error.message}`);
   }
-  return (data ?? []) as Materia[];
+
+  const materias = ((data ?? []) as FilaMateria[]).map(({ materias_regionales, ...m }): Materia => {
+    const enSuRegional = regionalId ? materias_regionales?.find((r) => r.regional_id === regionalId) : undefined;
+    return { ...m, nivel: enSuRegional?.nivel ?? m.nivel, dictado: enSuRegional?.dictado ?? null };
+  });
+  return materias.sort(
+    (a, b) =>
+      a.nivel - b.nivel ||
+      (ORDEN_DICTADO[a.dictado ?? ""] ?? 1) - (ORDEN_DICTADO[b.dictado ?? ""] ?? 1) ||
+      a.numero - b.numero
+  );
 }
 
 // El estado de cada materia que el alumno ya cargó (las que no aparecen están pendientes).

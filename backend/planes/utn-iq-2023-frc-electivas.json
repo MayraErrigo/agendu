@@ -1,0 +1,17 @@
+{
+  "fuente": "UTN FRC: oferta de electivas del Departamento de Ingeniería Química y régimen de correlativas de electivas publicado por el CET-AETI y los consejeros de Química (Plan 2023). Créditos = horas cátedra semanales; se piden 24.",
+  "plan_id": "utn-iq-2023",
+  "regional_id": "utn-frc",
+  "creditos_requeridos": 24,
+  "electivas": [
+    {"numero": 101, "nombre": "Tecnología de los Alimentos", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [38], "aprobadas": [22], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 102, "nombre": "Ingeniería de las Instalaciones", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [36], "aprobadas": [], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 103, "nombre": "Física de los Materiales", "nivel": 4, "creditos": 6, "se_dicta": true, "regulares": [20, 21], "aprobadas": [14], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 104, "nombre": "Formación de Tutores Emprendedores", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [34], "aprobadas": [15], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 105, "nombre": "Catalizadores y Procesos Catalíticos", "nivel": 4, "creditos": 6, "se_dicta": true, "regulares": [32], "aprobadas": [21], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 106, "nombre": "Introducción a la Investigación Científica", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [27, 28, 32], "aprobadas": [17, 22, 26], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 107, "nombre": "Gestión de Potencial Humano", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [34], "aprobadas": [15], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 108, "nombre": "Herramientas de Dirección y Gestión Empresarial", "nivel": 4, "creditos": 4, "se_dicta": true, "regulares": [], "aprobadas": [15, 30], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."},
+    {"numero": 109, "nombre": "Planificación, Desarrollo y Seguimiento de Proyectos Industriales", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [27, 34], "aprobadas": [17, 30], "verificar": "Correlativas tomadas del cuadro del centro de estudiantes; confirmar con el departamento."}
+  ]
+}

@@ -59,6 +59,7 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
     id: m.id,
     nombre: m.nombre,
     nivel: m.nivel,
+    dictado: m.dictado,
     tipo: m.tipo,
     creditos: m.creditos,
     seDicta: m.se_dicta,
@@ -76,7 +77,7 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
 
   const obligatorias = detalle.filter((m) => m.tipo === "obligatoria");
   const electivas = detalle.filter((m) => m.tipo === "electiva");
-    // Las del título intermedio van en su año, junto con las obligatorias.
+  // Las del título intermedio van en su año, junto con las obligatorias.
   const porAnio = detalle.filter((m) => m.tipo !== "electiva");
   const niveles = [...new Set(porAnio.map((m) => m.nivel))];
 
@@ -84,7 +85,8 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
     clave: `nivel-${nivel}`,
     etiqueta: `${nivel}º`,
     titulo: nombreDelAnio(nivel),
-    materias: porAnio.filter((m) => m.nivel === nivel),  }));
+    materias: porAnio.filter((m) => m.nivel === nivel),
+  }));
   if (electivas.length) {
     grupos.push({ clave: "electivas", etiqueta: "Elect.", titulo: "Electivas", materias: electivas });
   }
@@ -99,6 +101,7 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
         id: p.id,
         nombre: p.nombre,
         nivel: p.nivel,
+        dictado: null,
         tipo: p.tipo,
         creditos: p.creditos,
         seDicta: true,

@@ -1,9 +1,0 @@
-[33mcommit a24360c02ed140085245ae3b775d211ff9c28bc4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
-Author: MayraErrigo <merrigo555@gamil.com>
-Date:   Mon Nov 23 18:10:49 2026 -0300
-
-    Actualizar dependencias de desarrollo (npm audit)
-
- docs/decisiones.md         |   5 [32m+[m[31m-[m
- frontend/package-lock.json | 160 [32m++++++++++++++++++++++++[m[31m---------------------[m
- 2 files changed, 91 insertions(+), 74 deletions(-)

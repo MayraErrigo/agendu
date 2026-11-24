@@ -6,10 +6,13 @@ import type { EstadoMateria } from "@/lib/datos/plan";
 import type { Condicion, Situacion } from "@/lib/logica/correlativas";
 import { cambiarEstado, cambiarEstadoPropia, quitarPropia } from "./acciones";
 
+const DICTADO = { "1c": "1er cuatri", "2c": "2do cuatri", anual: "Anual" } as const;
+
 export type MateriaPlan = {
   id: string;
   nombre: string;
   nivel: number;
+  dictado: "anual" | "1c" | "2c" | null;
   tipo: "obligatoria" | "electiva" | "intermedio";
   creditos: number | null;
   seDicta: boolean;
@@ -79,6 +82,7 @@ export default function PlanCarrera({
   // Las del título intermedio se muestran en su año, pero no cuentan para la ingeniería.
   const deLaCarrera = grupo.materias.filter((m) => m.tipo !== "intermedio");
   const aprobadas = deLaCarrera.filter((m) => m.situacion === "aprobada").length;
+
   function elegirEstado(m: MateriaPlan, estado: EstadoMateria) {
     setError(null);
     iniciar(async () => {
@@ -165,7 +169,8 @@ export default function PlanCarrera({
                     {subtitulo(m)}
                     {m.tipo === "electiva" && m.creditos ? ` · ${m.creditos} créditos` : ""}
                     {m.tipo === "electiva" ? ` · ${m.nivel}º año` : ""}
-                                      {m.tipo === "intermedio" ? " · Título intermedio" : ""}
+                    {m.tipo === "intermedio" ? " · Título intermedio" : ""}
+                    {m.dictado ? ` · ${DICTADO[m.dictado]}` : ""}
                   </span>
                 </span>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${estilo.insignia}`}>
