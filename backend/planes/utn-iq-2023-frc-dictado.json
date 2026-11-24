@@ -1,5 +1,5 @@
 {
-  "fuente": "UTN FRC: distribución por año y cuatrimestre del Plan 2023 (cuadro del CET-AETI y consejeros de Química). La Ord. 1875 permite a cada regional cambiar el año y el dictado anual o cuatrimestral.",
+  "fuente": "UTN FRC: distribución por año y cuatrimestre del Plan 2023 (cuadro del CET-AETI y consejeros de Química). La Ord. 1875 permite a cada regional cambiar el año y el dictado anual o cuatrimestral. 1c-2c: se puede cursar en cualquiera de los dos cuatrimestres.",
   "plan_id": "utn-iq-2023",
   "regional_id": "utn-frc",
   "materias": [
@@ -38,7 +38,7 @@
     {"numero": 39, "nivel": 4, "dictado": "2c"},
     {"numero": 34, "nivel": 4, "dictado": "2c"},
     {"numero": 38, "nivel": 4, "dictado": "2c"},
-    {"numero": 41, "nivel": 5, "dictado": "anual"},
+    {"numero": 41, "nivel": 5, "dictado": "1c-2c"},
     {"numero": 35, "nivel": 5, "dictado": "1c"},
     {"numero": 36, "nivel": 5, "dictado": "1c"},
     {"numero": 37, "nivel": 5, "dictado": "1c"},

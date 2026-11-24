@@ -23,6 +23,8 @@ if (!url || !clave) {
 const db = createClient(url, clave, { auth: { persistSession: false } });
 const { plan_id: planId, regional_id: regionalId, materias } = JSON.parse(await readFile(archivo, "utf8"));
 const idDe = (numero) => `${planId}-${String(numero).padStart(2, "0")}`;
+// anual · 1c · 2c · 1c-2c / 2c-1c (se puede cursar en cualquiera de los dos; el primero es el principal)
+const DICTADOS = ["anual", "1c", "2c", "1c-2c", "2c-1c"];
 
 // ---------- Revisión del archivo antes de cargar ----------
 const { data: existentes, error: errorLectura } = await db.from("materias").select("id").eq("plan_id", planId);
@@ -33,12 +35,15 @@ if (errorLectura) {
 const ids = new Set(existentes.map((m) => m.id));
 const errores = [];
 const vistos = new Set();
+// Cada materia se indica por su número en el plan o, si no sigue ese formato (como el Seminario), por su id.
+const idDeFila = (m) => m.id ?? idDe(m.numero);
 for (const m of materias) {
-  if (vistos.has(m.numero)) errores.push(`La materia ${m.numero} está repetida`);
-  vistos.add(m.numero);
-  if (!ids.has(idDe(m.numero))) errores.push(`La materia ${m.numero} no está cargada en ${planId}`);
-  if (!Number.isInteger(m.nivel) || m.nivel < 1 || m.nivel > 6) errores.push(`La materia ${m.numero} tiene un año inválido`);
-  if (!["anual", "1c", "2c"].includes(m.dictado)) errores.push(`La materia ${m.numero} tiene un dictado inválido (anual, 1c o 2c)`);
+  const id = idDeFila(m);
+  if (vistos.has(id)) errores.push(`La materia ${id} está repetida`);
+  vistos.add(id);
+  if (!ids.has(id)) errores.push(`La materia ${id} no está cargada en ${planId}`);
+  if (!Number.isInteger(m.nivel) || m.nivel < 1 || m.nivel > 6) errores.push(`La materia ${id} tiene un año inválido`);
+  if (!DICTADOS.includes(m.dictado)) errores.push(`La materia ${id} tiene un dictado inválido (${DICTADOS.join(", ")})`);
 }
 if (errores.length) {
   console.error("El archivo tiene errores, no se cargó nada:\n- " + errores.join("\n- "));
@@ -47,7 +52,7 @@ if (errores.length) {
 
 // ---------- Carga ----------
 const { error } = await db.from("materias_regionales").upsert(
-  materias.map((m) => ({ materia_id: idDe(m.numero), regional_id: regionalId, nivel: m.nivel, dictado: m.dictado }))
+  materias.map((m) => ({ materia_id: idDeFila(m), regional_id: regionalId, nivel: m.nivel, dictado: m.dictado }))
 );
 if (error) {
   console.error(`Error al guardar: ${error.message}`);

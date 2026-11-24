@@ -2,17 +2,23 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import type { EstadoMateria } from "@/lib/datos/plan";
+import type { Dictado, EstadoMateria } from "@/lib/datos/plan";
 import type { Condicion, Situacion } from "@/lib/logica/correlativas";
 import { cambiarEstado, cambiarEstadoPropia, quitarPropia } from "./acciones";
 
-const DICTADO = { "1c": "1er cuatri", "2c": "2do cuatri", anual: "Anual" } as const;
+const DICTADO = {
+  "1c": "1er cuatri",
+  "2c": "2do cuatri",
+  "1c-2c": "1er o 2do cuatri",
+  "2c-1c": "2do o 1er cuatri",
+  anual: "Anual",
+} as const;
 
 export type MateriaPlan = {
   id: string;
   nombre: string;
   nivel: number;
-  dictado: "anual" | "1c" | "2c" | null;
+  dictado: Dictado | null;
   tipo: "obligatoria" | "electiva" | "intermedio";
   creditos: number | null;
   seDicta: boolean;

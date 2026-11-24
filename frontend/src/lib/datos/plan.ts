@@ -4,7 +4,8 @@ import type { Correlativa } from "@/lib/logica/correlativas";
 export const ESTADOS = ["pendiente", "cursando", "regular", "aprobada"] as const;
 export type EstadoMateria = (typeof ESTADOS)[number];
 
-export type Dictado = "anual" | "1c" | "2c";
+// anual · 1er o 2do cuatrimestre · "1c-2c"/"2c-1c": se puede cursar en cualquiera de los dos (el primero es el principal)
+export type Dictado = "anual" | "1c" | "2c" | "1c-2c" | "2c-1c";
 
 export type Materia = {
   id: string;
@@ -22,8 +23,7 @@ type FilaMateria = Omit<Materia, "dictado"> & {
   materias_regionales: { regional_id: string; nivel: number | null; dictado: Dictado | null }[] | null;
 };
 
-const ORDEN_DICTADO: Record<string, number> = { "1c": 0, anual: 1, "2c": 2 };
-
+const ORDEN_DICTADO: Record<string, number> = { "1c": 0, "1c-2c": 1, anual: 2, "2c-1c": 3, "2c": 4 };
 // Las materias de un plan que ve un alumno: las comunes a todas las regionales
 // más las electivas de su regional. Si su regional las dicta en otro año, vale ese año.
 // Ordenadas por año, cuatrimestre y número.
