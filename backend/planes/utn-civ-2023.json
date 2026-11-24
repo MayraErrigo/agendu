@@ -1,0 +1,69 @@
+{
+  "fuente": "UTN, Ord. 1853 (diseño curricular) y Ord. 2017 (correlatividades, 13/12/2023, reemplaza a la 1854) del Consejo Superior. Coincide con el régimen de correlativas del CET-AETI de la FR Córdoba.",
+  "universidad": {
+    "id": "utn",
+    "nombre": "Universidad Tecnológica Nacional",
+    "sigla": "UTN"
+  },
+  "carrera": {
+    "id": "utn-civ",
+    "nombre": "Ingeniería Civil"
+  },
+  "plan": {
+    "id": "utn-civ-2023",
+    "nombre": "Plan 2023",
+    "anio": 2023,
+    "ordenanzas": "Ord. 1853 y 2017 CSU",
+    "horas_electivas": null
+  },
+  "regionales": [
+    {
+      "id": "utn-frc",
+      "nombre": "Facultad Regional Córdoba",
+      "sigla": "FRC"
+    }
+  ],
+  "materias": [
+    {"numero": 1, "nivel": 1, "nombre": "Análisis Matemático I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 2, "nivel": 1, "nombre": "Álgebra y Geometría Analítica", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 3, "nivel": 1, "nombre": "Ingeniería y Sociedad", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 4, "nivel": 1, "nombre": "Ingeniería Civil I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 5, "nivel": 1, "nombre": "Sistemas de Representación", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 6, "nivel": 1, "nombre": "Química General", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 7, "nivel": 1, "nombre": "Física I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 8, "nivel": 1, "nombre": "Fundamentos de Informática", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 9, "nivel": 2, "nombre": "Análisis Matemático II", "integradora": false, "regulares": [1, 2], "aprobadas": []},
+    {"numero": 10, "nivel": 2, "nombre": "Estabilidad", "integradora": false, "regulares": [1, 2, 5, 7, 8], "aprobadas": []},
+    {"numero": 11, "nivel": 2, "nombre": "Ingeniería Civil II", "integradora": true, "regulares": [3, 4, 5, 8], "aprobadas": []},
+    {"numero": 12, "nivel": 2, "nombre": "Tecnología de los Materiales", "integradora": false, "regulares": [1, 5, 6, 7], "aprobadas": []},
+    {"numero": 13, "nivel": 2, "nombre": "Física II", "integradora": false, "regulares": [1, 7], "aprobadas": []},
+    {"numero": 14, "nivel": 2, "nombre": "Probabilidad y Estadística", "integradora": false, "regulares": [1, 2], "aprobadas": []},
+    {"numero": 15, "nivel": 2, "nombre": "Inglés I", "integradora": false, "regulares": [3], "aprobadas": []},
+    {"numero": 16, "nivel": 3, "nombre": "Resistencia de Materiales", "integradora": false, "regulares": [10], "aprobadas": [1, 2, 7, 8]},
+    {"numero": 17, "nivel": 3, "nombre": "Tecnología del Hormigón", "integradora": false, "regulares": [12, 14, 15], "aprobadas": [1, 2, 6, 7]},
+    {"numero": 18, "nivel": 3, "nombre": "Tecnología de la Construcción", "integradora": false, "regulares": [10, 11, 12, 15], "aprobadas": [1, 2, 4, 5, 6, 7, 8]},
+    {"numero": 19, "nivel": 3, "nombre": "Geotopografía", "integradora": false, "regulares": [9, 11, 13, 14], "aprobadas": [1, 2, 4, 5, 7]},
+    {"numero": 20, "nivel": 3, "nombre": "Hidráulica General y Aplicada", "integradora": false, "regulares": [9, 10, 11, 13, 14], "aprobadas": [1, 2, 5, 7, 8]},
+    {"numero": 21, "nivel": 3, "nombre": "Cálculo Avanzado", "integradora": false, "regulares": [9, 10, 12, 14], "aprobadas": [1, 2, 5, 7, 8]},
+    {"numero": 22, "nivel": 3, "nombre": "Instalaciones Eléctricas y Acústicas", "integradora": false, "regulares": [11, 12, 13], "aprobadas": [1, 2, 4, 5, 6, 7]},
+    {"numero": 23, "nivel": 3, "nombre": "Instalaciones Termomecánicas", "integradora": false, "regulares": [11, 12, 13], "aprobadas": [1, 2, 4, 5, 6, 7]},
+    {"numero": 24, "nivel": 3, "nombre": "Economía", "integradora": false, "regulares": [11, 14, 15], "aprobadas": [1, 2, 3, 4, 8]},
+    {"numero": 25, "nivel": 3, "nombre": "Inglés II", "integradora": false, "regulares": [15], "aprobadas": [3, 4]},
+    {"numero": 26, "nivel": 4, "nombre": "Geotecnia", "integradora": false, "regulares": [16, 17, 18, 19, 20], "aprobadas": [9, 10, 11, 12, 13, 14]},
+    {"numero": 27, "nivel": 4, "nombre": "Instalaciones Sanitarias y de Gas", "integradora": false, "regulares": [18, 19, 20, 24], "aprobadas": [5, 6, 7, 8, 12]},
+    {"numero": 28, "nivel": 4, "nombre": "Diseño Arquitectónico, Planeamiento y Urbanismo", "integradora": true, "regulares": [18, 19, 22, 23, 24, 25], "aprobadas": [10, 11, 12, 15]},
+    {"numero": 29, "nivel": 4, "nombre": "Análisis Estructural I", "integradora": false, "regulares": [16, 17], "aprobadas": [9, 10, 11, 14]},
+    {"numero": 30, "nivel": 4, "nombre": "Estructuras de Hormigón", "integradora": false, "regulares": [16, 17, 18, 19, 25], "aprobadas": [9, 10, 11, 12, 13, 14]},
+    {"numero": 31, "nivel": 4, "nombre": "Hidrología y Obras Hidráulicas", "integradora": false, "regulares": [16, 18, 19, 20, 24, 25], "aprobadas": [9, 10, 11, 12, 13, 14]},
+    {"numero": 32, "nivel": 4, "nombre": "Ingeniería Legal", "integradora": false, "regulares": [9, 11, 14, 15], "aprobadas": [1, 2, 3, 4, 8]},
+    {"numero": 33, "nivel": 5, "nombre": "Construcciones Metálicas y de Madera", "integradora": false, "regulares": [21, 29], "aprobadas": [16, 17, 18, 19]},
+    {"numero": 34, "nivel": 5, "nombre": "Cimentaciones", "integradora": false, "regulares": [21, 26, 29, 30, 31], "aprobadas": [16, 17, 18, 19, 20]},
+    {"numero": 35, "nivel": 5, "nombre": "Ingeniería Sanitaria", "integradora": false, "regulares": [26, 27, 31], "aprobadas": [17, 18, 19, 20, 25]},
+    {"numero": 36, "nivel": 5, "nombre": "Organización y Conducción de Obras", "integradora": false, "regulares": [26, 27, 28, 30, 31], "aprobadas": [17, 18, 19, 20, 22, 23, 24, 25]},
+    {"numero": 37, "nivel": 5, "nombre": "Vías de Comunicación I", "integradora": false, "regulares": [17, 18, 19], "aprobadas": [9, 10, 11, 12, 14, 15]},
+    {"numero": 38, "nivel": 5, "nombre": "Análisis Estructural II", "integradora": false, "regulares": [21, 26, 29, 30, 31], "aprobadas": [16, 17, 18, 19, 25]},
+    {"numero": 39, "nivel": 5, "nombre": "Vías de Comunicación II", "integradora": false, "regulares": [26, 30, 31, 32, 37], "aprobadas": [16, 17, 18, 19, 20, 24]},
+    {"numero": 40, "nivel": 5, "nombre": "Gestión Ambiental y Desarrollo Sustentable", "integradora": false, "regulares": [26, 28, 31, 32], "aprobadas": [20, 24, 25]},
+    {"numero": 41, "nivel": 6, "nombre": "Proyecto Final", "integradora": true, "regulares": [26, 27, 28, 29, 30, 31, 32], "aprobadas": [15, 16, 17, 18, 19, 20, 22, 23, 24, 25]}
+  ]
+}

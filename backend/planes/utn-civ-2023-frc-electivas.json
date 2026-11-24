@@ -1,0 +1,22 @@
+{
+  "fuente": "UTN FRC: electivas vigentes del Plan 2023 de Ingeniería Civil (cuadro del CET-AETI). Cada electiva suma sus horas semanales; se piden 22 horas cuatrimestrales.",
+  "plan_id": "utn-civ-2023",
+  "regional_id": "utn-frc",
+  "creditos_requeridos": 22,
+  "electivas": [
+    {"numero": 101, "nombre": "Análisis Estructural III", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [34, 38], "aprobadas": [26, 29, 30]},
+    {"numero": 102, "nombre": "Dinámica Estructural", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [29, 34, 38], "aprobadas": [26, 30]},
+    {"numero": 103, "nombre": "Diseño Arquitectónico y Planeamiento", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [24, 26, 32], "aprobadas": [18, 28]},
+    {"numero": 104, "nombre": "Geotecnia Experimental", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [34], "aprobadas": [26]},
+    {"numero": 105, "nombre": "Hidrología Urbana", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [28, 31], "aprobadas": [20]},
+    {"numero": 106, "nombre": "Línea de Ribera y Ordenamiento Territorial", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [18, 30, 31, 32, 34], "aprobadas": [20, 26, 27]},
+    {"numero": 107, "nombre": "Obras Fluviales y Marítimas", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [31], "aprobadas": [20, 26]},
+    {"numero": 108, "nombre": "Obras Subterráneas", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [34], "aprobadas": [26]},
+    {"numero": 109, "nombre": "Vialidad Especial", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [31, 39], "aprobadas": [11, 19, 37]},
+    {"numero": 110, "nombre": "Prefabricación", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [34], "aprobadas": [30]},
+    {"numero": 111, "nombre": "Puentes", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [33, 34, 38], "aprobadas": [30]},
+    {"numero": 112, "nombre": "Introducción a los Sistemas de Información Geográficos", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [31], "aprobadas": [19, 21]},
+    {"numero": 113, "nombre": "Tránsito y Transporte", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [34], "aprobadas": [19, 37]},
+    {"numero": 114, "nombre": "Uso del Recurso Hídrico", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [30, 31, 32, 34, 37], "aprobadas": [20, 27]}
+  ]
+}
