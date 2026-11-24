@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-
+import { mensajeDeLimite } from "@/lib/logica/limites";
 export type EstadoOpinion = { error?: string; ok?: boolean } | null;
 
 const CATEGORIAS = ["me_gusta", "no_entendi", "me_falta", "otra"];
@@ -34,7 +34,6 @@ export async function enviarOpinion(_anterior: EstadoOpinion, formulario: FormDa
     categoria,
     detalle,
   });
-  if (error) return { error: "No pudimos enviarla. Probá de nuevo." };
-
+if (error) return { error: mensajeDeLimite(error.message) ?? "No pudimos enviarla. Probá de nuevo." };
   return { ok: true };
 }

@@ -7,6 +7,7 @@ import { descargarCalendario } from "@/lib/datos/leerCalendario";
 import { esApertura, leerIcs, sugerirMateria, sugerirTipo } from "@/lib/logica/ics";
 import { esTipoFecha, hoyEnArgentina, type TipoFecha } from "@/lib/logica/fechas";
 import { sumarDias } from "@/lib/logica/calendario";
+import { LIMITES, mensajeDeLimite } from "@/lib/logica/limites";
 
 export type Origen = "uv" | "google" | "apple" | "outlook";
 const ORIGENES: Origen[] = ["uv", "google", "apple", "outlook"];
@@ -46,6 +47,20 @@ export async function buscarFechas(nuevo?: { origen: string; link: string }): Pr
   const datos = await alumno();
   if (!datos) return { error: "Tu sesión se cerró. Volvé a iniciar sesión." };
   const { supabase, usuarioId, planId, regionalId } = datos;
+
+  // Cada búsqueda descarga un calendario de internet: como mucho 10 por hora.
+  const haceUnaHora = new Date(Date.now() - 3600_000).toISOString();
+  const { count: busquedas } = await supabase
+    .from("uso_acciones")
+    .select("*", { count: "exact", head: true })
+    .eq("usuario_id", usuarioId)
+    .eq("accion", "buscar_fechas")
+    .gt("creado_en", haceUnaHora);
+  if ((busquedas ?? 0) >= LIMITES.busquedasPorHora) {
+    return { error: "Ya buscaste fechas varias veces en la última hora. Probá de nuevo más tarde." };
+  }
+  const { error: errorUso } = await supabase.from("uso_acciones").insert({ usuario_id: usuarioId, accion: "buscar_fechas" });
+  if (errorUso) return { error: "No pudimos buscar tus fechas. Probá de nuevo." };
 
   let link: string;
   if (nuevo) {
@@ -161,10 +176,19 @@ export async function traerFechas(elegidas: Elegida[], descartadas: string[]): P
   }
 
   if (filas.length) {
+    // Antes de guardar: que no pase el máximo de fechas (la base también lo controla).
+    const { count: yaTiene } = await supabase
+      .from("fechas")
+      .select("*", { count: "exact", head: true })
+      .eq("usuario_id", usuarioId);
+    if ((yaTiene ?? 0) + filas.length > LIMITES.fechas) {
+      return { error: mensajeDeLimite("limite_fechas")! };
+    }
+
     const { error } = await supabase
       .from("fechas")
       .upsert(filas, { onConflict: "usuario_id,uid_externo", ignoreDuplicates: true });
-    if (error) return { error: "No pudimos guardar las fechas. Probá de nuevo." };
+    if (error) return { error: mensajeDeLimite(error.message) ?? "No pudimos guardar las fechas. Probá de nuevo." };
   }
 
   const descartes = descartadas

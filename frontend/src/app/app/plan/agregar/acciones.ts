@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { mensajeDeLimite } from "@/lib/logica/limites";
 
 export type EstadoGuardado = { error: string } | null;
 
@@ -48,8 +49,7 @@ export async function agregarMateria(_anterior: EstadoGuardado, formulario: Form
     tipo,
     creditos,
   });
-  if (error) return { error: "No pudimos agregarla. Probá de nuevo." };
-
+if (error) return { error: mensajeDeLimite(error.message) ?? "No pudimos agregarla. Probá de nuevo." };
   // El reporte es para nosotros: si falla, la materia igual queda agregada.
   await supabase.from("reportes").insert({
     usuario_id: user.id,

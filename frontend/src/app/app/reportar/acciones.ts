@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { mensajeDeLimite } from "@/lib/logica/limites";
 
 export type EstadoReporte = { error?: string; ok?: boolean } | null;
 
@@ -29,7 +30,6 @@ export async function enviarReporte(_anterior: EstadoReporte, formulario: FormDa
     tipo: "error",
     detalle,
   });
-  if (error) return { error: "No pudimos enviarlo. Probá de nuevo." };
-
+if (error) return { error: mensajeDeLimite(error.message) ?? "No pudimos enviarlo. Probá de nuevo." };
   return { ok: true };
 }

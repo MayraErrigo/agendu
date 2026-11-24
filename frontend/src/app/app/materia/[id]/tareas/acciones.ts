@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { validarMateria } from "@/lib/datos/sesion";
+import { mensajeDeLimite } from "@/lib/logica/limites";
 
 export type EstadoTarea = { error?: string; ok?: boolean } | null;
 
@@ -25,7 +26,7 @@ export async function crearTarea(_anterior: EstadoTarea, formulario: FormData): 
   const { error } = await supabase
     .from("tareas")
     .insert({ usuario_id: usuarioId, materia_id: materiaId, titulo, fecha: fecha || null });
-  if (error) return { error: "No pudimos guardarla. Probá de nuevo." };
+  if (error) return { error: mensajeDeLimite(error.message) ?? "No pudimos guardarla. Probá de nuevo." };
 
   revalidatePath("/app", "layout");
   return { ok: true };

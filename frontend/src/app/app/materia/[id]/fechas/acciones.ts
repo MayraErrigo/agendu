@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { validarMateria } from "@/lib/datos/sesion";
 import { esTipoFecha } from "@/lib/logica/fechas";
+import { mensajeDeLimite } from "@/lib/logica/limites";
 
 export type EstadoFecha = { error?: string; ok?: boolean } | null;
 
@@ -39,8 +40,7 @@ export async function guardarFecha(_anterior: EstadoFecha, formulario: FormData)
   const { error } = fechaId
     ? await supabase.from("fechas").update(leido.datos).eq("id", fechaId).eq("materia_id", materiaId)
     : await supabase.from("fechas").insert({ ...leido.datos, usuario_id: usuarioId, materia_id: materiaId });
-  if (error) return { error: "No pudimos guardarla. Probá de nuevo." };
-
+if (error) return { error: mensajeDeLimite(error.message) ?? "No pudimos guardarla. Probá de nuevo." };
   revalidatePath("/app", "layout");
   return { ok: true };
 }
