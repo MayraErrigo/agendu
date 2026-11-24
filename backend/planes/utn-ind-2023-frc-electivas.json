@@ -1,0 +1,20 @@
+{
+  "fuente": "UTN FRC: electivas vigentes del Plan 2023 de Ingeniería Industrial (cuadro del CET-AETI), con créditos. Se piden 10.",
+  "plan_id": "utn-ind-2023",
+  "regional_id": "utn-frc",
+  "creditos_requeridos": 10,
+  "electivas": [
+    {"numero": 101, "nombre": "Gestión Ambiental", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [26], "aprobadas": [5]},
+    {"numero": 102, "nombre": "Gestión de Proyectos", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [27, 31, 32], "aprobadas": [10, 14, 17, 18]},
+    {"numero": 103, "nombre": "Gestión Emprendedora", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [30, 31], "aprobadas": [10, 17, 19, 23]},
+    {"numero": 104, "nombre": "Logística", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [27, 30, 31], "aprobadas": [18, 23]},
+    {"numero": 105, "nombre": "Política Económica", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [30], "aprobadas": [19, 23]},
+    {"numero": 106, "nombre": "Energías Renovables", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [20, 24, 26, 28, 32], "aprobadas": [2]},
+    {"numero": 107, "nombre": "Gestión del Conocimiento, la Innovación y Economía Crítica", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [18, 27], "aprobadas": [10, 25]},
+    {"numero": 108, "nombre": "Coaching de Formadores", "nivel": 4, "creditos": 3, "se_dicta": true, "regulares": [17, 18, 19], "aprobadas": [10, 14]},
+    {"numero": 109, "nombre": "Simulación", "nivel": 5, "creditos": 3, "se_dicta": true, "regulares": [27, 30, 31, 32], "aprobadas": [18]},
+    {"numero": 110, "nombre": "Análisis de Datos I", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [25, 27], "aprobadas": [10, 11, 14, 15, 33]},
+    {"numero": 111, "nombre": "Sustentabilidad y Nuevas Economías", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [17, 18, 19, 30], "aprobadas": [10, 14]},
+    {"numero": 112, "nombre": "CNH Cátedra In Stu", "nivel": 5, "creditos": 2, "se_dicta": true, "regulares": [27, 31, 32], "aprobadas": [10, 14, 17, 18, 19], "verificar": "Nombre tal como figura en el cuadro del CET; confirmar el nombre completo."}
+  ]
+}

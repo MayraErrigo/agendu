@@ -37,3 +37,8 @@ Los estudiantes nos confían sus datos. Por eso, en todo lo que hagamos:
   - **Contraseñas (nov 2026):** mínimo 8 caracteres, con letras y números (en la app y en Supabase).
   Las filtradas se rechazan desde la app con Have I Been Pwned (k-anonimato: la contraseña no sale
   del dispositivo). La opción equivalente de Supabase es del plan Pro.
+
+  - **Planes de estudio (nov 2026):** la ordenanza del Consejo Superior es la base (materias y correlativas).
+  El año y el cuatrimestre de cada regional se cargan aparte (materias_regionales), desde el cuadro del CET
+  de cada carrera. Si hay diferencias de correlativas, gana la ordenanza más nueva. Los alumnos reportan
+  lo que no coincida desde "Reportar un error".
