@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { validarMateria } from "@/lib/datos/sesion";
 import { esCarpetaFija } from "@/lib/logica/carpetas";
 import { coincideFirma, extensionDe, formatearTamano, MAXIMO_POR_VEZ, nombreSinExtension, TIPOS } from "@/lib/logica/archivos";
+import { buscarRepetido, type Repetido } from "@/lib/logica/repetidos";
 
 type Supabase = Extract<Awaited<ReturnType<typeof validarMateria>>, { supabase: unknown }>["supabase"];
 
@@ -39,6 +40,40 @@ async function espacio(supabase: Supabase, usuarioId: string) {
     limite: Number(perfil?.limite_bytes ?? 52428800),
     maxArchivo: Number(perfil?.max_archivo_bytes ?? 10485760),
   };
+}
+// Antes de subir: ¿alguno de los archivos ya está en esta carpeta? (mismo nombre; y si además pesa lo mismo, es el mismo)
+export async function revisarRepetidos(
+  materiaId: string,
+  carpeta: string,
+  archivos: { nombre: string; tamano: number }[]
+): Promise<{ error?: string; repetidos?: (Repetido | null)[] }> {
+  if (archivos.length > MAXIMO_POR_VEZ) return { error: `Podés subir hasta ${MAXIMO_POR_VEZ} archivos por vez.` };
+
+  const validacion = await validarMateria(materiaId);
+  if ("error" in validacion) return { error: validacion.error };
+  const { supabase, usuarioId } = validacion;
+  if (!(await carpetaValida(supabase, usuarioId, materiaId, carpeta))) return { error: "Esa carpeta no existe." };
+
+  const { data } = await supabase
+    .from("archivos")
+    .select("id, nombre, extension, tamano")
+    .eq("usuario_id", usuarioId)
+    .eq("materia_id", materiaId)
+    .eq("carpeta", carpeta)
+    .eq("estado", "listo");
+  const existentes = (data ?? []).map((a) => ({
+    id: a.id as string,
+    nombre: a.nombre as string,
+    extension: a.extension as string,
+    tamano: Number(a.tamano),
+  }));
+
+  const repetidos = archivos.map((archivo) => {
+    const tipo = extensionDe(String(archivo.nombre ?? ""));
+    if ("error" in tipo) return null; // se va a rechazar igual por el tipo
+    return buscarRepetido(nombreSinExtension(archivo.nombre), tipo.extension, Number(archivo.tamano), existentes);
+  });
+  return { repetidos };
 }
 
 // Paso 1 de la subida: revisa tipo, tamaño y espacio de cada archivo y lo anota como "pendiente".
