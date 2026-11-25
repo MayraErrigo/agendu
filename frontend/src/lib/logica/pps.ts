@@ -6,7 +6,8 @@ export type EstadoPps = "pendiente" | "haciendo" | "aprobada";
 export const ESTADOS_PPS: EstadoPps[] = ["pendiente", "haciendo", "aprobada"];
 
 // Cómo se muestra en Inicio.
-export type SituacionPps = "aprobada" | "haciendo" | "disponible" | "bloqueada";
+// "sin_datos": el plan no dice qué hace falta para empezarla.
+export type SituacionPps = "aprobada" | "haciendo" | "disponible" | "bloqueada" | "sin_datos";
 
 // Lo que venga de la base: si no es un estado conocido, está pendiente.
 export function estadoPpsDe(valor: unknown): EstadoPps {
@@ -20,8 +21,10 @@ export function buscarProyectoFinal<T extends { id: string; nombre: string; tipo
 }
 
 // Lo que marcó el alumno manda; si está pendiente, depende de si le faltan requisitos.
-export function situacionPps(estado: EstadoPps, faltantes: number): SituacionPps {
+// faltantes = null: no sabemos los requisitos de ese plan.
+export function situacionPps(estado: EstadoPps, faltantes: number | null): SituacionPps {
   if (estado === "aprobada") return "aprobada";
   if (estado === "haciendo") return "haciendo";
+  if (faltantes === null) return "sin_datos";
   return faltantes > 0 ? "bloqueada" : "disponible";
 }

@@ -51,7 +51,7 @@
 | 15c | Ingeniería Industrial | Plan 2023 (Ord. 1908 y 1909), 12 electivas FRC, Gestión Industrial (título intermedio) | Aparece para elegir | Sigue ahora |
 Ingeniería Civil: Hecha 
 | 15e | Próximas carreras |  Eléctrica, Electrónica, Mecánica, Metalúrgica; licenciaturas en Inteligencia Artificial y Seguridad Informática (2026) y Ciencia de Datos (2027) | Una por vez, con su cuadro del CET | Pendiente |
-
+15i · Práctica Profesional Supervisada: Hecha (materia en Eléctrica, Civil y Electrónica; requisito en Química, Sistemas, Mecánica e Industrial. A verificar: requisitos de la PPS de Electrónica).
 ### Para revisar en la etapa 12
 
 **Sistemas**

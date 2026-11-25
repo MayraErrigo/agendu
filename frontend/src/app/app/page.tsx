@@ -36,6 +36,7 @@ type Perfil = {
     creditos_electivas: number | null;
     unidad_electivas: string | null;
     pps_horas: number | null;
+    pps_requisitos_pf: boolean | null;
     carreras: { nombre: string };
   } | null;
 };
@@ -52,7 +53,7 @@ async function Inicio() {
   const { data } = await supabase
     .from("perfiles")
     .select(
-      "nombre, plan_id, regional_id, pps_estado, regionales ( sigla ), planes ( nombre, creditos_electivas, unidad_electivas, pps_horas, carreras ( nombre ) )"
+      "nombre, plan_id, regional_id, pps_estado, regionales ( sigla ), planes ( nombre, creditos_electivas, unidad_electivas, pps_horas, pps_requisitos_pf, carreras ( nombre ) )"
     )
     .eq("id", user.id)
     .maybeSingle();
@@ -92,14 +93,15 @@ async function Inicio() {
 
   // Práctica Profesional Supervisada, si el plan la pide como requisito (no como materia):
   // se empieza con los mismos requisitos que para cursar Proyecto Final.
+  // Si el plan no dice sus requisitos (pps_requisitos_pf = false), no se calcula qué falta.
   const ppsHoras = perfil.planes?.pps_horas ?? null;
-  const proyectoFinal = ppsHoras ? buscarProyectoFinal(materias) : null;
+  const proyectoFinal = ppsHoras && perfil.planes?.pps_requisitos_pf !== false ? buscarProyectoFinal(materias) : null;
   const faltanPps = proyectoFinal
     ? faltantesParaCursar(proyectoFinal.id, indexarCorrelativas(correlativas), estados).map((f) => ({
         nombre: materiaPorId.get(f.materiaId)?.nombre ?? f.materiaId,
         necesita: f.necesita,
       }))
-    : [];
+    : null;
 
   const nombre = perfil.nombre?.split(" ")[0] ?? "";
   const carrera = perfil.planes?.carreras.nombre ?? "";

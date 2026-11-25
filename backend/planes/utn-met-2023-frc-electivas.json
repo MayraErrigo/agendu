@@ -1,0 +1,10 @@
+{
+  "fuente": "UTN FRC: electivas vigentes del Plan 2023 de Ingeniería Metalúrgica (cuadro del CET-AETI), con créditos. Se piden 7.",
+  "plan_id": "utn-met-2023",
+  "regional_id": "utn-frc",
+  "creditos_requeridos": 7,
+  "electivas": [
+    {"numero": 101, "nombre": "Avances en Metalurgia y Nuevos Materiales", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [30, 31, 32], "aprobadas": [23, 26], "verificar": "El CET le da 4 créditos y pide 7 (hay que hacer las dos); la Ord. 1950 pide 7 h de electivas y el CET le pone 7 h a cada una."},
+    {"numero": 102, "nombre": "Ingeniería Gerencial", "nivel": 5, "creditos": 4, "se_dicta": true, "regulares": [36, 38, 39], "aprobadas": [17, 19], "verificar": "El CET le da 4 créditos y pide 7 (hay que hacer las dos); la Ord. 1950 pide 7 h de electivas y el CET le pone 7 h a cada una."}
+  ]
+}

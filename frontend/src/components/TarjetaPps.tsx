@@ -19,12 +19,12 @@ export default function TarjetaPps({
 }: {
   horas: number;
   estado: EstadoPps;
-  faltan: { nombre: string; necesita: "regular" | "aprobada" }[];
+  faltan: { nombre: string; necesita: "regular" | "aprobada" }[] | null; // null: no sabemos los requisitos
 }) {
   const [estado, setEstado] = useState<EstadoPps>(estadoInicial);
   const [error, setError] = useState<string | null>(null);
   const [guardando, iniciar] = useTransition();
-  const situacion = situacionPps(estado, faltan.length);
+  const situacion = situacionPps(estado, faltan ? faltan.length : null);
 
   function elegir(nuevo: EstadoPps) {
     const anterior = estado;
@@ -51,7 +51,10 @@ export default function TarjetaPps({
       {situacion === "disponible" && (
         <p className="text-sm font-semibold text-acento">Ya podés empezarla: cumplís los requisitos de Proyecto Final.</p>
       )}
-      {situacion === "bloqueada" && (
+      {situacion === "sin_datos" && (
+        <p className="text-sm text-suave">Consultá en tu departamento qué necesitás para empezarla.</p>
+      )}
+      {situacion === "bloqueada" && faltan && (
         <div className="flex flex-col gap-1 text-sm">
           <span>Para empezarla necesitás los mismos requisitos que para cursar Proyecto Final. Te falta:</span>
           <ul className="flex flex-col gap-0.5 text-suave">

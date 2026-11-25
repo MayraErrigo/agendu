@@ -34,3 +34,7 @@ test("pendiente: bloqueada si faltan requisitos, disponible si no", () => {
   assert.equal(situacionPps("pendiente", 2), "bloqueada");
   assert.equal(situacionPps("pendiente", 0), "disponible");
 });
+test("si no sabemos los requisitos, no dice que puede o no puede empezarla", () => {
+  assert.equal(situacionPps("pendiente", null), "sin_datos");
+  assert.equal(situacionPps("haciendo", null), "haciendo");
+});
