@@ -1,0 +1,22 @@
+{
+  "fuente": "UTN FRC: electivas vigentes del Plan 2023 de Ingeniería Electrónica (cuadro del CET-AETI). Cada electiva suma sus horas semanales del cuatrimestre (6), como en el CET. La Ord. 1849 pide 8 h anuales (192 h reloj), o sea 16 cuatrimestrales.",
+  "plan_id": "utn-ele-2023",
+  "regional_id": "utn-frc",
+  "creditos_requeridos": 16,
+  "unidad": "horas",
+  "electivas": [
+    {"numero": 101, "nombre": "Fundamentos de Robótica Móvil", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [29, 31, 34], "aprobadas": [8, 22, 23]},
+    {"numero": 102, "nombre": "Control de Procesos", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [27, 31, 34], "aprobadas": [23, 25]},
+    {"numero": 103, "nombre": "Tecnologías para la Transmisión Digital de Video", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [29, 30, 32], "aprobadas": [9, 24, 26]},
+    {"numero": 104, "nombre": "Software en Tiempo Real", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [29], "aprobadas": [22]},
+    {"numero": 105, "nombre": "Técnicas Digitales IV", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [27, 29, 30], "aprobadas": [16, 19, 23]},
+    {"numero": 106, "nombre": "Introducción a las Fibras Ópticas. Arquitectura de Redes", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [20, 26], "aprobadas": [30, 32]},
+    {"numero": 107, "nombre": "Sistemas de Telecomunicaciones", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [26, 32], "aprobadas": [12, 23]},
+    {"numero": 108, "nombre": "Equipos de Microondas", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [30, 32], "aprobadas": [12, 24, 26]},
+    {"numero": 109, "nombre": "Sistemas de Comunicaciones II", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [29, 30, 32], "aprobadas": [12, 24, 26]},
+    {"numero": 110, "nombre": "Sistemas de Comunicaciones III", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [29, 30, 32], "aprobadas": [12, 24, 26]},
+    {"numero": 111, "nombre": "Bioelectrónica", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [30, 33, 34], "aprobadas": [23, 27]},
+    {"numero": 112, "nombre": "Fundamentos de Acústica y Electroacústica", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [27, 29, 30], "aprobadas": [19, 23, 24]},
+    {"numero": 113, "nombre": "Visión por Computadora", "nivel": 6, "creditos": 6, "se_dicta": true, "regulares": [29], "aprobadas": [22, 24]}
+  ]
+}

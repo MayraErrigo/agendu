@@ -1,6 +1,5 @@
 {
-  "fuente": "UTN, Ord. 1877 (diseño curricular) y Ord. 1878 (correlatividades) del Consejo Superior. Tabla publicada por la FR Santa Fe.",
-  "universidad": {
+  "fuente": "UTN FRC: Ord. 1877 (diseño curricular) y Ord. 1878 (correlatividades) del Consejo Superior, en la copia de la FR Córdoba. Coincide con el régimen de correlativas del CET-AETI.",  "universidad": {
     "id": "utn",
     "nombre": "Universidad Tecnológica Nacional",
     "sigla": "UTN"
