@@ -5,6 +5,7 @@ import { nombreDelAnio } from "@/lib/datos/plan";
 import { obtenerParciales } from "@/lib/datos/parciales";
 import { puedeRendir, situacion } from "@/lib/logica/correlativas";
 import { resumirParciales } from "@/lib/logica/parciales";
+import { cantidad } from "@/lib/logica/unidades";
 import PestanasMateria from "@/components/PestanasMateria";
 
 const ETIQUETA = {
@@ -38,7 +39,7 @@ export default function MateriaLayout({
 
 async function Encabezado({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { usuarioId, materia, estados, indice } = await cargarMateria(id);
+  const { usuarioId, materia, estados, indice, unidad } = await cargarMateria(id);
   const sit = situacion(id, indice, estados);
 
   // Si está regular con promoción práctica, el final es solo teórico.
@@ -53,7 +54,7 @@ async function Encabezado({ params }: { params: Promise<{ id: string }> }) {
           <span className="text-sm text-suave">
             {nombreDelAnio(materia.nivel)}
             {materia.tipo === "electiva" ? " · Electiva" : ""}
-            {materia.creditos ? ` · ${materia.creditos} créditos` : ""}
+            {materia.creditos ? ` · ${cantidad(materia.creditos, unidad)}` : ""}
           </span>
           <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${ETIQUETA[sit].clases}`}>
             {ETIQUETA[sit].texto}

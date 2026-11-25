@@ -11,6 +11,7 @@ import {
   puedeRendir,
   situacion,
 } from "@/lib/logica/correlativas";
+import { unidadDe } from "@/lib/logica/unidades";
 import PlanCarrera, { type GrupoPlan } from "./PlanCarrera";
 
 // Pantalla Plan: la carrera completa, año por año, con el estado de cada materia.
@@ -37,13 +38,14 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
 
   const { data: perfil } = await supabase
     .from("perfiles")
-    .select("plan_id, regional_id, planes ( nombre )")
+    .select("plan_id, regional_id, planes ( nombre, unidad_electivas )")
     .eq("id", user.id)
     .maybeSingle();
   if (!perfil?.plan_id) {
     redirect("/app/carrera");
   }
-  const nombrePlan = (perfil.planes as unknown as { nombre: string } | null)?.nombre ?? "";
+  const plan = perfil.planes as unknown as { nombre: string; unidad_electivas: string | null } | null;
+  const nombrePlan = plan?.nombre ?? "";
 
   const [materias, estados, propias] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
@@ -121,6 +123,7 @@ async function Contenido({ searchParams }: { searchParams: Promise<{ agregada?: 
   return (
     <PlanCarrera
       grupos={grupos}
+      unidad={unidadDe(plan?.unidad_electivas)}
       subtitulo={`${nombrePlan} · ${obligatorias.length} obligatorias`}
       inicial={recienAgregada ? "propias" : undefined}
       aviso={recienAgregada ? "Listo, la agregamos a tu plan. ¡Gracias por avisarnos!" : undefined}

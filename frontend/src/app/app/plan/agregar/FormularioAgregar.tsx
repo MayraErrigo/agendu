@@ -1,12 +1,13 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { nombreUnidad, type Unidad } from "@/lib/logica/unidades";
 import { agregarMateria } from "./acciones";
 
 const campo =
   "h-12 rounded-2xl border border-linea bg-superficie px-4 outline-none focus:border-acento focus:ring-2 focus:ring-acento-claro";
 
-export default function FormularioAgregar() {
+export default function FormularioAgregar({ unidad }: { unidad: Unidad }) {
   const [tipo, setTipo] = useState<"obligatoria" | "electiva">("obligatoria");
   const [resultado, agregar, guardando] = useActionState(agregarMateria, null);
 
@@ -59,9 +60,17 @@ export default function FormularioAgregar() {
         {tipo === "electiva" && (
           <div className="flex flex-col gap-1.5">
             <label htmlFor="creditos" className="text-sm font-semibold">
-              Créditos
+              {nombreUnidad(unidad)}
             </label>
-            <input id="creditos" name="creditos" type="number" inputMode="numeric" min={1} max={20} className={campo} />
+            <input
+              id="creditos"
+              name="creditos"
+              type="text"
+              inputMode="decimal"
+              placeholder={unidad === "horas" ? "Ej.: 1,5" : "Ej.: 2"}
+              maxLength={4}
+              className={campo}
+            />
           </div>
         )}
       </div>

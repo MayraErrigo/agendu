@@ -24,6 +24,7 @@ const {
   plan_id: planId,
   regional_id: regionalId,
   creditos_requeridos: creditosRequeridos,
+  unidad = "creditos",
   electivas,
 } = JSON.parse(await readFile(archivo, "utf8"));
 const idDe = (numero) => `${planId}-${String(numero).padStart(2, "0")}`;
@@ -47,6 +48,13 @@ const numerosBase = new Set(base.map((m) => m.numero));
 const numerosElectivas = new Set();
 const errores = [];
 
+// Créditos u horas; con medios como mucho (1,5 sí, 1,3 no).
+if (!["creditos", "horas"].includes(unidad)) errores.push(`La unidad "${unidad}" no existe (creditos u horas)`);
+const valeCantidad = (n) => typeof n === "number" && n >= 0.5 && n <= 99 && Number.isInteger(n * 2);
+if (creditosRequeridos != null && !valeCantidad(creditosRequeridos)) {
+  errores.push(`creditos_requeridos (${creditosRequeridos}) tiene que ir de medio en medio`);
+}
+
 for (const e of electivas) {
   if (numerosElectivas.has(e.numero)) errores.push(`La electiva ${e.numero} está repetida`);
   numerosElectivas.add(e.numero);
@@ -57,6 +65,9 @@ for (const e of electivas) {
   }
   for (const n of [...e.regulares, ...e.aprobadas]) {
     if (!numerosBase.has(n) && !numerosElectivas.has(n)) errores.push(`${e.nombre} pide la materia ${n}, que no existe`);
+  }
+  if (e.creditos != null && !valeCantidad(e.creditos)) {
+    errores.push(`${e.nombre} tiene ${e.creditos} créditos: tiene que ir de medio en medio`);
   }
   const ambas = e.regulares.filter((n) => e.aprobadas.includes(n));
   if (ambas.length) errores.push(`${e.nombre} pide ${ambas.join(", ")} como regular y como aprobada`);
@@ -107,15 +118,16 @@ if (correlativas.length) {
 }
 console.log(`✓ correlativas de electivas: ${correlativas.length}`);
 
-// Créditos de electivas que pide el plan para recibirse (si ya los sabemos).
-if (creditosRequeridos) {
-  const { error: errorPlan } = await db.from("planes").update({ creditos_electivas: creditosRequeridos }).eq("id", planId);
-  if (errorPlan) {
-    console.error(`Error al guardar los créditos requeridos: ${errorPlan.message}`);
-    process.exit(1);
-  }
-  console.log(`✓ créditos de electivas requeridos: ${creditosRequeridos}`);
+// En qué unidad cuenta el plan sus electivas y cuántas pide para recibirse (si ya lo sabemos).
+const cambiosPlan = { unidad_electivas: unidad };
+if (creditosRequeridos) cambiosPlan.creditos_electivas = creditosRequeridos;
+const { error: errorPlan } = await db.from("planes").update(cambiosPlan).eq("id", planId);
+if (errorPlan) {
+  console.error(`Error al guardar los datos del plan: ${errorPlan.message}`);
+  process.exit(1);
 }
+const palabra = unidad === "horas" ? "horas" : "créditos";
+console.log(`✓ electivas en ${palabra}${creditosRequeridos ? `: se piden ${creditosRequeridos}` : ""}`);
 
 const aVerificar = electivas.filter((e) => e.verificar);
 if (aVerificar.length) {

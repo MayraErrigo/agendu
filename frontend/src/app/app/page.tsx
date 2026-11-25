@@ -10,6 +10,7 @@ import { hoyEnArgentina } from "@/lib/logica/fechas";
 import Calendario from "@/components/calendario/Calendario";
 import { resumen } from "@/lib/logica/correlativas";
 import { calcularAvance } from "@/lib/logica/avance";
+import { cantidad, nombreUnidad, numero, unidadDe } from "@/lib/logica/unidades";
 
 // Pantalla Inicio: el resumen de la carrera del alumno.
 export default function InicioPage() {
@@ -27,7 +28,12 @@ type Perfil = {
   plan_id: string | null;
   regional_id: string | null;
   regionales: { sigla: string } | null;
-  planes: { nombre: string; creditos_electivas: number | null; carreras: { nombre: string } } | null;
+  planes: {
+    nombre: string;
+    creditos_electivas: number | null;
+    unidad_electivas: string | null;
+    carreras: { nombre: string };
+  } | null;
 };
 
 async function Inicio() {
@@ -41,7 +47,7 @@ async function Inicio() {
 
   const { data } = await supabase
     .from("perfiles")
-    .select("nombre, plan_id, regional_id, regionales ( sigla ), planes ( nombre, creditos_electivas, carreras ( nombre ) )")
+    .select("nombre, plan_id, regional_id, regionales ( sigla ), planes ( nombre, creditos_electivas, unidad_electivas, carreras ( nombre ) )")
     .eq("id", user.id)
     .maybeSingle();
   const perfil = data as unknown as Perfil | null;
@@ -49,7 +55,7 @@ async function Inicio() {
     redirect("/app/carrera");
   }
 
-    const [materias, estados, notas, propias, calendario, conexion] = await Promise.all([
+  const [materias, estados, notas, propias, calendario, conexion] = await Promise.all([
     obtenerMaterias(perfil.plan_id, perfil.regional_id),
     obtenerEstados(user.id),
     obtenerNotas(user.id),
@@ -87,6 +93,8 @@ async function Inicio() {
   const circunferencia = 2 * Math.PI * radio;
   const trazo = (circunferencia * avance.porcentaje) / 100;
 
+  // Créditos u horas de electivas, según cómo las cuente el plan.
+  const unidad = unidadDe(perfil.planes?.unidad_electivas);
   const requeridos = avance.creditosRequeridos;
   const porcentajeCreditos = requeridos ? Math.min(100, Math.round((avance.creditosAprobados / requeridos) * 100)) : 0;
 
@@ -98,9 +106,9 @@ async function Inicio() {
         </span>
         <h1 className="text-[26px] font-bold tracking-tight">{nombre ? `Hola, ${nombre}` : "Hola"}</h1>
       </header>
-      
+
       {/* Calendario: fechas importantes y parciales de todas las materias */}
-       <Calendario items={calendario} hoy={hoyEnArgentina()} conexion={conexion} />
+      <Calendario items={calendario} hoy={hoyEnArgentina()} conexion={conexion} />
 
       {/* Avance */}
       <section className="flex items-center gap-5 rounded-3xl bg-superficie p-5 shadow-sm">
@@ -135,13 +143,13 @@ async function Inicio() {
         </div>
       </section>
 
-      {/* Créditos de electivas */}
+      {/* Créditos (u horas) de electivas */}
       {requeridos && (
         <section className="flex flex-col gap-2 rounded-3xl bg-superficie p-5 shadow-sm">
           <div className="flex items-baseline justify-between">
             <h2 className="font-bold">Electivas</h2>
             <span className="text-sm text-suave">
-              {avance.creditosAprobados} de {requeridos} créditos
+              {numero(avance.creditosAprobados)} de {cantidad(requeridos, unidad)}
             </span>
           </div>
           <div
@@ -150,14 +158,16 @@ async function Inicio() {
             aria-valuemin={0}
             aria-valuemax={requeridos}
             aria-valuenow={avance.creditosAprobados}
-            aria-label="Créditos de electivas"
+            aria-label={`${nombreUnidad(unidad)} de electivas`}
           >
             <div className="h-full rounded-full bg-acento" style={{ width: `${porcentajeCreditos}%` }} />
           </div>
           <span className="text-xs text-suave">
             {avance.creditosAprobados >= requeridos
-              ? "Ya juntaste todos los créditos de electivas."
-              : `Te faltan ${requeridos - avance.creditosAprobados} créditos.`}
+              ? unidad === "horas"
+                ? "Ya juntaste todas las horas de electivas."
+                : "Ya juntaste todos los créditos de electivas."
+              : `Te faltan ${cantidad(requeridos - avance.creditosAprobados, unidad)}.`}
           </span>
         </section>
       )}
@@ -209,8 +219,6 @@ async function Inicio() {
         </p>
       )}
 
-      
-      
     </div>
   );
 }

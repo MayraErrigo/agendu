@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import type { EstadoMateria, Materia } from "@/lib/datos/plan";
+import { cantidad, type Unidad } from "@/lib/logica/unidades";
 import { guardarAvance } from "./acciones";
 
 // Al tocar una materia, pasa al siguiente estado.
@@ -24,9 +25,11 @@ type Grupo = { clave: string; titulo: string; materias: Materia[]; esElectiva: b
 export default function CargarAvance({
   grupos,
   estadosIniciales,
+  unidad,
 }: {
   grupos: Grupo[];
   estadosIniciales: Record<string, EstadoMateria>;
+  unidad: Unidad; // créditos u horas, según el plan
 }) {
   const [estados, setEstados] = useState<Record<string, EstadoMateria>>(estadosIniciales);
   const [abierto, setAbierto] = useState<string | null>(grupos[0]?.clave ?? null);
@@ -139,7 +142,7 @@ export default function CargarAvance({
                             {grupo.esElectiva && (
                               <span className="text-xs text-suave">
                                 {m.nivel}º año
-                                {m.creditos ? ` · ${m.creditos} ${m.creditos === 1 ? "crédito" : "créditos"}` : ""}
+                                {m.creditos ? ` · ${cantidad(m.creditos, unidad)}` : ""}
                                 {m.se_dicta ? "" : " · No se dicta actualmente"}
                               </span>
                             )}

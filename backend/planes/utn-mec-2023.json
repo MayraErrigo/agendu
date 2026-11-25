@@ -1,0 +1,68 @@
+{
+  "fuente": "UTN, Ord. 1901 (diseño curricular) y Ord. 1902 (correlatividades) del Consejo Superior. Coincide con el régimen de correlativas del CET-AETI de la FR Córdoba.",
+  "universidad": {
+    "id": "utn",
+    "nombre": "Universidad Tecnológica Nacional",
+    "sigla": "UTN"
+  },
+  "carrera": {
+    "id": "utn-mec",
+    "nombre": "Ingeniería Mecánica"
+  },
+  "plan": {
+    "id": "utn-mec-2023",
+    "nombre": "Plan 2023",
+    "anio": 2023,
+    "ordenanzas": "Ord. 1901 y 1902 CSU",
+    "horas_electivas": null
+  },
+  "regionales": [
+    {
+      "id": "utn-frc",
+      "nombre": "Facultad Regional Córdoba",
+      "sigla": "FRC"
+    }
+  ],
+  "materias": [
+    {"numero": 1, "nivel": 1, "nombre": "Análisis Matemático I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 2, "nivel": 1, "nombre": "Química General", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 3, "nivel": 1, "nombre": "Álgebra y Geometría Analítica", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 4, "nivel": 1, "nombre": "Física I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 5, "nivel": 1, "nombre": "Ingeniería y Sociedad", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 6, "nivel": 1, "nombre": "Ingeniería Mecánica I", "integradora": true, "regulares": [], "aprobadas": []},
+    {"numero": 7, "nivel": 1, "nombre": "Sistemas de Representación", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 8, "nivel": 1, "nombre": "Fundamentos de Informática", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 9, "nivel": 2, "nombre": "Materiales No Metálicos", "integradora": false, "regulares": [2, 4], "aprobadas": []},
+    {"numero": 10, "nivel": 2, "nombre": "Estabilidad I", "integradora": false, "regulares": [1, 3, 4], "aprobadas": []},
+    {"numero": 11, "nivel": 2, "nombre": "Materiales Metálicos", "integradora": false, "regulares": [2, 4], "aprobadas": []},
+    {"numero": 12, "nivel": 2, "nombre": "Análisis Matemático II", "integradora": false, "regulares": [1, 3], "aprobadas": []},
+    {"numero": 13, "nivel": 2, "nombre": "Física II", "integradora": false, "regulares": [1, 4], "aprobadas": []},
+    {"numero": 14, "nivel": 2, "nombre": "Ingeniería Ambiental y Seguridad Industrial", "integradora": false, "regulares": [2, 4], "aprobadas": []},
+    {"numero": 15, "nivel": 2, "nombre": "Ingeniería Mecánica II", "integradora": true, "regulares": [4, 6], "aprobadas": []},
+    {"numero": 16, "nivel": 2, "nombre": "Inglés I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 17, "nivel": 3, "nombre": "Termodinámica", "integradora": false, "regulares": [12, 13], "aprobadas": [1, 3, 4]},
+    {"numero": 18, "nivel": 3, "nombre": "Mecánica Racional", "integradora": false, "regulares": [10, 12], "aprobadas": [1, 3, 4]},
+    {"numero": 19, "nivel": 3, "nombre": "Estabilidad II", "integradora": false, "regulares": [10, 12], "aprobadas": [1, 3, 4]},
+    {"numero": 20, "nivel": 3, "nombre": "Mediciones y Ensayos", "integradora": false, "regulares": [10, 11, 13], "aprobadas": [1, 4]},
+    {"numero": 21, "nivel": 3, "nombre": "Diseño Mecánico", "integradora": false, "regulares": [9, 10, 11], "aprobadas": [4, 6, 7, 8]},
+    {"numero": 22, "nivel": 3, "nombre": "Cálculo Avanzado", "integradora": false, "regulares": [12], "aprobadas": [1, 3, 8]},
+    {"numero": 23, "nivel": 3, "nombre": "Ingeniería Mecánica III", "integradora": true, "regulares": [9, 11, 15], "aprobadas": [1, 2, 4, 6]},
+    {"numero": 24, "nivel": 3, "nombre": "Probabilidad y Estadística", "integradora": false, "regulares": [1, 3], "aprobadas": []},
+    {"numero": 25, "nivel": 3, "nombre": "Inglés II", "integradora": false, "regulares": [], "aprobadas": [16]},
+    {"numero": 26, "nivel": 4, "nombre": "Economía", "integradora": false, "regulares": [15], "aprobadas": [5]},
+    {"numero": 27, "nivel": 4, "nombre": "Elementos de Máquinas", "integradora": true, "regulares": [9, 11, 18, 19, 23], "aprobadas": [2, 10, 12]},
+    {"numero": 28, "nivel": 4, "nombre": "Tecnología del Calor", "integradora": false, "regulares": [17], "aprobadas": [12, 13]},
+    {"numero": 29, "nivel": 4, "nombre": "Metrología e Ingeniería de Calidad", "integradora": false, "regulares": [20, 24], "aprobadas": [3, 11, 13]},
+    {"numero": 30, "nivel": 4, "nombre": "Mecánica de los Fluidos", "integradora": false, "regulares": [17], "aprobadas": [12, 13]},
+    {"numero": 31, "nivel": 4, "nombre": "Electrotecnia y Máquinas Eléctricas", "integradora": false, "regulares": [12, 13], "aprobadas": [1, 3, 4]},
+    {"numero": 32, "nivel": 4, "nombre": "Electrónica y Sistemas de Control", "integradora": false, "regulares": [12, 13, 22], "aprobadas": [1, 3, 4]},
+    {"numero": 33, "nivel": 4, "nombre": "Estabilidad III", "integradora": false, "regulares": [19], "aprobadas": [1, 3, 4, 10]},
+    {"numero": 34, "nivel": 5, "nombre": "Tecnología de Fabricación", "integradora": false, "regulares": [27, 29], "aprobadas": [9, 10, 11, 21]},
+    {"numero": 35, "nivel": 5, "nombre": "Máquinas Alternativas y Turbomáquinas", "integradora": false, "regulares": [28], "aprobadas": [13, 17]},
+    {"numero": 36, "nivel": 5, "nombre": "Instalaciones Industriales", "integradora": false, "regulares": [20, 28, 30, 31, 32], "aprobadas": [10, 14, 17]},
+    {"numero": 37, "nivel": 5, "nombre": "Organización Industrial", "integradora": false, "regulares": [26], "aprobadas": [15]},
+    {"numero": 38, "nivel": 5, "nombre": "Legislación", "integradora": false, "regulares": [15], "aprobadas": [5]},
+    {"numero": 39, "nivel": 5, "nombre": "Mantenimiento", "integradora": false, "regulares": [20, 26, 27], "aprobadas": [11, 13, 18, 19]},
+    {"numero": 40, "nivel": 5, "nombre": "Proyecto Final", "integradora": true, "regulares": [27, 29, 31, 32], "aprobadas": [18, 19, 20, 21]}
+  ]
+}

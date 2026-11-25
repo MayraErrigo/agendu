@@ -49,7 +49,8 @@
 | 15a | Año y cuatrimestre FRC | Mostrar el año y el cuatrimestre de la regional encima de la ordenanza (anual, 1er, 2do, o cualquiera de los dos) | Sistemas muestra Probabilidad en 2do año | Hecha |
 | 15b | Ingeniería Química | Plan 2023 (Ord. 1875 y 2138), 9 electivas FRC, dictado del CET | Aparece para elegir | Hecha |
 | 15c | Ingeniería Industrial | Plan 2023 (Ord. 1908 y 1909), 12 electivas FRC, Gestión Industrial (título intermedio) | Aparece para elegir | Sigue ahora |
-| 15d | Próximas carreras | Civil, Eléctrica, Electrónica, Mecánica, Metalúrgica; licenciaturas en Inteligencia Artificial y Seguridad Informática (2026) y Ciencia de Datos (2027) | Una por vez, con su cuadro del CET | Pendiente |
+Ingeniería Civil: Hecha 
+| 15e | Próximas carreras |  Eléctrica, Electrónica, Mecánica, Metalúrgica; licenciaturas en Inteligencia Artificial y Seguridad Informática (2026) y Ciencia de Datos (2027) | Una por vez, con su cuadro del CET | Pendiente |
 
 ### Para revisar en la etapa 12
 

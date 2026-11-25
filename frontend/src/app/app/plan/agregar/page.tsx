@@ -1,4 +1,8 @@
+import { Suspense } from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { unidadDe } from "@/lib/logica/unidades";
 import FormularioAgregar from "./FormularioAgregar";
 
 // Agregar una materia que no figura en el plan.
@@ -15,7 +19,32 @@ export default function AgregarPage() {
           el aviso para sumarla para todos.
         </p>
       </div>
-      <FormularioAgregar />
+      <Suspense fallback={<p className="text-suave">Cargando…</p>}>
+        <Formulario />
+      </Suspense>
     </main>
   );
+}
+
+// El formulario necesita saber si el plan cuenta las electivas en créditos o en horas.
+async function Formulario() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: perfil } = await supabase
+    .from("perfiles")
+    .select("plan_id, planes ( unidad_electivas )")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (!perfil?.plan_id) {
+    redirect("/app/carrera");
+  }
+  const plan = perfil.planes as unknown as { unidad_electivas: string | null } | null;
+
+  return <FormularioAgregar unidad={unidadDe(plan?.unidad_electivas)} />;
 }

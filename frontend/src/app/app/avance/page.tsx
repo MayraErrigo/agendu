@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { nombreDelAnio, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
+import { unidadDe } from "@/lib/logica/unidades";
 import CargarAvance from "./CargarAvance";
 
 // Paso 3 de 3 del recorrido inicial: el alumno marca lo que ya hizo.
@@ -41,7 +42,7 @@ async function Contenido() {
 
   const { data: perfil } = await supabase
     .from("perfiles")
-    .select("plan_id, regional_id")
+    .select("plan_id, regional_id, planes ( unidad_electivas )")
     .eq("id", user.id)
     .maybeSingle();
   if (!perfil?.plan_id) {
@@ -67,11 +68,13 @@ async function Contenido() {
   if (electivas.length) {
     grupos.push({ clave: "electivas", titulo: "Electivas", materias: electivas, esElectiva: true });
   }
-    // Las del título intermedio, aparte: son opcionales, como las electivas.
+  // Las del título intermedio, aparte: son opcionales, como las electivas.
   const intermedio = materias.filter((m) => m.tipo === "intermedio");
   if (intermedio.length) {
     grupos.push({ clave: "intermedio", titulo: "Título intermedio", materias: intermedio, esElectiva: true });
   }
 
-  return <CargarAvance grupos={grupos} estadosIniciales={estados} />;
+  const plan = perfil.planes as unknown as { unidad_electivas: string | null } | null;
+
+  return <CargarAvance grupos={grupos} estadosIniciales={estados} unidad={unidadDe(plan?.unidad_electivas)} />;
 }

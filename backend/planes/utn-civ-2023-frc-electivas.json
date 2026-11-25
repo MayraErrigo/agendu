@@ -3,6 +3,7 @@
   "plan_id": "utn-civ-2023",
   "regional_id": "utn-frc",
   "creditos_requeridos": 22,
+  "unidad": "horas",
   "electivas": [
     {"numero": 101, "nombre": "Análisis Estructural III", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [34, 38], "aprobadas": [26, 29, 30]},
     {"numero": 102, "nombre": "Dinámica Estructural", "nivel": 5, "creditos": 6, "se_dicta": true, "regulares": [29, 34, 38], "aprobadas": [26, 30]},

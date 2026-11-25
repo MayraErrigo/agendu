@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { obtenerCorrelativas, obtenerEstados, obtenerMaterias } from "@/lib/datos/plan";
 import { indexarCorrelativas } from "@/lib/logica/correlativas";
+import { unidadDe } from "@/lib/logica/unidades";
 
 // Todo lo que necesitan las pestañas de una materia: el alumno, la materia,
 // el resto del plan y sus correlativas. Si algo no corresponde, redirige.
@@ -18,7 +19,7 @@ export const cargarMateria = cache(async (id: string) => {
 
   const { data: perfil } = await supabase
     .from("perfiles")
-    .select("plan_id, regional_id")
+    .select("plan_id, regional_id, planes ( unidad_electivas )")
     .eq("id", user.id)
     .maybeSingle();
   if (!perfil?.plan_id) {
@@ -44,5 +45,7 @@ export const cargarMateria = cache(async (id: string) => {
     correlativas,
     indice: indexarCorrelativas(correlativas),
     nombre: new Map(materias.map((m) => [m.id, m.nombre])),
+    // Créditos u horas, según cómo cuente las electivas el plan.
+    unidad: unidadDe((perfil.planes as unknown as { unidad_electivas: string | null } | null)?.unidad_electivas),
   };
 });

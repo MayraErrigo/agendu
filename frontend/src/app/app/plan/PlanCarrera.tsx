@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import type { Dictado, EstadoMateria } from "@/lib/datos/plan";
 import type { Condicion, Situacion } from "@/lib/logica/correlativas";
+import { cantidad, type Unidad } from "@/lib/logica/unidades";
 import { cambiarEstado, cambiarEstadoPropia, quitarPropia } from "./acciones";
 
 const DICTADO = {
@@ -69,11 +70,13 @@ function subtitulo(m: MateriaPlan): string {
 
 export default function PlanCarrera({
   grupos,
+  unidad,
   subtitulo: textoPlan,
   inicial,
   aviso,
 }: {
   grupos: GrupoPlan[];
+  unidad: Unidad; // créditos u horas, según el plan
   subtitulo: string;
   inicial?: string;
   aviso?: string;
@@ -173,7 +176,7 @@ export default function PlanCarrera({
                   <span className="font-semibold leading-snug">{m.nombre}</span>
                   <span className="text-xs text-suave">
                     {subtitulo(m)}
-                    {m.tipo === "electiva" && m.creditos ? ` · ${m.creditos} créditos` : ""}
+                    {m.tipo === "electiva" && m.creditos ? ` · ${cantidad(m.creditos, unidad)}` : ""}
                     {m.tipo === "electiva" ? ` · ${m.nivel}º año` : ""}
                     {m.tipo === "intermedio" ? " · Título intermedio" : ""}
                     {m.dictado ? ` · ${DICTADO[m.dictado]}` : ""}
