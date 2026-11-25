@@ -1,0 +1,70 @@
+{
+  "fuente": "UTN FRC: Ord. 1873 (diseño curricular, copia de la FR Córdoba) y régimen de correlativas del CET-AETI de la FR Córdoba. Integradoras según el espacio integrador de la Ord. 1873: Integración Eléctrica I y II, Taller Interdisciplinario y Proyecto Final.",
+  "universidad": {
+    "id": "utn",
+    "nombre": "Universidad Tecnológica Nacional",
+    "sigla": "UTN"
+  },
+  "carrera": {
+    "id": "utn-iee",
+    "nombre": "Ingeniería en Energía Eléctrica"
+  },
+  "plan": {
+    "id": "utn-iee-2023",
+    "nombre": "Plan 2023",
+    "anio": 2023,
+    "ordenanzas": "Ord. 1873 CSU",
+    "horas_electivas": null
+  },
+  "regionales": [
+    {
+      "id": "utn-frc",
+      "nombre": "Facultad Regional Córdoba",
+      "sigla": "FRC"
+    }
+  ],
+  "materias": [
+    {"numero": 1, "nivel": 1, "nombre": "Análisis Matemático I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 2, "nivel": 1, "nombre": "Álgebra y Geometría Analítica", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 3, "nivel": 1, "nombre": "Ingeniería y Sociedad", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 4, "nivel": 1, "nombre": "Sistemas de Representación", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 5, "nivel": 1, "nombre": "Física I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 6, "nivel": 1, "nombre": "Química General", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 7, "nivel": 1, "nombre": "Integración Eléctrica I", "integradora": true, "regulares": [], "aprobadas": []},
+    {"numero": 8, "nivel": 1, "nombre": "Fundamentos de Informática", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 9, "nivel": 2, "nombre": "Física II", "integradora": false, "regulares": [1, 5], "aprobadas": []},
+    {"numero": 10, "nivel": 2, "nombre": "Probabilidad y Estadística", "integradora": false, "regulares": [1, 2], "aprobadas": []},
+    {"numero": 11, "nivel": 2, "nombre": "Electrotecnia I", "integradora": false, "regulares": [1, 2, 5], "aprobadas": []},
+    {"numero": 12, "nivel": 2, "nombre": "Estabilidad", "integradora": false, "regulares": [1, 2, 5], "aprobadas": []},
+    {"numero": 13, "nivel": 2, "nombre": "Mecánica Técnica", "integradora": false, "regulares": [1, 5], "aprobadas": []},
+    {"numero": 14, "nivel": 2, "nombre": "Integración Eléctrica II", "integradora": true, "regulares": [1, 5, 7], "aprobadas": []},
+    {"numero": 15, "nivel": 2, "nombre": "Inglés I", "integradora": false, "regulares": [], "aprobadas": []},
+    {"numero": 16, "nivel": 2, "nombre": "Análisis Matemático II", "integradora": false, "regulares": [1, 2], "aprobadas": []},
+    {"numero": 17, "nivel": 2, "nombre": "Cálculo Numérico", "integradora": false, "regulares": [1, 2, 5, 8], "aprobadas": []},
+    {"numero": 18, "nivel": 3, "nombre": "Tecnologías y Ensayos de Materiales Eléctricos", "integradora": false, "regulares": [6, 9], "aprobadas": [1, 5]},
+    {"numero": 19, "nivel": 3, "nombre": "Instrumentos y Mediciones Eléctricas", "integradora": false, "regulares": [10, 11], "aprobadas": [1, 2, 5]},
+    {"numero": 20, "nivel": 3, "nombre": "Teoría de los Campos", "integradora": false, "regulares": [9, 16], "aprobadas": [1, 2, 5]},
+    {"numero": 21, "nivel": 3, "nombre": "Física III", "integradora": false, "regulares": [9, 16], "aprobadas": [1, 2, 5]},
+    {"numero": 22, "nivel": 3, "nombre": "Máquinas Eléctricas I", "integradora": false, "regulares": [9, 11, 16, 17], "aprobadas": [1, 5]},
+    {"numero": 23, "nivel": 3, "nombre": "Electrotecnia II", "integradora": false, "regulares": [9, 11, 16], "aprobadas": [1, 2, 5]},
+    {"numero": 24, "nivel": 3, "nombre": "Termodinámica", "integradora": false, "regulares": [9, 16], "aprobadas": [1, 2, 5]},
+    {"numero": 25, "nivel": 3, "nombre": "Fundamentos para el Análisis de Señales", "integradora": false, "regulares": [16, 17], "aprobadas": [1, 2]},
+    {"numero": 26, "nivel": 3, "nombre": "Taller Interdisciplinario", "integradora": true, "regulares": [9, 11, 16, 17], "aprobadas": [1, 5]},
+    {"numero": 27, "nivel": 4, "nombre": "Inglés II", "integradora": false, "regulares": [], "aprobadas": [15]},
+    {"numero": 28, "nivel": 4, "nombre": "Economía", "integradora": false, "regulares": [], "aprobadas": [3]},
+    {"numero": 29, "nivel": 4, "nombre": "Electrónica I", "integradora": false, "regulares": [11], "aprobadas": [1, 5]},
+    {"numero": 30, "nivel": 4, "nombre": "Máquinas Eléctricas II", "integradora": false, "regulares": [18, 19, 20, 22, 23], "aprobadas": [6, 9, 10, 11, 15, 16]},
+    {"numero": 31, "nivel": 4, "nombre": "Seguridad, Riesgo Eléctrico y Medio Ambiente", "integradora": false, "regulares": [6, 11, 18, 20], "aprobadas": [1, 2, 5, 9, 16]},
+    {"numero": 32, "nivel": 4, "nombre": "Instalaciones Eléctricas y Luminotecnia", "integradora": false, "regulares": [18, 22, 23], "aprobadas": [6, 9, 11, 14, 15, 16]},
+    {"numero": 33, "nivel": 4, "nombre": "Control Automático", "integradora": false, "regulares": [23, 25], "aprobadas": [11, 16]},
+    {"numero": 34, "nivel": 4, "nombre": "Máquinas Térmicas, Hidráulicas y de Fluidos", "integradora": false, "regulares": [12, 13, 24], "aprobadas": [9, 16]},
+    {"numero": 35, "nivel": 4, "nombre": "Legislación", "integradora": false, "regulares": [], "aprobadas": [3]},
+    {"numero": 36, "nivel": 5, "nombre": "Electrónica II", "integradora": false, "regulares": [23, 29], "aprobadas": [11, 26]},
+    {"numero": 37, "nivel": 5, "nombre": "Generación, Transmisión y Distribución de la Energía Eléctrica", "integradora": false, "regulares": [21, 30, 34], "aprobadas": [12, 13, 18, 22, 23, 24]},
+    {"numero": 38, "nivel": 5, "nombre": "Sistemas de Potencia", "integradora": false, "regulares": [30, 33], "aprobadas": [18, 22, 23, 26]},
+    {"numero": 39, "nivel": 5, "nombre": "Accionamientos y Controles Eléctricos", "integradora": false, "regulares": [29, 30, 33], "aprobadas": [11, 18, 22, 23, 25, 26]},
+    {"numero": 40, "nivel": 5, "nombre": "Organización y Administración de Empresas", "integradora": false, "regulares": [28, 35], "aprobadas": [26]},
+    {"numero": 41, "nivel": 5, "nombre": "Proyecto Final", "integradora": true, "regulares": [28, 30, 32, 33], "aprobadas": [18, 19, 22, 23, 25, 26, 27]},
+    {"numero": 42, "nivel": 5, "nombre": "Práctica Profesional Supervisada", "integradora": false, "regulares": [28, 30, 32, 33], "aprobadas": [18, 19, 22, 23, 25, 26, 27]} 
+]
+}

@@ -64,6 +64,7 @@
     {"numero": 38, "nivel": 5, "nombre": "Análisis Estructural II", "integradora": false, "regulares": [21, 26, 29, 30, 31], "aprobadas": [16, 17, 18, 19, 25]},
     {"numero": 39, "nivel": 5, "nombre": "Vías de Comunicación II", "integradora": false, "regulares": [26, 30, 31, 32, 37], "aprobadas": [16, 17, 18, 19, 20, 24]},
     {"numero": 40, "nivel": 5, "nombre": "Gestión Ambiental y Desarrollo Sustentable", "integradora": false, "regulares": [26, 28, 31, 32], "aprobadas": [20, 24, 25]},
-    {"numero": 41, "nivel": 6, "nombre": "Proyecto Final", "integradora": true, "regulares": [26, 27, 28, 29, 30, 31, 32], "aprobadas": [15, 16, 17, 18, 19, 20, 22, 23, 24, 25]}
+    {"numero": 41, "nivel": 6, "nombre": "Proyecto Final", "integradora": true, "regulares": [26, 27, 28, 29, 30, 31, 32], "aprobadas": [15, 16, 17, 18, 19, 20, 22, 23, 24, 25]},
+      {"numero": 42, "nivel": 6, "nombre": "Práctica Profesional Supervisada", "integradora": false, "regulares": [26, 27, 28, 29, 30, 31, 32], "aprobadas": [15, 16, 17, 18, 19, 20, 22, 23, 24, 25]}
   ]
 }

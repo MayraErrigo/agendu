@@ -8,9 +8,11 @@ import { obtenerCalendario } from "@/lib/datos/calendario";
 import { obtenerConexion } from "@/lib/datos/conexion";
 import { hoyEnArgentina } from "@/lib/logica/fechas";
 import Calendario from "@/components/calendario/Calendario";
-import { resumen } from "@/lib/logica/correlativas";
+import TarjetaPps from "@/components/TarjetaPps";
+import { faltantesParaCursar, indexarCorrelativas, resumen } from "@/lib/logica/correlativas";
 import { calcularAvance } from "@/lib/logica/avance";
 import { cantidad, nombreUnidad, numero, unidadDe } from "@/lib/logica/unidades";
+import { buscarProyectoFinal, estadoPpsDe } from "@/lib/logica/pps";
 
 // Pantalla Inicio: el resumen de la carrera del alumno.
 export default function InicioPage() {
@@ -27,11 +29,13 @@ type Perfil = {
   nombre: string | null;
   plan_id: string | null;
   regional_id: string | null;
+  pps_estado: string | null;
   regionales: { sigla: string } | null;
   planes: {
     nombre: string;
     creditos_electivas: number | null;
     unidad_electivas: string | null;
+    pps_horas: number | null;
     carreras: { nombre: string };
   } | null;
 };
@@ -47,7 +51,9 @@ async function Inicio() {
 
   const { data } = await supabase
     .from("perfiles")
-    .select("nombre, plan_id, regional_id, regionales ( sigla ), planes ( nombre, creditos_electivas, unidad_electivas, carreras ( nombre ) )")
+    .select(
+      "nombre, plan_id, regional_id, pps_estado, regionales ( sigla ), planes ( nombre, creditos_electivas, unidad_electivas, pps_horas, carreras ( nombre ) )"
+    )
     .eq("id", user.id)
     .maybeSingle();
   const perfil = data as unknown as Perfil | null;
@@ -83,6 +89,17 @@ async function Inicio() {
   const obligatoriasCursables = cursables.filter((m) => m.tipo === "obligatoria");
   const electivasCursables = cursables.filter((m) => m.tipo === "electiva");
   const rendibles = podesRendir.map((id) => materiaPorId.get(id)!);
+
+  // Práctica Profesional Supervisada, si el plan la pide como requisito (no como materia):
+  // se empieza con los mismos requisitos que para cursar Proyecto Final.
+  const ppsHoras = perfil.planes?.pps_horas ?? null;
+  const proyectoFinal = ppsHoras ? buscarProyectoFinal(materias) : null;
+  const faltanPps = proyectoFinal
+    ? faltantesParaCursar(proyectoFinal.id, indexarCorrelativas(correlativas), estados).map((f) => ({
+        nombre: materiaPorId.get(f.materiaId)?.nombre ?? f.materiaId,
+        necesita: f.necesita,
+      }))
+    : [];
 
   const nombre = perfil.nombre?.split(" ")[0] ?? "";
   const carrera = perfil.planes?.carreras.nombre ?? "";
@@ -171,6 +188,9 @@ async function Inicio() {
           </span>
         </section>
       )}
+
+      {/* Práctica Profesional Supervisada (requisito para recibirse) */}
+      {ppsHoras && <TarjetaPps horas={ppsHoras} estado={estadoPpsDe(perfil.pps_estado)} faltan={faltanPps} />}
 
       {/* Podés rendir */}
       {rendibles.length > 0 && (

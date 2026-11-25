@@ -60,6 +60,7 @@
     {"numero": 34, "nivel": 5, "nombre": "Electrónica de Potencia", "integradora": false, "regulares": [23, 25, 27], "aprobadas": [13, 16, 19]},
     {"numero": 35, "nivel": 5, "nombre": "Organización Industrial", "integradora": false, "regulares": [18], "aprobadas": []},
     {"numero": 36, "nivel": 6, "nombre": "Economía", "integradora": false, "regulares": [8], "aprobadas": [4]},
-    {"numero": 37, "nivel": 6, "nombre": "Proyecto Final", "integradora": false, "regulares": [29, 30, 32], "aprobadas": [22, 23, 25, 27]}
+    {"numero": 37, "nivel": 6, "nombre": "Proyecto Final", "integradora": false, "regulares": [29, 30, 32], "aprobadas": [22, 23, 25, 27]},
+      {"numero": 38, "nivel": 6, "nombre": "Práctica Profesional Supervisada", "integradora": false, "regulares": [], "aprobadas": []}
   ]
 }
