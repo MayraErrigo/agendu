@@ -125,7 +125,15 @@ async function Contenido() {
       <section className="rounded-3xl bg-superficie p-5 shadow-sm">
         <BarraEspacio usado={uso.usado} limite={uso.limite} />
       </section>
-
+      {/* Legales */}
+      <section className="flex flex-col gap-3 rounded-3xl bg-superficie p-5 shadow-sm">
+        <span className="text-xs font-semibold uppercase tracking-wider text-suave">Sobre Agendu</span>
+                <p className="text-sm text-suave">Agendu es una aplicación independiente de la universidad.</p>
+        <div className="flex flex-col gap-2">
+          <Opcion href="/privacidad" texto="Política de privacidad" />
+          <Opcion href="/arrepentimiento" texto="Botón de arrepentimiento" detalle="Cancelar dentro de los 10 días de contratar" />
+        </div>
+      </section>
       {/* Salir */}
       <form action="/auth/salir" method="post">
         <button

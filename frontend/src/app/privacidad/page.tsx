@@ -7,8 +7,7 @@ export const metadata: Metadata = {
   title: "Política de privacidad · Agendu",
 };
 
-const ACTUALIZADA = "22 de noviembre de 2026";
-
+const ACTUALIZADA = "26 de noviembre de 2026";
 // Política de privacidad: qué datos guarda Agendu, para qué y cómo pedir que se borren.
 export default function PrivacidadPage() {
   return (
@@ -29,7 +28,17 @@ export default function PrivacidadPage() {
           para qué y qué podés hacer con ellos.
         </p>
       </Seccion>
-
+        <Seccion titulo="Proyecto independiente">
+          <p>
+            Agendu es una aplicación independiente: no es una aplicación oficial de la Universidad Tecnológica Nacional
+            (UTN) ni de la Facultad Regional Córdoba.
+          </p>
+          <p>
+            Los planes de estudio, las materias y las correlativas que muestra la app son información pública: salen de la
+            oferta académica que publica la facultad, de las ordenanzas del Consejo Superior de la UTN y de los cuadros del
+            CET. Podemos cometer errores al cargarlos; ante cualquier duda, la información oficial es la de tu facultad.
+          </p>
+      </Seccion>
       <Seccion titulo="Qué datos guardamos">
         <ul className="list-disc space-y-1 pl-5">
           <li>
